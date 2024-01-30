@@ -1,0 +1,43 @@
+{
+    "tables": {
+        "Carta": {
+            "tableName": "Carta",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "nombre": {
+                    "field": "nombre",
+                    "seqType": "Sequelize.STRING"
+                },
+                "rareza": {
+                    "field": "rareza",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "number": {
+                    "field": "number",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        }
+    },
+    "path": "C:\\Users\\PC\\Documents\\ranita_bot\\migrations\\_current.json",
+    "backupPath": "C:\\Users\\PC\\Documents\\ranita_bot\\migrations\\_current_bak.json",
+    "exists": false,
+    "revision": 1
+}

@@ -47,17 +47,6 @@ client.on('messageCreate', async message => {
     if (response){ 
         message.channel.send(response)
     }
-    /*if(msg.toLowerCase() === '/roll'){
-
-        con.query("SELECT nombre FROM cartas", function (err, result) {
-            if (err) throw err;
-            let str ="";
-            for (let i=0; i<5; i++) 
-                str+=result[Math.floor(Math.random()*result.length)].nombre+"\n";
-            message.channel.send(str);
-    });}
-    if(msg.toLowerCase() === '/chapas')message.channel.send('Usted tiene: la nada \n (aun no se configuro los usuarios)');
-    */
 }); 
 
 client.login(token);

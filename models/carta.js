@@ -15,7 +15,6 @@ module.exports = (sequelize, DataTypes) => {
   }
   Carta.init({
     nombre: DataTypes.STRING,
-    nombre2: DataTypes.STRING,
     rareza: DataTypes.INTEGER,
     number: DataTypes.INTEGER
   }, {

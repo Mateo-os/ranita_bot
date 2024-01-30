@@ -14,12 +14,16 @@
                     "field": "nombre",
                     "seqType": "Sequelize.STRING"
                 },
+                "serie": {
+                    "field": "serie",
+                    "seqType": "Sequelize.STRING"
+                },
                 "rareza": {
                     "field": "rareza",
                     "seqType": "Sequelize.INTEGER"
                 },
-                "number": {
-                    "field": "number",
+                "numero": {
+                    "field": "numero",
                     "seqType": "Sequelize.INTEGER"
                 },
                 "createdAt": {

@@ -10,7 +10,7 @@ const Sequelize = require("sequelize");
 const info = {
   revision: 1,
   name: "noname",
-  created: "2024-01-30T01:26:19.077Z",
+  created: "2024-01-30T15:21:21.672Z",
   comment: "",
 };
 
@@ -28,8 +28,9 @@ const migrationCommands = (transaction) => [
           allowNull: false,
         },
         nombre: { type: Sequelize.STRING, field: "nombre" },
+        serie: { type: Sequelize.STRING, field: "serie" },
         rareza: { type: Sequelize.INTEGER, field: "rareza" },
-        number: { type: Sequelize.INTEGER, field: "number" },
+        numero: { type: Sequelize.INTEGER, field: "numero" },
         createdAt: {
           type: Sequelize.DATE,
           field: "createdAt",

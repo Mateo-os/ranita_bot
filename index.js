@@ -1,19 +1,19 @@
 const { Client, Events } = require('discord.js');
-const { token } = require('./config.json');
 const client = new Client({ intents: [37633]});
-const mysql = require('mysql');
-
+const mysql = require('mysql2');
+require('dotenv').config();
+const token = process.env.TOKEN;
+const port = (process.env.PORT || 3306);
 var con = mysql.createConnection({
     host: "localhost",
     user: "Ranita",
-    password: "contraseña",
-    database: "las3ranas"
+    password: "ribbit",
+    database: "las3ranas",
+    port: port
 });
-
 client.once(Events.ClientReady, readyClient => {
 	console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 });
-
 client.on('messageCreate', async message => {
     let msg = message.content;
     

@@ -6,15 +6,6 @@ const {models} = require('./database');
 const mysql = require('mysql2');
 
 const token = process.env.TOKEN;
-const port = (process.env.PORT || 3306);
-
-var con = mysql.createConnection({
-    host: "localhost",
-    user: "Ranita",
-    password: "ribbit",
-    database: "las3ranas",
-    port: port
-});
 
 client.once(Events.ClientReady, readyClient => {
 	console.log(`Ready! Logged in as ${readyClient.user.tag}`);

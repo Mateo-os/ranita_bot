@@ -3,7 +3,6 @@ const client = new Client({ intents: [37633]});
 require('dotenv').config();
 const { literal } = require('sequelize')
 const {models} = require('./database');
-const mysql = require('mysql2');
 
 const token = process.env.TOKEN;
 

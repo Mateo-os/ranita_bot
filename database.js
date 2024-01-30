@@ -9,4 +9,4 @@ const models = {
   // Add other models here
 };
 
-module.exports = { sequelize, models };
+module.exports = { models };

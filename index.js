@@ -24,10 +24,11 @@ async function incrementElement() {
 function parseCartas(query){
     let response = "\`\`\`"
     query.forEach( elem => {
+        const repetidas = (elem.Cromo && elem.Cromo.cantidad > 1) ? " [" + elem.Cromo.cantidad + "] " : ''
         const name = "Personaje: " + elem.nombre;
         const rarity = " Rareza: " + elem.rareza; 
-        const series = " Serie: " + elem.serie + " (" + elem.numero + ")" + "\n";
-        response += name.padEnd(30) + rarity.padEnd(15) + series;
+        const series = " Serie: " + elem.serie + " (" + elem.numero + ")" +  repetidas + "\n";
+        response += name.padEnd(35) + rarity.padEnd(15) + series;
     });
     response += "\`\`\`"
     return response;
@@ -75,7 +76,8 @@ client.on('messageCreate', async message => {
                 response += 'No tenés rolls';
                 break
             }
-            const query = [];
+            let new_cards = [];
+            let card_ids = []; 
             for (i=0;i<5;i++){
                 let random = Math.floor(Math.random()*1000);
                 if (random <=4) rare = 5;
@@ -87,11 +89,18 @@ client.on('messageCreate', async message => {
                     where:{rareza:rare},
                     order:literal("RAND()"),
                 },)
-                query.push(card);              
+                new_cards.push(card);
+                card_ids.push(card.id);              
             }
-            player.addCartas(query);
+            player.cartas.forEach(c =>{
+                if(card_ids.includes(c.id)){
+                    c.Cromo.increment('cantidad');
+                    c.save();
+                }
+            })
+            player.addCartas(new_cards.filter(elem => !(elem.id in card_ids)));
             player.decrement('rolls');
-            response = parseCartas(query);
+            response = parseCartas(new_cards);
             break;
         case 'chapas':
             response = 'Estas son tus cartas totales: \n';

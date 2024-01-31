@@ -44,16 +44,9 @@
             "schema": {
                 "cantidad": {
                     "defaultValue": {
-                        "value": 0
+                        "value": 1
                     },
                     "field": "cantidad",
-                    "seqType": "Sequelize.INTEGER"
-                },
-                "id": {
-                    "primaryKey": true,
-                    "autoIncrement": true,
-                    "allowNull": false,
-                    "field": "id",
                     "seqType": "Sequelize.INTEGER"
                 },
                 "createdAt": {
@@ -67,7 +60,7 @@
                     "seqType": "Sequelize.DATE"
                 },
                 "CartumId": {
-                    "unique": "Cromo_JugadorId_CartumId_unique",
+                    "primaryKey": true,
                     "references": {
                         "model": "Carta",
                         "key": "id"
@@ -78,7 +71,7 @@
                     "seqType": "Sequelize.INTEGER"
                 },
                 "JugadorId": {
-                    "unique": "Cromo_JugadorId_CartumId_unique",
+                    "primaryKey": true,
                     "references": {
                         "model": "Jugador",
                         "key": "id"

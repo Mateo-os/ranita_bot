@@ -11,14 +11,8 @@ module.exports = (sequelize) => {
   Cromo.init({
     cantidad: {
         type: DataTypes.INTEGER,
-        defaultValue:0
+        defaultValue:1
     },
-    id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-        allowNull: false
-      },
   },{
     sequelize,
     modelName: 'Cromo',

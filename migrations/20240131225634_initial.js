@@ -12,7 +12,7 @@ const Sequelize = require("sequelize");
 const info = {
   revision: 1,
   name: "initial",
-  created: "2024-01-31T22:22:01.113Z",
+  created: "2024-01-31T22:56:34.484Z",
   comment: "",
 };
 
@@ -85,14 +85,7 @@ const migrationCommands = (transaction) => [
         cantidad: {
           type: Sequelize.INTEGER,
           field: "cantidad",
-          defaultValue: 0,
-        },
-        id: {
-          type: Sequelize.INTEGER,
-          field: "id",
-          allowNull: false,
-          autoIncrement: true,
-          primaryKey: true,
+          defaultValue: 1,
         },
         createdAt: {
           type: Sequelize.DATE,
@@ -110,7 +103,7 @@ const migrationCommands = (transaction) => [
           onUpdate: "CASCADE",
           onDelete: "CASCADE",
           references: { model: "Carta", key: "id" },
-          unique: "Cromo_JugadorId_CartumId_unique",
+          primaryKey: true,
         },
         JugadorId: {
           type: Sequelize.INTEGER,
@@ -118,7 +111,7 @@ const migrationCommands = (transaction) => [
           onUpdate: "CASCADE",
           onDelete: "CASCADE",
           references: { model: "Jugador", key: "id" },
-          unique: "Cromo_JugadorId_CartumId_unique",
+          primaryKey: true,
         },
       },
       { transaction },

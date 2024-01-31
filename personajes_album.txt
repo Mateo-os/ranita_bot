@@ -57,8 +57,8 @@ Megumi Yokosuka,1,7
 Mansaku Matsuura,1,8
 Ishihara,1,9
 Lilly,1,10
-Setsuko Koike,1,11
-Sasaki Gisuke 1,12
+Setsuko Koike,1,1,1
+Sasaki Gisuke 1,1,2
 
 Nijigahara Holograph (7)
 Amahiko Suzuki,2,1

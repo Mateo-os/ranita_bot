@@ -92,4 +92,4 @@ lerna-debug.log
 Thumbs.db
 
 #SQL
-.sql
+*.sql

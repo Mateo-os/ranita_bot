@@ -10,9 +10,9 @@ console.log(user);
 
 async function incrementElement() {
     try {
-      const row = await models.Jugador.findOne();
+      const row = await models.Jugador.findAll();
       if (row) {
-        row.rolls += 1;
+        row.increment('rolls');
         await row.save();
         console.log('Element incremented successfully.');
       }

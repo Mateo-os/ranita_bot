@@ -5,6 +5,21 @@ const { literal } = require('sequelize')
 const {models} = require('./database');
 
 const token = process.env.TOKEN;
+const user = process.env.DBUSER;
+console.log(user);
+
+async function incrementElement() {
+    try {
+      const row = await models.Jugador.findOne();
+      if (row) {
+        row.rolls += 1;
+        await row.save();
+        console.log('Element incremented successfully.');
+      }
+    } catch (error) {
+      console.error('Error incrementing element:', error);
+    }
+  }
 
 function parseCartas(query){
     let response = "\`\`\`"
@@ -18,10 +33,9 @@ function parseCartas(query){
     return response;
 }
 
-
-
 client.once(Events.ClientReady, readyClient => {
 	console.log(`Ready! Logged in as ${readyClient.user.tag}`);
+    setInterval(incrementElement, 24 * 60 * 60 * 1000);
 });
 client.on('messageCreate', async message => {
     if (message.content.charAt(0) != '/' || message.author.bot){
@@ -57,7 +71,7 @@ client.on('messageCreate', async message => {
             break;
         case 'roll':
             if(player.rolls <= 0){
-                response += 'No tenes rolls';
+                response += 'No tenés rolls';
                 break
             }
             const query = await models.Carta.findAll({
@@ -73,9 +87,8 @@ client.on('messageCreate', async message => {
             response += parseCartas(player.cartas);
             break;
     }
-    if (response){ 
-        message.channel.send(response)
-    }
+    if(response)
+        message.channel.send(response);
 }); 
 
 client.login(token);

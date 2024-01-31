@@ -77,13 +77,21 @@ client.on('messageCreate', async message => {
                 response += 'No tenés rolls';
                 break
             }
-            const query = await models.Carta.findAll({
-                order: literal('RAND() * (1 / rareza)'),
-                limit: 5,
+            let rare;
+            for (i=0;i<5;i++){
+                let random = Math.floor(Math.random()*1000);
+                if (random <=4) rare = 5;
+                else if (random <= 30) rare = 4;
+                else if (random <= 100) rare = 3;
+                else if (random <= 300) rare = 2;
+                else rare = 1;              
+            }
+            const query = await models.Carta.findOne({
+                where: {rareza:rare}
             });
-            player.decrement('rolls');
             player.addCartas(query);
-            response = parseCartas(query);
+            player.decrement('rolls');
+            response = parseCartas(query5);
             break;
         case 'chapas':
             response = 'Estas son tus cartas totales: \n';

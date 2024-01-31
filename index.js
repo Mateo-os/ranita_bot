@@ -1,13 +1,11 @@
 const { Client, Events } = require('discord.js');
 const client = new Client({ intents: [37633]});
 require('dotenv').config();
-const { literal } = require('sequelize')
+const { literal, where } = require('sequelize')
 const {models} = require('./database');
 
 const token = process.env.TOKEN;
 const user = process.env.DBUSER;
-console.log(user);
-
 async function incrementElement() {
     try {
       const row = await models.Jugador.findAll();
@@ -77,21 +75,23 @@ client.on('messageCreate', async message => {
                 response += 'No tenés rolls';
                 break
             }
-            let rare;
+            const query = [];
             for (i=0;i<5;i++){
                 let random = Math.floor(Math.random()*1000);
                 if (random <=4) rare = 5;
                 else if (random <= 30) rare = 4;
                 else if (random <= 100) rare = 3;
                 else if (random <= 300) rare = 2;
-                else rare = 1;              
+                else rare = 1;
+                card = await models.Carta.findOne({
+                    where:{rareza:rare},
+                    order:literal("RAND()"),
+                },)
+                query.push(card);              
             }
-            const query = await models.Carta.findOne({
-                where: {rareza:rare}
-            });
             player.addCartas(query);
             player.decrement('rolls');
-            response = parseCartas(query5);
+            response = parseCartas(query);
             break;
         case 'chapas':
             response = 'Estas son tus cartas totales: \n';

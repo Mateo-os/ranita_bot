@@ -5,13 +5,14 @@ const Sequelize = require("sequelize");
  *
  * createTable() => "Carta", deps: []
  * createTable() => "Jugador", deps: []
+ * createTable() => "Cromo", deps: [Carta, Jugador]
  *
  */
 
 const info = {
   revision: 1,
-  name: "noname",
-  created: "2024-01-31T01:46:13.727Z",
+  name: "initial",
+  created: "2024-01-31T22:22:01.113Z",
   comment: "",
 };
 
@@ -59,8 +60,9 @@ const migrationCommands = (transaction) => [
           allowNull: false,
         },
         nombre: { type: Sequelize.STRING, field: "nombre" },
-        id_discord: { type: Sequelize.INTEGER, field: "id_discord" },
-        id_servidor: { type: Sequelize.INTEGER, field: "id_servidor" },
+        id_discord: { type: Sequelize.BIGINT, field: "id_discord" },
+        id_servidor: { type: Sequelize.BIGINT, field: "id_servidor" },
+        rolls: { type: Sequelize.INTEGER, field: "rolls", defaultValue: 1 },
         createdAt: {
           type: Sequelize.DATE,
           field: "createdAt",
@@ -75,12 +77,63 @@ const migrationCommands = (transaction) => [
       { transaction },
     ],
   },
+  {
+    fn: "createTable",
+    params: [
+      "Cromo",
+      {
+        cantidad: {
+          type: Sequelize.INTEGER,
+          field: "cantidad",
+          defaultValue: 0,
+        },
+        id: {
+          type: Sequelize.INTEGER,
+          field: "id",
+          allowNull: false,
+          autoIncrement: true,
+          primaryKey: true,
+        },
+        createdAt: {
+          type: Sequelize.DATE,
+          field: "createdAt",
+          allowNull: false,
+        },
+        updatedAt: {
+          type: Sequelize.DATE,
+          field: "updatedAt",
+          allowNull: false,
+        },
+        CartumId: {
+          type: Sequelize.INTEGER,
+          field: "CartumId",
+          onUpdate: "CASCADE",
+          onDelete: "CASCADE",
+          references: { model: "Carta", key: "id" },
+          unique: "Cromo_JugadorId_CartumId_unique",
+        },
+        JugadorId: {
+          type: Sequelize.INTEGER,
+          field: "JugadorId",
+          onUpdate: "CASCADE",
+          onDelete: "CASCADE",
+          references: { model: "Jugador", key: "id" },
+          unique: "Cromo_JugadorId_CartumId_unique",
+        },
+      },
+      { transaction },
+    ],
+  },
 ];
 
 const rollbackCommands = (transaction) => [
   {
     fn: "dropTable",
     params: ["Carta", { transaction }],
+  },
+  {
+    fn: "dropTable",
+    params: ["Cromo", { transaction }],
   },
   {
     fn: "dropTable",

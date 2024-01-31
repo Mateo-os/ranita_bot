@@ -39,6 +39,58 @@
             },
             "indexes": []
         },
+        "Cromo": {
+            "tableName": "Cromo",
+            "schema": {
+                "cantidad": {
+                    "defaultValue": {
+                        "value": 0
+                    },
+                    "field": "cantidad",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "id": {
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "allowNull": false,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "CartumId": {
+                    "unique": "Cromo_JugadorId_CartumId_unique",
+                    "references": {
+                        "model": "Carta",
+                        "key": "id"
+                    },
+                    "onDelete": "CASCADE",
+                    "onUpdate": "CASCADE",
+                    "field": "CartumId",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "JugadorId": {
+                    "unique": "Cromo_JugadorId_CartumId_unique",
+                    "references": {
+                        "model": "Jugador",
+                        "key": "id"
+                    },
+                    "onDelete": "CASCADE",
+                    "onUpdate": "CASCADE",
+                    "field": "JugadorId",
+                    "seqType": "Sequelize.INTEGER"
+                }
+            },
+            "indexes": []
+        },
         "Jugador": {
             "tableName": "Jugador",
             "schema": {
@@ -80,48 +132,10 @@
                 }
             },
             "indexes": []
-        },
-        "Cromo": {
-            "tableName": "Cromo",
-            "schema": {
-                "createdAt": {
-                    "allowNull": false,
-                    "field": "createdAt",
-                    "seqType": "Sequelize.DATE"
-                },
-                "updatedAt": {
-                    "allowNull": false,
-                    "field": "updatedAt",
-                    "seqType": "Sequelize.DATE"
-                },
-                "CartumId": {
-                    "primaryKey": true,
-                    "references": {
-                        "model": "Carta",
-                        "key": "id"
-                    },
-                    "onDelete": "CASCADE",
-                    "onUpdate": "CASCADE",
-                    "field": "CartumId",
-                    "seqType": "Sequelize.INTEGER"
-                },
-                "JugadorId": {
-                    "primaryKey": true,
-                    "references": {
-                        "model": "Jugador",
-                        "key": "id"
-                    },
-                    "onDelete": "CASCADE",
-                    "onUpdate": "CASCADE",
-                    "field": "JugadorId",
-                    "seqType": "Sequelize.INTEGER"
-                }
-            },
-            "indexes": []
         }
     },
     "path": "C:\\Users\\PC\\Documents\\ranita_bot\\migrations\\_current.json",
     "backupPath": "C:\\Users\\PC\\Documents\\ranita_bot\\migrations\\_current_bak.json",
-    "exists": true,
-    "revision": 4
+    "exists": false,
+    "revision": 1
 }

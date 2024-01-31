@@ -6,6 +6,7 @@ const sequelize = new Sequelize(config.development);
 
 const models = {
   Carta: require('./models/carta')(sequelize),
+  Jugador: require('./models/jugador')(sequelize),
   // Add other models here
 };
 

@@ -16,8 +16,8 @@ module.exports = (sequelize) => {
   }
   Jugador.init({
     nombre: DataTypes.STRING,
-    id_discord: DataTypes.INTEGER,
-    id_servidor: DataTypes.INTEGER
+    id_discord: DataTypes.BIGINT,
+    id_servidor: DataTypes.BIGINT
   }, {
     sequelize,
     modelName: 'Jugador',

@@ -10,9 +10,24 @@ client.once(Events.ClientReady, readyClient => {
 	console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 });
 client.on('messageCreate', async message => {
-    if (message.content.charAt(0) != '/'){
+    if (message.content.charAt(0) != '/' || message.author.bot){
         return;
-    }  
+    }
+    const author = message.author;
+    const server = message.guild;
+    const player = await models.Jugador.findOne({
+        id_discord : author.id,
+        id_servidor: server.id,
+    });
+    if(!player) {
+        message.channel.send("Hola noob ahi te creo un perfil");
+        const new_player = await models.Jugador.create({
+            nombre:author.username,
+            id_discord: author.id,
+            id_servidor: server.id
+        });
+        message.channel.send('Bienvenido al juego ' + author.username.toUpperCase());
+    }
     const msg = message.content.replace('/','');
     let response = '';
     switch(msg){

@@ -12,8 +12,10 @@ async function incrementElement() {
     try {
       const row = await models.Jugador.findAll();
       if (row) {
-        row.increment('rolls');
-        await row.save();
+        row.forEach(element => {
+            element.increment('rolls');
+            element.save();
+        });
         console.log('Element incremented successfully.');
       }
     } catch (error) {
@@ -68,6 +70,7 @@ client.on('messageCreate', async message => {
         case 'test':
             console.log(player.toJSON());
             console.log(player.cartas);
+            incrementElement();
             break;
         case 'roll':
             if(player.rolls <= 0){

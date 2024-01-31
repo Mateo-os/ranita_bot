@@ -4,13 +4,14 @@ const Sequelize = require("sequelize");
  * Actions summary:
  *
  * createTable() => "Carta", deps: []
+ * createTable() => "Jugador", deps: []
  *
  */
 
 const info = {
   revision: 1,
   name: "noname",
-  created: "2024-01-30T15:21:21.672Z",
+  created: "2024-01-31T01:46:13.727Z",
   comment: "",
 };
 
@@ -45,12 +46,45 @@ const migrationCommands = (transaction) => [
       { transaction },
     ],
   },
+  {
+    fn: "createTable",
+    params: [
+      "Jugador",
+      {
+        id: {
+          type: Sequelize.INTEGER,
+          field: "id",
+          autoIncrement: true,
+          primaryKey: true,
+          allowNull: false,
+        },
+        nombre: { type: Sequelize.STRING, field: "nombre" },
+        id_discord: { type: Sequelize.INTEGER, field: "id_discord" },
+        id_servidor: { type: Sequelize.INTEGER, field: "id_servidor" },
+        createdAt: {
+          type: Sequelize.DATE,
+          field: "createdAt",
+          allowNull: false,
+        },
+        updatedAt: {
+          type: Sequelize.DATE,
+          field: "updatedAt",
+          allowNull: false,
+        },
+      },
+      { transaction },
+    ],
+  },
 ];
 
 const rollbackCommands = (transaction) => [
   {
     fn: "dropTable",
     params: ["Carta", { transaction }],
+  },
+  {
+    fn: "dropTable",
+    params: ["Jugador", { transaction }],
   },
 ];
 

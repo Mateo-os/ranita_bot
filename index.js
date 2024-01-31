@@ -52,16 +52,21 @@ client.on('messageCreate', async message => {
     let response = '';
     switch(msg){
         case 'test':
+            console.log(player.toJSON());
             console.log(player.cartas);
             break;
         case 'roll':
+            if(player.rolls <= 0){
+                response += 'No tenes rolls';
+                break
+            }
             const query = await models.Carta.findAll({
                 order: literal('RAND() * (1 / rareza)'),
                 limit: 5,
             });
+            player.decrement('rolls');
             player.addCartas(query);
             response = parseCartas(query);
-            player.save();
             break;
         case 'chapas':
             response = 'Estas son tus cartas totales: \n';

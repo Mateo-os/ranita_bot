@@ -61,6 +61,13 @@
                     "field": "id_servidor",
                     "seqType": "Sequelize.BIGINT"
                 },
+                "rolls": {
+                    "defaultValue": {
+                        "value": 1
+                    },
+                    "field": "rolls",
+                    "seqType": "Sequelize.INTEGER"
+                },
                 "createdAt": {
                     "allowNull": false,
                     "field": "createdAt",
@@ -116,5 +123,5 @@
     "path": "C:\\Users\\PC\\Documents\\ranita_bot\\migrations\\_current.json",
     "backupPath": "C:\\Users\\PC\\Documents\\ranita_bot\\migrations\\_current_bak.json",
     "exists": true,
-    "revision": 3
+    "revision": 4
 }

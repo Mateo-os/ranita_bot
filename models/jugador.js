@@ -12,7 +12,11 @@ module.exports = (sequelize) => {
   Jugador.init({
     nombre: DataTypes.STRING,
     id_discord: DataTypes.BIGINT,
-    id_servidor: DataTypes.BIGINT
+    id_servidor: DataTypes.BIGINT,
+    rolls: {
+      type: DataTypes.INTEGER,
+      defaultValue: 1,
+    }
   }, {
     sequelize,
     modelName: 'Jugador',

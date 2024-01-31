@@ -15,7 +15,8 @@ const config = {
       "dialect": "mysql",
       "define":{
         "freezeTableName":true,
-      }
+      },
+      "logging":false,
     },
 }
 module.exports = config;

@@ -55,11 +55,11 @@
                 },
                 "id_discord": {
                     "field": "id_discord",
-                    "seqType": "Sequelize.INTEGER"
+                    "seqType": "Sequelize.BIGINT"
                 },
                 "id_servidor": {
                     "field": "id_servidor",
-                    "seqType": "Sequelize.INTEGER"
+                    "seqType": "Sequelize.BIGINT"
                 },
                 "createdAt": {
                     "allowNull": false,
@@ -77,6 +77,6 @@
     },
     "path": "C:\\Users\\PC\\Documents\\ranita_bot\\migrations\\_current.json",
     "backupPath": "C:\\Users\\PC\\Documents\\ranita_bot\\migrations\\_current_bak.json",
-    "exists": false,
-    "revision": 1
+    "exists": true,
+    "revision": 2
 }

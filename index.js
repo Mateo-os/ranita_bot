@@ -6,6 +6,20 @@ const {models} = require('./database');
 
 const token = process.env.TOKEN;
 
+function parseCartas(query){
+    let response = "\`\`\`"
+    query.forEach( elem => {
+        const name = "Personaje: " + elem.nombre;
+        const rarity = " Rareza: " + elem.rareza; 
+        const series = " Serie: " + elem.serie + " (" + elem.numero + ")" + "\n";
+        response += name.padEnd(30) + rarity.padEnd(15) + series;
+    });
+    response += "\`\`\`"
+    return response;
+}
+
+
+
 client.once(Events.ClientReady, readyClient => {
 	console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 });
@@ -15,10 +29,14 @@ client.on('messageCreate', async message => {
     }
     const author = message.author;
     const server = message.guild;
-    const player = await models.Jugador.findOne({
-        id_discord : author.id,
-        id_servidor: server.id,
+    let player = await models.Jugador.findOne({
+        where: {
+            id_discord : author.id,
+            id_servidor: server.id,
+        },
+        include : 'cartas',
     });
+
     if(!player) {
         message.channel.send("Hola noob ahi te creo un perfil");
         const new_player = await models.Jugador.create({
@@ -26,27 +44,28 @@ client.on('messageCreate', async message => {
             id_discord: author.id,
             id_servidor: server.id
         });
-        message.channel.send('Bienvenido al juego ' + author.username.toUpperCase());
+        message.channel.send('Bienvenido al juego ' + new_player.nombre.toUpperCase());
+        player = new_player;
     }
+
     const msg = message.content.replace('/','');
     let response = '';
     switch(msg){
+        case 'test':
+            console.log(player.cartas);
+            break;
         case 'roll':
             const query = await models.Carta.findAll({
                 order: literal('RAND() * (1 / rareza)'),
                 limit: 5,
             });
-            response += "\`\`\`"
-            query.forEach( elem => {
-                const name = "Personaje: " + elem.nombre;
-                const rarity = " Rareza: " + elem.rareza; 
-                const series = " Serie: " + elem.serie + " (" + elem.numero + ")" + "\n";
-                response += name.padEnd(30) + rarity.padEnd(15) + series;
-            })
-            response += "\`\`\`"
+            player.addCartas(query);
+            response = parseCartas(query);
+            player.save();
             break;
         case 'chapas':
-            response = 'No me presten atencion, probando cosas 2';
+            response = 'Estas son tus cartas totales: \n';
+            response += parseCartas(player.cartas);
             break;
     }
     if (response){ 

@@ -7,7 +7,7 @@ const {
 module.exports = (sequelize) => {
   class Carta extends Model {
     static associate(models) {
-      // define association here
+      Carta.belongsToMany(models.Jugador, {through: 'Cromo', as: 'poseedores'});
     }
   }
   Carta.init({

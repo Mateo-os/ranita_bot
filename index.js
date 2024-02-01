@@ -5,8 +5,7 @@ const { literal, where } = require('sequelize')
 const {models} = require('./database');
 
 const token = process.env.TOKEN;
-const user = process.env.DBUSER;
-
+const prefix = (process.env.PREFIX || '/');
 async function incrementElement(amount=1) {
     try {
       const row = await models.Jugador.findAll();
@@ -25,11 +24,11 @@ async function incrementElement(amount=1) {
 function parseCartas(query,showRepeats=false){
     let response = "\`\`\`"
     query.forEach( elem => {
-        const repeat = (elem.Cromo && elem.Cromo.cantidad > 1 && showRepeats) ? "[" + elem.Cromo.cantidad + "]" : ''
-        const name = "Personaje: " + elem.nombre;
-        const rarity = " Rareza: " + elem.rareza; 
-        const series = " Serie: " + elem.serie + " (" + elem.numero + ")" + "\n";
-        response += repeat.padEnd(5) + name.padEnd(35) + rarity.padEnd(12) + series;
+        const repeat = (elem.Cromo && elem.Cromo.cantidad > 1 && showRepeats) ? `[${elem.Cromo.cantidad}]` : '';
+        const name = `Personaje: ${elem.nombre}`;
+        const rarity = `Rareza: ${elem.rareza}`; 
+        const series = `Serie: ${elem.serie}  (${elem.numero})`;
+        response += `${repeat.padEnd(5)}${name.padEnd(35)}${rarity.padEnd(12)}${series}\n`;
     });
     response += "\`\`\`"
     return response;
@@ -40,11 +39,15 @@ client.once(Events.ClientReady, readyClient => {
     setInterval(incrementElement, 24 * 60 * 60 * 1000);
 });
 client.on('messageCreate', async message => {
-    if (message.content.charAt(0) != '/' || message.author.bot){
+    
+    if (!message.content.startsWith(prefix) || message.author.bot){
         return;
     }
+
+    const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const author = message.author;
     const server = message.guild;
+    
     let player = await models.Jugador.findOne({
         where: {
             id_discord : author.id,
@@ -64,12 +67,17 @@ client.on('messageCreate', async message => {
         message.channel.send('Bienvenido al juego ' + new_player.nombre.toUpperCase());
         player = new_player;
     }
-
-    const msg = message.content.replace('/','');
+    const command = args.shift().toLowerCase();
     let responses = [];
-    switch(msg){
+    switch(command){
         case 'test':
             incrementElement(100);
+            if(args.length){
+                responses.push('Estos son los argumentos que diste');
+                args.forEach(a => responses.push(a));
+            }else{
+                responses.push('No diste mas argumentos');
+            }
             break;
         case 'roll':
             if(player.rolls <= 0){
@@ -107,6 +115,14 @@ client.on('messageCreate', async message => {
             responses.push('Estas son tus cartas totales: \n');
             responses.push(parseCartas(player.cartas,showRepeats=true));
             break;
+        case 'info':
+            responses.push(`Hola ${player.nombre} estos son tus datos:\n`)
+            const repetidas = player.cartas.filter(c => c.Cromo.cantidad > 1);
+            const amount = repetidas.reduce((acc,carta) => acc + (carta.Cromo.cantidad - 1), 0);
+            let info = `\`\`\`Rolls: ${player.rolls}\nCartas repetidas: ${amount}\`\`\``;
+            responses.push(info);
+
+        
     }
     if(!responses){
         return;
@@ -119,7 +135,6 @@ client.on('messageCreate', async message => {
         }
         const wrap = (s) => {return '\`\`\`' + s + '\`\`\`'};
         const mono = r.startsWith('\`');
-        console.log(mono)
         let temp = r.replace(/\`\`\`/g, "");
         let index = 0;
         

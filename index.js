@@ -6,6 +6,7 @@ const {models} = require('./database');
 
 const token = process.env.TOKEN;
 const user = process.env.DBUSER;
+
 async function incrementElement() {
     try {
       const row = await models.Jugador.findAll();
@@ -21,10 +22,10 @@ async function incrementElement() {
     }
   }
 
-function parseCartas(query){
+function parseCartas(query,showRepeats=false){
     let response = "\`\`\`"
     query.forEach( elem => {
-        const repeat = (elem.Cromo && elem.Cromo.cantidad > 1) ? "[" + elem.Cromo.cantidad + "]" : ''
+        const repeat = (elem.Cromo && elem.Cromo.cantidad > 1 && showRepeats) ? "[" + elem.Cromo.cantidad + "]" : ''
         const name = "Personaje: " + elem.nombre;
         const rarity = " Rareza: " + elem.rareza; 
         const series = " Serie: " + elem.serie + " (" + elem.numero + ")" + "\n";
@@ -64,7 +65,7 @@ client.on('messageCreate', async message => {
     }
 
     const msg = message.content.replace('/','');
-    let response = '';
+    let responses = [];
     switch(msg){
         case 'test':
             console.log(player.toJSON());
@@ -73,7 +74,7 @@ client.on('messageCreate', async message => {
             break;
         case 'roll':
             if(player.rolls <= 0){
-                response += 'No tenés rolls';
+                responses.push('No tenés rolls');
                 break
             }
             let new_cards = [];
@@ -100,15 +101,40 @@ client.on('messageCreate', async message => {
             })
             player.addCartas(new_cards.filter(elem => !(elem.id in card_ids)));
             player.decrement('rolls');
-            response = parseCartas(new_cards);
+            responses.push(parseCartas(new_cards));
             break;
         case 'chapas':
-            response = 'Estas son tus cartas totales: \n';
-            response += parseCartas(player.cartas);
+            responses.push('Estas son tus cartas totales: \n');
+            responses.push(parseCartas(player.cartas,showRepeats=true));
             break;
     }
-    if(response)
-        message.channel.send(response);
+    if(!responses){
+        return;
+    }
+    for(let i in responses){
+        r = responses[i]
+        if(r.length < 2000){
+            message.channel.send(r);
+            continue;
+        }
+        const wrap = (s) => {return '\`\`\`' + s + '\`\`\`'};
+        const mono = r.startsWith('\`');
+        console.log(mono)
+        let temp = r.replace(/\`\`\`/g, "");
+        let index = 0;
+        
+        while(index < temp.length){
+            const end = index + 1001;
+            const tail = temp.slice(end);
+            let buffer = temp.slice(index,end);
+            buffer += tail.slice(0,tail.indexOf('\n'));
+            index += buffer.length;
+            if(mono){
+                buffer = wrap(buffer);
+            }
+            message.channel.send(buffer)
+        }
+    }
 }); 
 
 client.login(token);

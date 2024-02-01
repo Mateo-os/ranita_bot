@@ -53,16 +53,16 @@ client.on('messageCreate', async message => {
                 responses.push('Estos son los argumentos que diste');
                 args.forEach(a => responses.push(a));
             }else
-                responses.push('No diste mas argumentos');
+                responses = responses.push('No diste mas argumentos');
             break;
         case 'roll':
-            responses.concat(roll(player));
+            responses = responses.concat(await roll(player));
             break;
         case 'album':
-            responses.concat(album(player));
+            responses = responses.concat(album(player));
             break;
         case 'info':
-            responses.concat(info(player));
+            responses = responses.concat(await info(player));
             break;
     }
     show(responses,message);

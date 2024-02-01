@@ -1,6 +1,4 @@
 function show(responses, message){
-    if(!responses)
-    return;
     for(let i in responses){
         r = responses[i]
         if(r.length < 2000){

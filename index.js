@@ -56,13 +56,13 @@ client.on('messageCreate', async message => {
                 responses.push('No diste mas argumentos');
             break;
         case 'roll':
-            roll(player, responses, message);
+            responses.concat(roll(player));
             break;
         case 'album':
-            album(player, responses);
+            responses.concat(album(player));
             break;
         case 'info':
-            info(responses, player);
+            responses.concat(info(player));
             break;
     }
     show(responses,message);

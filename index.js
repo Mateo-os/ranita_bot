@@ -2,12 +2,14 @@ const { Client, Events } = require('discord.js');
 const client = new Client({ intents: [37633]});
 require('dotenv').config();
 const {models} = require('./database');
-const incrementElement = require("./commands/increment.js");
-const roll = require("./commands/roll.js");
-const show = require("./commands/show.js");
-const album = require("./commands/album.js");
-const info = require("./commands/info.js");
-const {ownerrolls} = require("./commands/ownergift.js");
+const {
+    incrementElement,
+    roll,
+    show,
+    album,
+    info,
+    ownerrolls,
+  } = require("./commands/commands.js");
 
 const token = process.env.TOKEN;
 const prefix = (process.env.PREFIX || '/');

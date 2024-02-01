@@ -1,7 +1,6 @@
 const { Client, Events } = require('discord.js');
 const client = new Client({ intents: [37633]});
 require('dotenv').config();
-const { literal, where } = require('sequelize')
 const {models} = require('./database');
 const incrementElement = require("./commands/increment.js");
 const roll = require("./commands/roll.js");

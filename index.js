@@ -7,12 +7,12 @@ const {models} = require('./database');
 const token = process.env.TOKEN;
 const user = process.env.DBUSER;
 
-async function incrementElement() {
+async function incrementElement(amount=1) {
     try {
       const row = await models.Jugador.findAll();
       if (row) {
         row.forEach(element => {
-            element.increment('rolls');
+            element.increment('rolls',{'by':amount});
             element.save();
         });
         console.log('Element incremented successfully.');
@@ -29,7 +29,7 @@ function parseCartas(query,showRepeats=false){
         const name = "Personaje: " + elem.nombre;
         const rarity = " Rareza: " + elem.rareza; 
         const series = " Serie: " + elem.serie + " (" + elem.numero + ")" + "\n";
-        response += repeat.padEnd(5) + name.padEnd(35) + rarity.padEnd(15) + series;
+        response += repeat.padEnd(5) + name.padEnd(35) + rarity.padEnd(12) + series;
     });
     response += "\`\`\`"
     return response;
@@ -58,8 +58,9 @@ client.on('messageCreate', async message => {
         const new_player = await models.Jugador.create({
             nombre:author.username,
             id_discord: author.id,
-            id_servidor: server.id
+            id_servidor: server.id,
         });
+        new_player.cartas = []
         message.channel.send('Bienvenido al juego ' + new_player.nombre.toUpperCase());
         player = new_player;
     }
@@ -68,9 +69,7 @@ client.on('messageCreate', async message => {
     let responses = [];
     switch(msg){
         case 'test':
-            console.log(player.toJSON());
-            console.log(player.cartas);
-            incrementElement();
+            incrementElement(100);
             break;
         case 'roll':
             if(player.rolls <= 0){
@@ -95,6 +94,7 @@ client.on('messageCreate', async message => {
             }
             player.cartas.forEach(c =>{
                 if(card_ids.includes(c.id)){
+                    message.channel.send('DUPLICADA');
                     c.Cromo.increment('cantidad');
                     c.save();
                 }
@@ -103,7 +103,7 @@ client.on('messageCreate', async message => {
             player.decrement('rolls');
             responses.push(parseCartas(new_cards));
             break;
-        case 'chapas':
+        case 'album':
             responses.push('Estas son tus cartas totales: \n');
             responses.push(parseCartas(player.cartas,showRepeats=true));
             break;

@@ -8,6 +8,7 @@ const roll = require("./commands/roll.js");
 const show = require("./commands/show.js");
 const album = require("./commands/album.js");
 const info = require("./commands/info.js");
+const {ownerrolls} = require("./commands/ownergift.js");
 
 const token = process.env.TOKEN;
 const prefix = (process.env.PREFIX || '/');
@@ -49,7 +50,7 @@ client.on('messageCreate', async message => {
     let responses = [];
     switch(command){
         case 'test':
-            incrementElement(100);
+            incrementElement(2);
             if(args.length){
                 responses.push('Estos son los argumentos que diste');
                 args.forEach(a => responses.push(a));
@@ -64,6 +65,9 @@ client.on('messageCreate', async message => {
             break;
         case 'info':
             info(responses, player);
+            break;
+        case 'ownerrolls':
+            ownerrolls(message, args);
             break;
     }
     show(responses,message);

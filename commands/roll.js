@@ -3,10 +3,10 @@ const parseCartas = require("./parse.js");
 const {literal} = require('sequelize');
 const show = require("./show.js");
 
-async function roll(player,responses, message){
+async function roll(player){
+    const result = []
     if(player.rolls <= 0){
-        responses.push('No tenés rolls');
-        return;
+        return ['No tienes rolls'];
     }
     let new_cards = [];
     let card_ids = []; 
@@ -32,9 +32,7 @@ async function roll(player,responses, message){
     })
     player.addCartas(new_cards.filter(elem => !(elem.id in card_ids)));
     player.decrement('rolls');
-    responses.push(parseCartas(new_cards));
-    console.log(responses);
-    show(responses, message);
+    return([parseCartas(new_cards)]);
 }
 
 module.exports = roll;

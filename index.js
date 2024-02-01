@@ -1,7 +1,6 @@
 const { Client, Events } = require('discord.js');
 const client = new Client({ intents: [37633]});
 require('dotenv').config();
-const { literal, where } = require('sequelize')
 const {models} = require('./database');
 const incrementElement = require("./commands/increment.js");
 const roll = require("./commands/roll.js");
@@ -55,16 +54,16 @@ client.on('messageCreate', async message => {
                 responses.push('Estos son los argumentos que diste');
                 args.forEach(a => responses.push(a));
             }else
-                responses.push('No diste mas argumentos');
+                responses = responses.push('No diste mas argumentos');
             break;
         case 'roll':
-            roll(player, responses, message);
+            responses = responses.concat(await roll(player));
             break;
         case 'album':
-            album(player, responses);
+            responses = responses.concat(album(player));
             break;
         case 'info':
-            info(responses, player);
+            responses = responses.concat(await info(player));
             break;
         case 'ownerrolls':
             ownerrolls(message, args);

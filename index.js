@@ -24,11 +24,11 @@ async function incrementElement() {
 function parseCartas(query){
     let response = "\`\`\`"
     query.forEach( elem => {
-        const repetidas = (elem.Cromo && elem.Cromo.cantidad > 1) ? " [" + elem.Cromo.cantidad + "] " : ''
+        const repeat = (elem.Cromo && elem.Cromo.cantidad > 1) ? "[" + elem.Cromo.cantidad + "]" : ''
         const name = "Personaje: " + elem.nombre;
         const rarity = " Rareza: " + elem.rareza; 
-        const series = " Serie: " + elem.serie + " (" + elem.numero + ")" +  repetidas + "\n";
-        response += name.padEnd(35) + rarity.padEnd(15) + series;
+        const series = " Serie: " + elem.serie + " (" + elem.numero + ")" + "\n";
+        response += repeat.padEnd(5) + name.padEnd(35) + rarity.padEnd(15) + series;
     });
     response += "\`\`\`"
     return response;

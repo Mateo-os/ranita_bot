@@ -1,7 +1,7 @@
 const {models} = require('../database');
 const {fn,col} = require('sequelize');
 async function info(player){
-    const result = []
+    const result = [];
     const total_cards = await models.Carta.count();
     const cardQuery = await models.Carta.findAll({
         attributes: ['rareza', [fn('COUNT', col('*')), 'count']],
@@ -25,7 +25,7 @@ async function info(player){
     info += '\`\`\`';
     result.push(`Hola ${player.nombre} estos son tus datos:\n`)
     result.push(info);
-    return(result);
+    return result;
 }
 
 module.exports = info;

@@ -9,7 +9,8 @@ const {
     album,
     info,
     ownerrolls,
-  } = require("./commands/commands.js");
+    giftrolls
+} = require("./commands/commands.js");
 
 const token = process.env.TOKEN;
 const prefix = (process.env.PREFIX || '/');
@@ -69,6 +70,9 @@ client.on('messageCreate', async message => {
             break;
         case 'ownerrolls':
             ownerrolls(message, args);
+            break;
+        case 'giftrolls':
+            responses = responses.concat(await giftrolls(player,message,args));
             break;
     }
     show(responses,message);

@@ -10,7 +10,7 @@ async function giftrolls(player, message, args){
         where:{id_discord:member}
     });
     row.increment('rolls',{'by':rolls});
-    player.increment('rolls', {'by':-rolls});
+    player.increment('rolls',{'by':-rolls});
     return `${message.author} le regalo ${rolls} roll/s a <@${member}>.`;
 }
 

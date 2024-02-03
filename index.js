@@ -1,4 +1,4 @@
-const { Client, Events } = require('discord.js');
+const { Client, Events, EmbedBuilder  } = require('discord.js');
 const client = new Client({ intents: [37633]});
 require('dotenv').config();
 const {models} = require('./database');
@@ -15,6 +15,7 @@ const {
 
 const token = process.env.TOKEN;
 const prefix = (process.env.PREFIX || '/');
+const owner = process.env.IDOWNER;
 
 client.once(Events.ClientReady, readyClient => {
 	console.log(`Ready! Logged in as ${readyClient.user.tag}`);
@@ -33,8 +34,7 @@ client.on('messageCreate', async message => {
         where: {
             id_discord : message.author.id,
             id_servidor: message.guild.id,
-        },
-        include : 'cartas',
+        }, include : 'cartas',
     });
 
     if(!player) player = await newplayer(message);
@@ -42,6 +42,16 @@ client.on('messageCreate', async message => {
     switch(command){
         case 'test':
             incrementElement(100);
+            const infoE = new EmbedBuilder()
+            .setColor(0x31593B)
+            .setTitle(`Información sobre ${message.author.username.toUpperCase()}`)
+            .addFields(
+                { name: 'Rolls: ', value: `${player.rolls}`, inline: true},
+                { name: 'Cromos en el album:', value: `${player.cartas.length}`, inline: true },
+                { name: 'Owner?', value: (message.author.id === owner)?"Sí":"No", inline: true },
+            ).setImage('https://www.manimalworld.net/medias/images/alytesmuletensis.jpg');
+            message.channel.send({ embeds: [infoE] });
+            //responses = responses.push({ embeds: [infoE] }); //No funciona al no ser un string
             break;
         case 'roll':
             responses = responses.concat(await roll(player));

@@ -4,7 +4,7 @@ const {models} = require('../database');
 const owner = process.env.IDOWNER;
 
 async function ownerrolls(message, args){
-    if (!(message.author.id === owner))return "No sos el owner.";
+    if (message.author.id != owner) return "No sos el owner.";
     try {
         const member = message.mentions.members.first().user.id;
         if (!member) return `No mencionaste jugador.`;

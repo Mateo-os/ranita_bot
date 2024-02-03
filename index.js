@@ -9,7 +9,8 @@ const {
     album,
     info,
     ownerrolls,
-    giftrolls
+    giftrolls,
+    newplayer
 } = require("./commands/commands.js");
 
 const token = process.env.TOKEN;
@@ -17,47 +18,30 @@ const prefix = (process.env.PREFIX || '/');
 
 client.once(Events.ClientReady, readyClient => {
 	console.log(`Ready! Logged in as ${readyClient.user.tag}`);
-    setInterval(incrementElement, 24 * 60 * 60 * 1000);
+    setInterval(incrementElement, 86400000); // 86400000 ms in day
 });
 
 client.on('messageCreate', async message => {
     
-    if (!message.content.startsWith(prefix) || message.author.bot)
-        return;
+    if (!message.content.startsWith(prefix) || message.author.bot) return;
 
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
-    const author = message.author;
-    const server = message.guild;
+    const command = args.shift().toLowerCase();
+    let responses = [];
     
     let player = await models.Jugador.findOne({
         where: {
-            id_discord : author.id,
-            id_servidor: server.id,
+            id_discord : message.author.id,
+            id_servidor: message.guild.id,
         },
         include : 'cartas',
     });
 
-    if(!player) {
-        message.channel.send("Hola noob ahi te creo un perfil");
-        const new_player = await models.Jugador.create({
-            nombre:author.username,
-            id_discord: author.id,
-            id_servidor: server.id,
-        });
-        new_player.cartas = []
-        message.channel.send('Bienvenido al juego ' + new_player.nombre.toUpperCase());
-        player = new_player;
-    }
-    const command = args.shift().toLowerCase();
-    let responses = [];
+    if(!player) player = await newplayer(message);
+
     switch(command){
         case 'test':
-            incrementElement(2);
-            if(args.length){
-                responses.push('Estos son los argumentos que diste');
-                args.forEach(a => responses.push(a));
-            }else
-                responses = responses.push('No diste mas argumentos');
+            incrementElement(100);
             break;
         case 'roll':
             responses = responses.concat(await roll(player));
@@ -69,7 +53,7 @@ client.on('messageCreate', async message => {
             responses = responses.concat(await info(player));
             break;
         case 'ownerrolls':
-            ownerrolls(message, args);
+            responses = responses.concat(await ownerrolls(message, args));
             break;
         case 'giftrolls':
             responses = responses.concat(await giftrolls(player,message,args));

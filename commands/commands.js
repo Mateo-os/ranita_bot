@@ -4,6 +4,7 @@ const show = require("./show.js");
 const album = require("./album.js");
 const info = require("./info.js");
 const giftrolls = require("./giftrolls.js");
+const newplayer = require("./newplayer.js");
 const { ownerrolls } = require("./ownergift.js");
 
 module.exports = {
@@ -13,5 +14,6 @@ module.exports = {
   album,
   info,
   ownerrolls,
-  giftrolls
+  giftrolls,
+  newplayer
 };

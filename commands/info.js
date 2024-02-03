@@ -1,12 +1,13 @@
 const {models} = require('../database');
 const {fn,col} = require('sequelize');
+
 async function info(player){
     const result = [];
     const total_cards = await models.Carta.count();
     const cardQuery = await models.Carta.findAll({
         attributes: ['rareza', [fn('COUNT', col('*')), 'count']],
         group: ['rareza'],
-    })
+    });
 
     let cardCounts = cardQuery.map( c => c.toJSON())
     cardCounts.sort((a,b) => a.rareza - b.rareza);

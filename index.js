@@ -15,7 +15,7 @@ const {
 const config = require('./config/config.js');
 const token = config.token;
 const prefix = config.prefix;
-const owner = owner;
+const owner = config.owner;
 
 client.once(Events.ClientReady, readyClient => {
     console.log(`Ready! Logged in as ${readyClient.user.tag}`);
@@ -49,6 +49,7 @@ client.on('messageCreate', async message => {
             responses = responses.concat(await album(player, message));
             break;
         case 'info':
+            console.log(message.author);
             responses = responses.concat(await info(player));
             break;
         case 'ownerrolls':

@@ -1,7 +1,7 @@
 
 const { Sequelize } = require('sequelize');
 const config = require('./config/config');
-const sequelize = new Sequelize(config.development);
+const sequelize = new Sequelize(config.sequelize);
 const models = {
   Carta: require('./models/carta')(sequelize),
   Jugador: require('./models/jugador')(sequelize),

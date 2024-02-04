@@ -1,7 +1,6 @@
 const {models} = require('../database.js');
 const parseCartas = require("./parse.js");
 const {literal} = require('sequelize');
-const show = require("./show.js");
 
 async function roll(player){
     if(player.rolls <= 0)

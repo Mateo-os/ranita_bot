@@ -1,7 +1,6 @@
 const { Client, Events, EmbedBuilder  } = require('discord.js');
 const client = new Client({ intents: [37633]});
 require('dotenv').config();
-const {models} = require('./database');
 const {
     incrementElement,
     roll,
@@ -10,7 +9,8 @@ const {
     info,
     ownerrolls,
     giftrolls,
-    newplayer
+    newplayer,
+    findplayer
 } = require("./commands/commands.js");
 
 const token = process.env.TOKEN;
@@ -23,22 +23,11 @@ client.once(Events.ClientReady, readyClient => {
 });
 
 client.on('messageCreate', async message => {
-    
     if (!message.content.startsWith(prefix) || message.author.bot) return;
-
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const command = args.shift().toLowerCase();
+    let player = await findplayer(message.author.id,message.guild.id)||await newplayer(message);
     let responses = [];
-    
-    let player = await models.Jugador.findOne({
-        where: {
-            id_discord : message.author.id,
-            id_servidor: message.guild.id,
-        }, include : 'cartas',
-    });
-
-    if(!player) player = await newplayer(message);
-
     switch(command){
         case 'test':
             incrementElement(100);
@@ -57,7 +46,7 @@ client.on('messageCreate', async message => {
             responses = responses.concat(await roll(player));
             break;
         case 'album':
-            responses = responses.concat(album(player));
+            responses = responses.concat(await album(player,message));
             break;
         case 'info':
             responses = responses.concat(await info(player));

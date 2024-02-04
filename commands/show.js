@@ -19,7 +19,7 @@ function show(responses, message){
             if(mono){
                 buffer = wrap(buffer);
             }
-            message.channel.send(buffer)
+            message.channel.send(buffer);
         }
     }
 }

@@ -9,7 +9,8 @@ const {
     ownerrolls,
     giftrolls,
     newplayer,
-    findplayer
+    findplayer,
+    checkcard
 } = require("./commands/commands.js");
 
 const config = require('./config/config.js');
@@ -57,6 +58,9 @@ client.on('messageCreate', async message => {
             break;
         case 'giftrolls':
             responses = responses.concat(await giftrolls(player, message, args));
+            break;
+        case 'checkcard':
+            responses = responses.concat(await checkcard(player,message,args));
             break;
     }
     show(responses, message);

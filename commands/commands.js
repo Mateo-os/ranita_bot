@@ -7,7 +7,7 @@ const giftrolls = require("./giftrolls.js");
 const newplayer = require("./newplayer.js");
 const findplayer = require("./findplayer.js");
 const { ownerrolls } = require("./ownergift.js");
-const checkcard = require("./checkcard.js");
+const checkcards = require("./checkcards.js");
 module.exports = {
   incrementElement,
   roll,
@@ -18,5 +18,5 @@ module.exports = {
   giftrolls,
   newplayer,
   findplayer,
-  checkcard
+  checkcards
 };

@@ -6,8 +6,8 @@ async function checkcards(player,message,args){
     var selfcheck,member;
     try{
         const member_id = message.mentions.members.first().user.id;
-        const server_id = message.guild.id
-        member = await findplayer(member_id,server_id)
+        const server_id = message.guild.id;
+        member = await findplayer(member_id,server_id);
     }catch(err){
         selfcheck = true;
         member = player

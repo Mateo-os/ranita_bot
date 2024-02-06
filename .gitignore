@@ -93,3 +93,6 @@ Thumbs.db
 
 #SQL
 *.sql
+
+#Google Drive files
+secret.json

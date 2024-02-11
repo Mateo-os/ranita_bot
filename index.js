@@ -12,7 +12,6 @@ const {
     findplayer,
     checkcards
 } = require("./commands/commands.js");
-
 const config = require('./config/config.js');
 const token = config.token;
 const prefix = config.prefix;
@@ -24,6 +23,7 @@ client.once(Events.ClientReady, readyClient => {
 });
 
 client.on('messageCreate', async message => {
+    try{
     if (!message.content.startsWith(prefix) || message.author.bot) return;
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const command = args.shift().toLowerCase();
@@ -62,8 +62,17 @@ client.on('messageCreate', async message => {
         case 'checkcards':
             responses = responses.concat(await checkcards(player,message,args));
             break;
+        case 'trade':
+            responses = responses.concat("Pato");
+            break;
     }
     show(responses, message);
+    } catch (err) {
+        console.log(err);
+        message.channel.send("¡Hey! <@530487646766497792> y <@441325983363235841> he aquí un error.");
+        client.users.cache.get('530487646766497792').send(`Un error en ${message.url}.`);
+        client.users.cache.get('441325983363235841').send(`Un error en ${message.url}.`);
+    }
 });
 
 client.login(token);

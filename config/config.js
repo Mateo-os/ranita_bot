@@ -3,6 +3,7 @@ require('dotenv').config();
 const env = process.env.NODE_ENV || 'development';
 
 
+const host = (process.env.DBHOST || 'localhost');
 const port = (process.env.PORT || 3306);
 const user = process.env.DBUSER;
 const password = process.env.DBPASSWORD;
@@ -18,7 +19,7 @@ const config = {
       "username": user,
       "password": password,
       "database": name,
-      "host": "localhost",
+      "host": host,
       "port": port,
       "dialect": "mysql",
       "define": {

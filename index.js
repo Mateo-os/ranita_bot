@@ -10,7 +10,8 @@ const {
     giftrolls,
     newplayer,
     findplayer,
-    checkcards
+    checkcards,
+    help
 } = require("./commands/commands.js");
 const config = require('./config/config.js');
 const token = config.token;
@@ -31,6 +32,7 @@ client.on('messageCreate', async message => {
     let responses = [];
     switch (command) {
         case 'test':
+            if(message.author.id!=441325983363235841||message.author.id!=530487646766497792)break;
             incrementElement(100);
             const infoE = new EmbedBuilder()
                 .setColor(0x31593B)
@@ -65,13 +67,16 @@ client.on('messageCreate', async message => {
         case 'trade':
             responses = responses.concat("Pato");
             break;
+        case "help":
+            responses = help(message);
+            break;
     }
     show(responses, message);
     } catch (err) {
         console.log(err);
         message.channel.send("¡Hey! <@530487646766497792> y <@441325983363235841> he aquí un error.");
-        client.users.cache.get('530487646766497792').send(`Un error en ${message.url}.`);
-        client.users.cache.get('441325983363235841').send(`Un error en ${message.url}.`);
+        client.users.cache.get('530487646766497792').send(`Un error en ${message.url}.`); //Ray
+        client.users.cache.get('441325983363235841').send(`Un error en ${message.url}.`); //Mateo
     }
 });
 

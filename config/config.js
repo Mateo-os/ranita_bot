@@ -1,8 +1,7 @@
 require('dotenv').config();
+const sequelize = require('./sequelize');
 
 const env = process.env.NODE_ENV || 'development';
-
-
 const host = (process.env.DBHOST || 'localhost');
 const port = (process.env.PORT || 3306);
 const user = process.env.DBUSER;
@@ -13,20 +12,9 @@ const prefix = process.env.PREFIX;
 const version = process.env.VERSION;
 const owner = process.env.IDOWNER;
 
-const config = {
+const Config = {
   "development": {
-    "sequelize": {
-      "username": user,
-      "password": password,
-      "database": name,
-      "host": host,
-      "port": port,
-      "dialect": "mysql",
-      "define": {
-        "freezeTableName": true,
-      },
-      "logging": false,
-    },
+    "sequelize": {},
     "token": token,
     "prefix": prefix,
     "version": version,
@@ -34,4 +22,6 @@ const config = {
   },
 }
 
-module.exports = config[env];
+const config = Config[env];
+config.sequelize = sequelize[env];
+module.exports = config;

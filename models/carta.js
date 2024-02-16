@@ -1,8 +1,5 @@
 'use strict';
-const {
-  Model,
-  DataTypes
-} = require('sequelize');
+const { Model, DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
   class Carta extends Model {
@@ -11,8 +8,14 @@ module.exports = (sequelize) => {
     }
   }
   Carta.init({
-    nombre: DataTypes.STRING,
-    serie: DataTypes.STRING,
+    nombre: {
+      type: DataTypes.STRING,
+      unique: 'compositeIndex' // Adding unique constraint for the nombre, serie pair
+    },
+    serie: {
+      type: DataTypes.STRING,
+      unique: 'compositeIndex' // Adding unique constraint for the nombre, serie pair
+    },
     rareza: DataTypes.INTEGER,
     numero: DataTypes.INTEGER
   }, {

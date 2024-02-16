@@ -11,12 +11,10 @@
                     "seqType": "Sequelize.INTEGER"
                 },
                 "nombre": {
-                    "unique": "compositeIndex",
                     "field": "nombre",
                     "seqType": "Sequelize.STRING"
                 },
                 "serie": {
-                    "unique": "compositeIndex",
                     "field": "serie",
                     "seqType": "Sequelize.STRING"
                 },
@@ -131,6 +129,6 @@
     },
     "path": "C:\\Users\\PC\\Documents\\ranita_bot\\migrations\\_current.json",
     "backupPath": "C:\\Users\\PC\\Documents\\ranita_bot\\migrations\\_current_bak.json",
-    "exists": true,
-    "revision": 2
+    "exists": false,
+    "revision": 1
 }

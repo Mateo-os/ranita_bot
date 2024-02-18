@@ -1,29 +1,31 @@
-const {models} = require('../database.js');
+const { models } = require('../database.js');
 const parseCartas = require("./parse.js");
-const {literal} = require('sequelize');
+const { literal } = require('sequelize');
 
-async function roll(player){
-    if(player.rolls <= 0)
+const ROLL_SIZE = 5;
+
+async function roll(player) {
+    if (player.rolls <= 0)
         return ['No tienes rolls'];
 
     let new_cards = [];
-    let card_ids = []; 
-    for (i=0;i<5;i++){
-        let random = Math.floor(Math.random()*1000);
-        if (random <=4) rare = 5;
-        else if (random <= 30) rare = 4;
-        else if (random <= 100) rare = 3;
-        else if (random <= 300) rare = 2;
+    let card_ids = [];
+    for (i = 0; i < ROLL_SIZE; i++) {
+        let random = Math.floor(Math.random() * 1000);
+        if (random <= 1) rare = 5;
+        else if (random <= 11) rare = 4;
+        else if (random <= 71) rare = 3;
+        else if (random <= 250) rare = 2;
         else rare = 1;
         card = await models.Carta.findOne({
-            where:{rareza:rare},
-            order:literal("RAND()"),
+            where: { rareza: rare },
+            order: literal("RAND()"),
         },)
         new_cards.push(card);
-        card_ids.push(card.id);              
+        card_ids.push(card.id);
     }
-    player.cartas.forEach(c =>{
-        if(card_ids.includes(c.id)){
+    player.cartas.forEach(c => {
+        if (card_ids.includes(c.id)) {
             c.Cromo.increment('cantidad');
             c.save();
         }

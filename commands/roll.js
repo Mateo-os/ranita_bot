@@ -2,7 +2,7 @@ const { models } = require('../database.js');
 const parseCartas = require("./parse.js");
 const { literal } = require('sequelize');
 
-const ROLL_SIZE = 5;
+const ROLL_SIZE = 3;
 
 async function roll(player) {
     if (player.rolls <= 0)

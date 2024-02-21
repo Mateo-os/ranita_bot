@@ -10,7 +10,7 @@ async function repeats(player, message) {
         const response =  selfcheck ? "No posees duplicados": `${usuario.nombre} no posee duplicados`
         return [response];
     }
-    const header = selfcheck ? `Estas son tus cartas duplicadas`:
+    const header = selfcheck ? `Estas son tus cartas duplicadas: \n`:
         `Estas son las cartas duplicadas de ${usuario.nombre}: \n`;
     return [header,
     parseCartas(cartas, showRepeats = true)];

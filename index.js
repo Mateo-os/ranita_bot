@@ -24,18 +24,18 @@ const owner = config.owner;
 
 
 
-client.once(Events.ClientReady,async readyClient => {
-    console.log(`Welcome to Ranita bot v${config.version}` );
+client.once(Events.ClientReady, async readyClient => {
+    console.log(`Welcome to Ranita bot v${config.version}`);
     console.log(`Logged in as ${readyClient.user.tag}`);
     // Daily roll increment
-    const job = new cron.CronJob('18 00 * * *', () => incrementElement(),timeZone="utc");
+    const job = new cron.CronJob('00 19 * * *', () => incrementElement(), timeZone = "utc");
     job.start();
 });
 
 client.on('messageCreate', async message => {
-    try{
+    try {
         //Ignore bots and message without the prefix
-        if (!message.content.startsWith(prefix) || message.author.bot) 
+        if (!message.content.startsWith(prefix) || message.author.bot)
             return;
         //Retreive all words separated by on or more spaces as arguments
         const args = message.content.slice(prefix.length).trim().split(/ +/g);
@@ -44,7 +44,7 @@ client.on('messageCreate', async message => {
         let responses = [];
         switch (command) {
             case 'test':
-                if(message.author.id!=441325983363235841||message.author.id!=530487646766497792)break;
+                if (message.author.id != 441325983363235841 || message.author.id != 530487646766497792) break;
                 incrementElement(100);
                 const infoE = new EmbedBuilder()
                     .setColor(0x31593B)
@@ -77,7 +77,7 @@ client.on('messageCreate', async message => {
                 responses = responses.concat(await ownerrolls(message, args));
                 break;
             case 'repeats':
-                responses = responses.concat(await repeats(player,message));
+                responses = responses.concat(await repeats(player, message));
                 break;
             case 'roll':
                 responses = responses.concat(await roll(player));

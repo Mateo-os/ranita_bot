@@ -1,4 +1,5 @@
 const { Client, Events, EmbedBuilder } = require('discord.js');
+const cron = require('cron');
 const client = new Client({ intents: [37633] });
 const {
     incrementElement,
@@ -18,8 +19,15 @@ const token = config.token;
 const prefix = config.prefix;
 const owner = config.owner;
 
-client.once(Events.ClientReady, readyClient => {
-    console.log(`Ready! Logged in as ${readyClient.user.tag}`);
+
+
+
+
+client.once(Events.ClientReady,async readyClient => {
+    console.log(`Welcome to Ranita bot v${config.version}` );
+    console.log(`Logged in as ${readyClient.user.tag}`);
+    const job = new cron.CronJob('18 00 * * *', () => incrementElement(),timeZone="utc");
+    job.start();
     setInterval(incrementElement, 86400000); // 86400000 ms in day
 });
 

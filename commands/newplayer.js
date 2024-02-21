@@ -2,8 +2,9 @@ const {models} = require('../database');
 
 async function newPlayer(message) {
     message.channel.send("Hola noob ahi te creo un perfil\n");
+    //Discord API bug, the globalName and username are switched
     const new_player = await models.Jugador.create({
-        nombre: message.author.username,
+        nombre: message.author.globalName,
         id_discord: message.author.id,
         id_servidor: message.guild.id,
     });

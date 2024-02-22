@@ -1,4 +1,4 @@
-const { Client, Events, EmbedBuilder } = require('discord.js');
+const { Client, Events, ActionRowBuilder, EmbedBuilder,ButtonBuilder  } = require('discord.js');
 const cron = require('cron');
 const client = new Client({ intents: [37633] });
 const {
@@ -44,18 +44,54 @@ client.on('messageCreate', async message => {
         let responses = [];
         switch (command) {
             case 'test':
-                if (message.author.id != 441325983363235841 || message.author.id != 530487646766497792) break;
-                incrementElement(100);
-                const infoE = new EmbedBuilder()
-                    .setColor(0x31593B)
-                    .setTitle(`Información sobre ${message.author.globalName.toUpperCase()}`)
-                    .addFields(
-                        { name: 'Rolls: ', value: `${player.rolls}`, inline: true },
-                        { name: 'Cromos en el album:', value: `${player.cartas.length}`, inline: true },
-                        { name: 'Owner?', value: (message.author.id === owner) ? "Sí" : "No", inline: true },
-                    ).setImage('https://www.manimalworld.net/medias/images/alytesmuletensis.jpg');
-                message.channel.send({ embeds: [infoE] });
-                //responses = responses.push({ embeds: [infoE] }); //No funciona al no ser un string
+                const author_id = BigInt(message.author.id);
+                // devs only
+                if (author_id != BigInt("441325983363235841") && author_id != BigInt("530487646766497792")) break;
+                const pages = [];
+                for (let i = 0; i < 4; i++) {
+                    const embed = new EmbedBuilder()
+                        .setColor(0x31593B)
+                        .setDescription(`Pagina ${i + 1}`);
+        
+                    pages.push(embed);
+                }
+        
+                let currentPage = 0;
+                const row = new ActionRowBuilder()
+                    .addComponents(
+                        new ButtonBuilder()
+                            .setCustomId('previous_button')
+                            .setLabel('Previous')
+                            .setStyle('Primary')
+                            .setDisabled(true),
+                        new ButtonBuilder()
+                            .setCustomId('next_button')
+                            .setLabel('Next')
+                            .setStyle('Primary')
+                    );
+        
+                const msg = await message.channel.send({ embeds: [pages[currentPage]], components: [row] });
+        
+                const filter = i => i.customId === 'previous_button' || i.customId === 'next_button';
+                const collector = msg.createMessageComponentCollector({ filter, time: 60000 });
+        
+                collector.on('collect', async interaction => {
+                    if (interaction.customId === 'previous_button') {
+                        currentPage = Math.max(0, currentPage - 1);
+                    } else if (interaction.customId === 'next_button') {
+                        currentPage = Math.min(pages.length - 1, currentPage + 1);
+                    }
+        
+                    // Update button states based on current page index
+                    row.components[0].setDisabled(currentPage === 0); // Disable "previous" button on page 0
+                    row.components[1].setDisabled(currentPage === pages.length - 1); // Disable "next" button on last page
+        
+                    await interaction.update({ embeds: [pages[currentPage]], components: [row] });
+                });
+        
+                collector.on('end', async () => {
+                    await msg.edit({ components: [] });
+                });
                 break;
             case 'album':
                 responses = responses.concat(await album(player, message));
@@ -89,9 +125,9 @@ client.on('messageCreate', async message => {
         show(responses, message);
     } catch (err) {
         console.log(err);
-        message.channel.send("¡Hey! <@530487646766497792> y <@441325983363235841> he aquí un error.");
+        /*message.channel.send("¡Hey! <@530487646766497792> y <@441325983363235841> he aquí un error.");
         client.users.cache.get('530487646766497792').send(`Un error en ${message.url}.`); //Ray
-        client.users.cache.get('441325983363235841').send(`Un error en ${message.url}.`); //Mateo
+        client.users.cache.get('441325983363235841').send(`Un error en ${message.url}.`); //Mateo*/
     }
 });
 

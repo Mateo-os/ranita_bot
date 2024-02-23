@@ -1,5 +1,5 @@
 const { models } = require('../database.js');
-const parseCartas = require("./parse.js");
+const {parseCartas} = require("../helpers");
 const { literal } = require('sequelize');
 
 const ROLL_SIZE = 3;

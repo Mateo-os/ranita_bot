@@ -1,4 +1,4 @@
-const { Client, Events, ActionRowBuilder, EmbedBuilder,ButtonBuilder  } = require('discord.js');
+const { Client, Events,EmbedBuilder } = require('discord.js');
 const cron = require('cron');
 const client = new Client({ intents: [37633] });
 const {
@@ -15,13 +15,11 @@ const {
     repeats,
     help
 } = require("./commands/commands.js");
+const {newPanel, startCollector} = require('./helpers');
 const config = require('./config/config.js');
 const token = config.token;
 const prefix = config.prefix;
 const owner = config.owner;
-
-
-
 
 
 client.once(Events.ClientReady, async readyClient => {
@@ -56,42 +54,14 @@ client.on('messageCreate', async message => {
                     pages.push(embed);
                 }
         
-                let currentPage = 0;
-                const row = new ActionRowBuilder()
-                    .addComponents(
-                        new ButtonBuilder()
-                            .setCustomId('previous_button')
-                            .setLabel('Previous')
-                            .setStyle('Primary')
-                            .setDisabled(true),
-                        new ButtonBuilder()
-                            .setCustomId('next_button')
-                            .setLabel('Next')
-                            .setStyle('Primary')
-                    );
-        
-                const msg = await message.channel.send({ embeds: [pages[currentPage]], components: [row] });
+                const buttonPanel = newPanel();
+                let currentPage = 0;         
+                const msg = await message.channel.send({ embeds: [pages[currentPage]], components: [buttonPanel] });
         
                 const filter = i => i.customId === 'previous_button' || i.customId === 'next_button';
-                const collector = msg.createMessageComponentCollector({ filter, time: 60000 });
-        
-                collector.on('collect', async interaction => {
-                    if (interaction.customId === 'previous_button') {
-                        currentPage = Math.max(0, currentPage - 1);
-                    } else if (interaction.customId === 'next_button') {
-                        currentPage = Math.min(pages.length - 1, currentPage + 1);
-                    }
-        
-                    // Update button states based on current page index
-                    row.components[0].setDisabled(currentPage === 0); // Disable "previous" button on page 0
-                    row.components[1].setDisabled(currentPage === pages.length - 1); // Disable "next" button on last page
-        
-                    await interaction.update({ embeds: [pages[currentPage]], components: [row] });
-                });
-        
-                collector.on('end', async () => {
-                    await msg.edit({ components: [] });
-                });
+                // Active for 2 minutes 
+                const collector = msg.createMessageComponentCollector({ filter, time: 120000 });
+                startCollector(msg,collector,currentPage,pages,buttonPanel);
                 break;
             case 'album':
                 responses = responses.concat(await album(player, message));

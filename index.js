@@ -1,6 +1,6 @@
-const { Client, Events,EmbedBuilder } = require('discord.js');
+const { Client, Events,EmbedBuilder, AttachmentBuilder} = require('discord.js');
 const cron = require('cron');
-const fs = require('fs');
+const path = require('path');
 const client = new Client({ intents: [37633] });
 const {
     incrementElement,
@@ -17,7 +17,7 @@ const {
     help
 } = require("./commands/commands.js");
 const {models} = require("./database.js");
-const {newPanel, startCollector} = require('./helpers');
+const {newPanel } = require('./helpers');
 const config = require('./config/config.js');
 const token = config.token;
 const prefix = config.prefix;
@@ -50,7 +50,7 @@ client.on('messageCreate', async message => {
                 if (author_id != BigInt("441325983363235841") && author_id != BigInt("530487646766497792")) break;
                 const pages = [];
                 const cartas = await models.Carta.findAll({"where":{"serie":"Billy Bat"},"limit":4});
-                const albumpath = config.albumURL;
+                const albumpath = path.resolve(config.albumURL).replace(/\\/g, '/');;
                 const rarezas={
                     1:'COMÚN',
                     2:'POCO COMÚN',
@@ -60,9 +60,14 @@ client.on('messageCreate', async message => {
                 }
                 for (let i = 0; i < 4; i++) {
                     const c = cartas[i];
+                    const image = new AttachmentBuilder(
+                        `${albumpath}/Billy/${c.numero}.png`,
+                        {"name": `Billy${c.numero}.png`}
+                    )
                     const embed = new EmbedBuilder()
                         .setTitle("Informacion de carta")
                         .setColor(0x31593B)
+                        .setImage(`https://i.imgur.com/Fsgi9QT.jpeg`)
                         .addFields(
                             { name: `Carta`, value:c.nombre},
                             { name: `Serie`, value: `${c.serie} (${c.numero})`},

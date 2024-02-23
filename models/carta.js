@@ -17,7 +17,11 @@ module.exports = (sequelize) => {
       unique: 'compositeIndex' // Adding unique constraint for the nombre, serie pair
     },
     rareza: DataTypes.INTEGER,
-    numero: DataTypes.INTEGER
+    numero: DataTypes.INTEGER,
+    URLfoto:{
+      type: DataTypes.STRING,
+      defaultValue: '',
+    }
   }, {
     sequelize,
     modelName: 'Carta',

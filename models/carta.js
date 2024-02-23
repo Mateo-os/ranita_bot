@@ -18,10 +18,6 @@ module.exports = (sequelize) => {
     },
     rareza: DataTypes.INTEGER,
     numero: DataTypes.INTEGER,
-    URLfoto:{
-      type: DataTypes.STRING,
-      defaultValue: '',
-    }
   }, {
     sequelize,
     modelName: 'Carta',

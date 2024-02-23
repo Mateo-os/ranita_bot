@@ -1,5 +1,6 @@
 const { Client, Events,EmbedBuilder } = require('discord.js');
 const cron = require('cron');
+const fs = require('fs');
 const client = new Client({ intents: [37633] });
 const {
     incrementElement,
@@ -15,12 +16,14 @@ const {
     repeats,
     help
 } = require("./commands/commands.js");
+const {models} = require("./database.js");
 const {newPanel, startCollector} = require('./helpers');
 const config = require('./config/config.js');
 const token = config.token;
 const prefix = config.prefix;
 const owner = config.owner;
 
+              
 
 client.once(Events.ClientReady, async readyClient => {
     console.log(`Welcome to Ranita bot v${config.version}`);
@@ -41,27 +44,57 @@ client.on('messageCreate', async message => {
         let player = await findplayer(message.author.id, message.guild.id) || await newplayer(message);
         let responses = [];
         switch (command) {
-            case 'test':
+            case 'test':                
                 const author_id = BigInt(message.author.id);
                 // devs only
                 if (author_id != BigInt("441325983363235841") && author_id != BigInt("530487646766497792")) break;
                 const pages = [];
+                const cartas = await models.Carta.findAll({"where":{"serie":"Billy Bat"},"limit":4});
+                const albumpath = config.albumURL;
+                const rarezas={
+                    1:'COMÚN',
+                    2:'POCO COMÚN',
+                    3:'RARA',
+                    4:'ÉPICA',
+                    5:'LEGENDARIA'
+                }
                 for (let i = 0; i < 4; i++) {
+                    const c = cartas[i];
                     const embed = new EmbedBuilder()
+                        .setTitle("Informacion de carta")
                         .setColor(0x31593B)
-                        .setDescription(`Pagina ${i + 1}`);
-        
+                        .addFields(
+                            { name: `Carta`, value:c.nombre},
+                            { name: `Serie`, value: `${c.serie} (${c.numero})`},
+                            { name: `Rareza`, value: `${c.rareza} (${rarezas[c.rareza]})`},
+                        );
                     pages.push(embed);
                 }
         
-                const buttonPanel = newPanel();
-                let currentPage = 0;         
+                let currentPage = 0;
+                const buttonPanel = newPanel();         
                 const msg = await message.channel.send({ embeds: [pages[currentPage]], components: [buttonPanel] });
         
                 const filter = i => i.customId === 'previous_button' || i.customId === 'next_button';
-                // Active for 2 minutes 
-                const collector = msg.createMessageComponentCollector({ filter, time: 120000 });
-                startCollector(msg,collector,currentPage,pages,buttonPanel);
+                const collector = msg.createMessageComponentCollector({ filter, time: 60000 });
+        
+                collector.on('collect', async interaction => {
+                    if (interaction.customId === 'previous_button') {
+                        currentPage = Math.max(0, currentPage - 1);
+                    } else if (interaction.customId === 'next_button') {
+                        currentPage = Math.min(pages.length - 1, currentPage + 1);
+                    }
+        
+                    // Update button states based on current page index
+                    buttonPanel.components[0].setDisabled(currentPage === 0); // Disable "previous" button on page 0
+                    buttonPanel.components[1].setDisabled(currentPage === pages.length - 1); // Disable "next" button on last page
+        
+                    await interaction.update({ embeds: [pages[currentPage]], components: [buttonPanel] });
+                });
+        
+                collector.on('end', async () => {
+                    await msg.edit({ components: [] });
+                });
                 break;
             case 'album':
                 responses = responses.concat(await album(player, message));

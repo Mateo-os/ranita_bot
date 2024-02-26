@@ -4,7 +4,7 @@ const { literal } = require('sequelize');
 
 const ROLL_SIZE = 3;
 
-async function roll(player) {
+async function roll(player){
     if (player.rolls <= 0)
         return ['No tienes rolls'];
 
@@ -32,7 +32,7 @@ async function roll(player) {
     })
     player.addCartas(new_cards.filter(elem => !(elem.id in card_ids)));
     player.decrement('rolls');
-    return [parseCartas(new_cards)];
+    return new_cards;
 }
 
 module.exports = roll;

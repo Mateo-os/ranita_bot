@@ -18,7 +18,7 @@ seriesArray.forEach(series => {
     // Process each element in the series
     const seriesElements = seriesLines.slice(1);
     seriesElements.forEach(element => {
-        const [elementName, elementRarity, elementNumber] = element.split(',');
+        const [elementName, elementRarity, elementNumber, elementURL] = element.split(',');
         // Check if the card already exists in the database
         models.Carta.findOrCreate({
             where: {
@@ -27,7 +27,8 @@ seriesArray.forEach(series => {
             },
             defaults: {
                 rareza: elementRarity,
-                numero: elementNumber
+                numero: elementNumber,
+                URLimagen: elementURL
             }
         }).then(([carta, created]) => {
             if (created) {

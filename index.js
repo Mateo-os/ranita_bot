@@ -1,7 +1,7 @@
 const { Client, Events,EmbedBuilder, AttachmentBuilder} = require('discord.js');
 const cron = require('cron');
-const path = require('path');
 const client = new Client({ intents: [37633] });
+const urljoin = require('urljoin');
 const {
     incrementElement,
     roll,
@@ -17,13 +17,9 @@ const {
     help
 } = require("./commands/commands.js");
 const {models} = require("./database.js");
-const {newPanel } = require('./helpers');
+const { newPanel } = require('./helpers');
 const config = require('./config/config.js');
-const token = config.token;
-const prefix = config.prefix;
-const owner = config.owner;
-
-              
+const {token,prefix,albumURL} = config;
 
 client.once(Events.ClientReady, async readyClient => {
     console.log(`Welcome to Ranita bot v${config.version}`);
@@ -46,11 +42,8 @@ client.on('messageCreate', async message => {
         switch (command) {
             case 'test':                
                 const author_id = BigInt(message.author.id);
-                // devs only
-                if (author_id != BigInt("441325983363235841") && author_id != BigInt("530487646766497792")) break;
                 const pages = [];
-                const cartas = await models.Carta.findAll({"where":{"serie":"Billy Bat"},"limit":4});
-                const albumpath = path.resolve(config.albumURL).replace(/\\/g, '/');;
+                const cartas = await models.Carta.findAll({"where":{"serie":"20th Century Boys"},"limit":4});
                 const rarezas={
                     1:'COMÚN',
                     2:'POCO COMÚN',
@@ -60,14 +53,11 @@ client.on('messageCreate', async message => {
                 }
                 for (let i = 0; i < 4; i++) {
                     const c = cartas[i];
-                    const image = new AttachmentBuilder(
-                        `${albumpath}/Billy/${c.numero}.png`,
-                        {"name": `Billy${c.numero}.png`}
-                    )
+                    const photopath = urljoin(albumURL,`${c.URLimagen}.png`);
                     const embed = new EmbedBuilder()
                         .setTitle("Informacion de carta")
                         .setColor(0x31593B)
-                        .setImage(`https://i.imgur.com/Fsgi9QT.jpeg`)
+                        .setImage(photopath)
                         .addFields(
                             { name: `Carta`, value:c.nombre},
                             { name: `Serie`, value: `${c.serie} (${c.numero})`},

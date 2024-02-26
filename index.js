@@ -17,7 +17,7 @@ const {
     help
 } = require("./commands/commands.js");
 const {models} = require("./database.js");
-const { newPanel } = require('./helpers');
+const { newPanel, rarities } = require('./helpers');
 const config = require('./config/config.js');
 const {token,prefix,albumURL} = config;
 
@@ -42,7 +42,6 @@ client.on('messageCreate', async message => {
         switch (command) {
             case 'test':                
                 const author_id = BigInt(message.author.id);
-                const pages = [];
                 const cartas = await models.Carta.findAll({"where":{"serie":"20th Century Boys"},"limit":4});
                 const rarezas={
                     1:'COMÚN',
@@ -51,8 +50,32 @@ client.on('messageCreate', async message => {
                     4:'ÉPICA',
                     5:'LEGENDARIA'
                 }
-                for (let i = 0; i < 4; i++) {
-                    const c = cartas[i];
+            case 'album':
+                responses = responses.concat(await album(player, message));
+                break;
+            case 'checkcards':
+                responses = responses.concat(await checkcards(player, message, args));
+                break;
+            case 'giftrolls':
+                responses = responses.concat(await giftrolls(player, message, args));
+                break;
+            case 'help':
+                responses = help(message);
+                break;
+            case 'info':
+                console.log(message.author);
+                responses = responses.concat(await info(player));
+                break;
+            case 'ownerrolls':
+                responses = responses.concat(await ownerrolls(message, args));
+                break;
+            case 'repeats':
+                responses = responses.concat(await repeats(player, message));
+                break;
+            case 'roll':
+                
+                cards = await roll(player);
+                const pages = cards.map(c =>{
                     const photopath = urljoin(albumURL,`${c.URLimagen}.png`);
                     const embed = new EmbedBuilder()
                         .setTitle("Informacion de carta")
@@ -60,12 +83,12 @@ client.on('messageCreate', async message => {
                         .setImage(photopath)
                         .addFields(
                             { name: `Carta`, value:c.nombre},
-                            { name: `Serie`, value: `${c.serie} (${c.numero})`},
-                            { name: `Rareza`, value: `${c.rareza} (${rarezas[c.rareza]})`},
+                            { name: `Serie`, value: `${c.serie}  (${c.numero})`},
+                            { name: `Rareza`, value: `${c.rareza}  (${rarities[c.rareza]})`},
                         );
-                    pages.push(embed);
-                }
-        
+                    return embed;
+                });
+
                 let currentPage = 0;
                 const buttonPanel = newPanel();         
                 const msg = await message.channel.send({ embeds: [pages[currentPage]], components: [buttonPanel] });
@@ -90,32 +113,7 @@ client.on('messageCreate', async message => {
                 collector.on('end', async () => {
                     await msg.edit({ components: [] });
                 });
-                break;
-            case 'album':
-                responses = responses.concat(await album(player, message));
-                break;
-            case 'checkcards':
-                responses = responses.concat(await checkcards(player, message, args));
-                break;
-            case 'giftrolls':
-                responses = responses.concat(await giftrolls(player, message, args));
-                break;
-            case 'help':
-                responses = help(message);
-                break;
-            case 'info':
-                console.log(message.author);
-                responses = responses.concat(await info(player));
-                break;
-            case 'ownerrolls':
-                responses = responses.concat(await ownerrolls(message, args));
-                break;
-            case 'repeats':
-                responses = responses.concat(await repeats(player, message));
-                break;
-            case 'roll':
-                responses = responses.concat(await roll(player));
-                break;
+                break;    
             case 'trade':
                 responses = responses.concat("Pato");
                 break;

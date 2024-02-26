@@ -2,7 +2,7 @@ const fs = require('fs');
 const { models } = require('./database');
 
 // Read the file content
-const fileContent = fs.readFileSync('personajes_album_test.txt', 'utf8');
+const fileContent = fs.readFileSync('personajes_album.txt', 'utf8');
 
 // Split the content into series
 const seriesArray = fileContent.split('\n\n');

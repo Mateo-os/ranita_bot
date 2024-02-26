@@ -73,8 +73,11 @@ client.on('messageCreate', async message => {
                 responses = responses.concat(await repeats(player, message));
                 break;
             case 'roll':
-                
+
+                //Logic that handles the database update and returns the cards that were rolled 
                 cards = await roll(player);
+
+                //Create the embeds for the cards
                 const pages = cards.map(c =>{
                     const photopath = urljoin(albumURL,`${c.URLimagen}.png`);
                     const embed = new EmbedBuilder()
@@ -90,6 +93,7 @@ client.on('messageCreate', async message => {
                 });
 
                 let currentPage = 0;
+                //I dont understand javascript controllers
                 const buttonPanel = newPanel();         
                 const msg = await message.channel.send({ embeds: [pages[currentPage]], components: [buttonPanel] });
         
@@ -113,6 +117,7 @@ client.on('messageCreate', async message => {
                 collector.on('end', async () => {
                     await msg.edit({ components: [] });
                 });
+                
                 break;    
             case 'trade':
                 responses = responses.concat("Pato");

@@ -13,4 +13,4 @@ async function giftrolls(player, message, args){
     return `${message.author} le regalo ${rolls} roll/s a <@${member}>.`;
 }
 
-module.exports = giftrolls;
+module.exports = {giftrolls};

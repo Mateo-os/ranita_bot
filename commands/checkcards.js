@@ -32,4 +32,4 @@ async function checkcards(player, message, args) {
     return result;
 }
 
-module.exports = checkcards;
+module.exports = {checkcards};

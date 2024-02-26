@@ -11,4 +11,4 @@ async function album(player, message) {
     parseCartas(usuario.cartas, showRepeats = true)];
 }
 
-module.exports = album;
+module.exports = {album};

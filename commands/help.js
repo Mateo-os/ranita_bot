@@ -17,4 +17,4 @@ async function help(message) {
 }
 
 
-module.exports = help;
+module.exports = {help};

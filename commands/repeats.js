@@ -16,4 +16,4 @@ async function repeats(player, message) {
     parseCartas(cartas, showRepeats = true)];
 }
 
-module.exports = repeats;
+module.exports = {repeats};

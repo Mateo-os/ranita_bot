@@ -24,4 +24,4 @@ function show(responses, message){
     }
 }
 
-module.exports = show;
+module.exports = {show};

@@ -35,4 +35,4 @@ async function roll(player){
     return new_cards;
 }
 
-module.exports = roll;
+module.exports = {roll};

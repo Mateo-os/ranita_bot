@@ -29,6 +29,7 @@ async function roll(player){
             c.save();
         }
     })
+    
     player.addCartas(new_cards.filter(elem => !(elem.id in card_ids)));
     player.decrement('rolls');
     return new_cards;

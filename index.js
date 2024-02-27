@@ -50,7 +50,19 @@ client.on('messageCreate', async message => {
                     5:'LEGENDARIA'
                 }
             case 'album':
-                responses = responses.concat(await album(player, message));
+                const [user,cards] = await album(player, message);
+                const selfcheck = user.nombre == player.nombre;
+
+                if (!album.length) {
+                    const response = selfcheck ? "No tienes cartas" : `${user.nombre} no tiene cartas`;        
+                    responses.push(response);
+                    break;
+                }
+                const response = `Estas son todas ${selfcheck? `tus cartas`:`las cartas de ${user.nombre}`}:\n`
+                responses.push(response);
+                show(responses,message);
+                responses.length = 0;
+                await sendCardEmbed(message,cards,showRepeats = true);
                 break;
             case 'checkcards':
                 responses = responses.concat(await checkcards(player, message, args));
@@ -73,16 +85,16 @@ client.on('messageCreate', async message => {
                 break;
             case 'roll':
                 //Logic that handles the database update and returns the cards that were rolled 
-                cards = await roll(player);
-                if (!cards.length) {
+                const rolledcards = await roll(player);
+                if (!rolledcards.length) {
                     // Rolls will only return an empty list when the player has 
                     // no rolls
                     responses.push("No tienes rolls");
                     break;
                 }
                 // Create and send the embeds for the cards
-                await sendCardEmbed(message,cards);
-                break;    
+                await sendCardEmbed(message,rolledcards);
+                break;                
             case 'trade':
                 responses = responses.concat("Pato");
                 break;

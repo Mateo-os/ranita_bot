@@ -6,7 +6,7 @@ const ROLL_SIZE = 3;
 
 async function roll(player){
     if (player.rolls <= 0)
-        return ['No tienes rolls'];
+        return [];
 
     let new_cards = [];
     let card_ids = [];

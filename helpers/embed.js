@@ -1,6 +1,5 @@
 const {ActionRowBuilder, ButtonBuilder, EmbedBuilder} = require('discord.js');
 const urljoin = require('urljoin');
-
 const {albumURL} = require('../config/config.js');
 const {rarities} = require('./constants.js');
 

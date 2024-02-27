@@ -1,7 +1,6 @@
 const { Client, Events,EmbedBuilder, AttachmentBuilder} = require('discord.js');
 const cron = require('cron');
 const client = new Client({ intents: [37633] });
-const urljoin = require('urljoin');
 const {
     incrementElement,
     roll,

@@ -25,27 +25,11 @@ function newPanel(totalPages){
     return row;
 }
 
+async function sendCardEmbedSinglePage(message, pages){
+    const msg = await message.channel.send({ embeds: pages });
+}
 
-async function sendCardEmbed(message, cards,showRepeats = false){
-    const pages = cards.map(c =>{
-        const photopath = urljoin(albumURL,`${c.URLimagen}.png`);
-        const embed = new EmbedBuilder()
-            .setTitle("Informacion de carta")
-            .setColor(0x31593B)
-            .setImage(photopath)
-            .addFields(
-                { name: `Carta`, value: c.nombre},
-                { name: `Serie`, value: `${c.serie}  (${c.numero})`},
-                { name: `Rareza`, value: `${c.rareza}  (${rarities[c.rareza]})`},
-            );
-            if (c.Cromo  && showRepeats){
-                embed.addFields(
-                    {name: `En posesión`, value:`${c.Cromo.cantidad}`}
-                )
-            }
-        return embed;
-    });
-
+async function sendCardEmbedPaginated(message, pages){
     let currentPage = 0;
     const buttonPanel = newPanel(pages.length);     
     const msg = await message.channel.send({ embeds: [pages[currentPage]], components: [buttonPanel] });
@@ -71,6 +55,34 @@ async function sendCardEmbed(message, cards,showRepeats = false){
     collector.on('end', async () => {
         await msg.edit({ components: [] });
     });
+
+}
+
+async function sendCardEmbed(message, cards,paginated=false,showRepeats = false){
+    const pages = cards.map(c =>{
+        const photopath = urljoin(albumURL,`${c.URLimagen}.png`);
+        const embed = new EmbedBuilder()
+            .setTitle("Informacion de carta")
+            .setColor(0x31593B)
+            .setImage(photopath)
+            .addFields(
+                { name: `Carta`, value: c.nombre},
+                { name: `Serie`, value: `${c.serie}  (${c.numero})`},
+                { name: `Rareza`, value: `${c.rareza}  (${rarities[c.rareza]})`},
+            );
+            if (c.Cromo  && showRepeats){
+                embed.addFields(
+                    {name: `En posesión`, value:`${c.Cromo.cantidad}`}
+                )
+            }
+        return embed;
+    });
+
+    if(paginated)
+        sendCardEmbedPaginated(message,pages);
+    else
+        sendCardEmbedSinglePage(message,pages);
+
 }
 
 module.exports = {newPanel,sendCardEmbed};

@@ -20,11 +20,7 @@ async function album(player, message) {
     const usuario = (message.mentions.members.first()) ?
         await findplayer(message.mentions.members.first().user.id, message.guild.id) : player;    
     const album =  usuario.cartas.slice();
-    album.sort((c1,c2) => {
-        const comp = orderCards(c1,c2);
-        console.log(`${c1.nombre},${c2.nombre} => ${comp}`);
-        return comp;
-    });   
+    album.sort((c1,c2) => { return orderCards(c1,c2)});   
     return [usuario,album]  
 }
 

@@ -55,7 +55,7 @@ client.on('messageCreate', async message => {
                 responses.push(response);
                 show(responses,message);
                 responses.length = 0;
-                await sendCardEmbed(message,cards,showRepeats = true);
+                await sendCardEmbed(message,cards,paginated = true,showRepeats = true);
                 break;
             case 'checkcards':
                 responses = responses.concat(await checkcards(player, message, args));
@@ -86,7 +86,7 @@ client.on('messageCreate', async message => {
                     break;
                 }
                 // Create and send the embeds for the cards
-                await sendCardEmbed(message,rolledcards);
+                await sendCardEmbed(message,rolledcards,paginated=false);
                 break;                
             case 'trade':
                 responses = responses.concat("Pato");

@@ -6,8 +6,7 @@ const ROLL_SIZE = 3;
 
 async function roll(player){
     if (player.rolls <= 0)
-        return ['No tienes rolls'];
-
+        return [];
     let new_cards = [];
     let card_ids = [];
     for (i = 0; i < ROLL_SIZE; i++) {
@@ -30,6 +29,7 @@ async function roll(player){
             c.save();
         }
     })
+    
     player.addCartas(new_cards.filter(elem => !(elem.id in card_ids)));
     player.decrement('rolls');
     return new_cards;

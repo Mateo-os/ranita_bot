@@ -12,6 +12,7 @@ const {
     newplayer,
     findplayer,
     checkcards,
+    checkseries,
     repeats,
     help
 } = require("./commands/commands.js");
@@ -59,6 +60,9 @@ client.on('messageCreate', async message => {
                 break;
             case 'checkcards':
                 responses = responses.concat(await checkcards(player, message, args));
+                break;
+            case 'checkseries':
+                responses = responses.concat(await checkseries(player, message, args));
                 break;
             case 'giftrolls':
                 responses = responses.concat(await giftrolls(player, message, args));

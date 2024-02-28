@@ -39,16 +39,9 @@ client.on('messageCreate', async message => {
         let player = await findplayer(message.author.id, message.guild.id) || await newplayer(message);
         let responses = [];
         switch (command) {
-            case 'test':                
-                const author_id = BigInt(message.author.id);
-                const cartas = await models.Carta.findAll({"where":{"serie":"20th Century Boys"},"limit":4});
-                const rarezas={
-                    1:'COMÚN',
-                    2:'POCO COMÚN',
-                    3:'RARA',
-                    4:'ÉPICA',
-                    5:'LEGENDARIA'
-                }
+            case 'test':
+                response.push("TEST");
+                break;                
             case 'album':
                 const [user,cards] = await album(player, message);
                 const selfcheck = user.nombre == player.nombre;

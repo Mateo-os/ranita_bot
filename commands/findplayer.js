@@ -9,4 +9,4 @@ async function findplayer(iduser, idserver){
     });
 }
 
-module.exports = findplayer;
+module.exports = {findplayer};

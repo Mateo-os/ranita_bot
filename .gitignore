@@ -94,5 +94,6 @@ Thumbs.db
 #SQL
 *.sql
 
-#Google Drive files
-secret.json
+#Images
+album/*
+

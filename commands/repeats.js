@@ -1,4 +1,4 @@
-const parseCartas = require("./parse.js");
+const {parseCartas} = require("../helpers");
 const findplayer = require("./findplayer.js");
 
 async function repeats(player, message) {
@@ -16,4 +16,4 @@ async function repeats(player, message) {
     parseCartas(cartas, showRepeats = true)];
 }
 
-module.exports = repeats;
+module.exports = {repeats};

@@ -32,4 +32,4 @@ Rarezas:\n`;
     return result;
 }
 
-module.exports = info;
+module.exports = {info};

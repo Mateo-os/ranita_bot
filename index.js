@@ -1,4 +1,4 @@
-const { Client, Events, EmbedBuilder } = require('discord.js');
+const { Client, Events,EmbedBuilder, AttachmentBuilder} = require('discord.js');
 const cron = require('cron');
 const client = new Client({ intents: [37633] });
 const {
@@ -12,17 +12,14 @@ const {
     newplayer,
     findplayer,
     checkcards,
+    checkseries,
     repeats,
     help
 } = require("./commands/commands.js");
+const {models} = require("./database.js");
+const { newPanel, rarities, sendCardEmbed} = require('./helpers');
 const config = require('./config/config.js');
-const token = config.token;
-const prefix = config.prefix;
-const owner = config.owner;
-
-
-
-
+const {token,prefix,albumURL} = config;
 
 client.once(Events.ClientReady, async readyClient => {
     console.log(`Welcome to Ranita bot v${config.version}`);
@@ -44,24 +41,28 @@ client.on('messageCreate', async message => {
         let responses = [];
         switch (command) {
             case 'test':
-                if (message.author.id != 441325983363235841 || message.author.id != 530487646766497792) break;
-                incrementElement(100);
-                const infoE = new EmbedBuilder()
-                    .setColor(0x31593B)
-                    .setTitle(`Información sobre ${message.author.globalName.toUpperCase()}`)
-                    .addFields(
-                        { name: 'Rolls: ', value: `${player.rolls}`, inline: true },
-                        { name: 'Cromos en el album:', value: `${player.cartas.length}`, inline: true },
-                        { name: 'Owner?', value: (message.author.id === owner) ? "Sí" : "No", inline: true },
-                    ).setImage('https://www.manimalworld.net/medias/images/alytesmuletensis.jpg');
-                message.channel.send({ embeds: [infoE] });
-                //responses = responses.push({ embeds: [infoE] }); //No funciona al no ser un string
-                break;
+                response.push("TEST");
+                break;                
             case 'album':
-                responses = responses.concat(await album(player, message));
+                const [user,cards] = await album(player, message);
+                const selfcheck = user.nombre == player.nombre;
+
+                if (!album.length) {
+                    const response = selfcheck ? "No tienes cartas" : `${user.nombre} no tiene cartas`;        
+                    responses.push(response);
+                    break;
+                }
+                const response = `Estas son todas ${selfcheck? `tus cartas`:`las cartas de ${user.nombre}`}:\n`
+                responses.push(response);
+                show(responses,message);
+                responses.length = 0;
+                await sendCardEmbed(message,cards,paginated = true,showRepeats = true);
                 break;
             case 'checkcards':
                 responses = responses.concat(await checkcards(player, message, args));
+                break;
+            case 'checkseries':
+                responses = responses.concat(await checkseries(player, message, args));
                 break;
             case 'giftrolls':
                 responses = responses.concat(await giftrolls(player, message, args));
@@ -80,8 +81,17 @@ client.on('messageCreate', async message => {
                 responses = responses.concat(await repeats(player, message));
                 break;
             case 'roll':
-                responses = responses.concat(await roll(player));
-                break;
+                //Logic that handles the database update and returns the cards that were rolled 
+                const rolledcards = await roll(player);
+                if (!rolledcards.length) {
+                    // Rolls will only return an empty list when the player has 
+                    // no rolls
+                    responses.push("No tienes rolls");
+                    break;
+                }
+                // Create and send the embeds for the cards
+                await sendCardEmbed(message,rolledcards,paginated=false);
+                break;                
             case 'trade':
                 responses = responses.concat("Pato");
                 break;
@@ -89,9 +99,9 @@ client.on('messageCreate', async message => {
         show(responses, message);
     } catch (err) {
         console.log(err);
-        message.channel.send("¡Hey! <@530487646766497792> y <@441325983363235841> he aquí un error.");
+        /*message.channel.send("¡Hey! <@530487646766497792> y <@441325983363235841> he aquí un error.");
         client.users.cache.get('530487646766497792').send(`Un error en ${message.url}.`); //Ray
-        client.users.cache.get('441325983363235841').send(`Un error en ${message.url}.`); //Mateo
+        client.users.cache.get('441325983363235841').send(`Un error en ${message.url}.`); //Mateo*/
     }
 });
 

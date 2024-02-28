@@ -4,4 +4,4 @@ async function trade(player, message, args){
     
 }
 
-module.exports = trade;
+module.exports = {trade};

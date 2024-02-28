@@ -11,10 +11,12 @@ const token = process.env.TOKEN;
 const prefix = process.env.PREFIX;
 const version = process.env.VERSION;
 const owner = process.env.IDOWNER;
+const albumURL = process.env.ALBUMURL;
 
 const Config = {
   "development": {
     "sequelize": {},
+    "albumURL": albumURL,
     "token": token,
     "prefix": prefix,
     "version": version,

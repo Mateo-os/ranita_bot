@@ -13,4 +13,4 @@ async function newPlayer(message) {
     return new_player;
 }
 
-module.exports = newPlayer;
+module.exports = {newPlayer};

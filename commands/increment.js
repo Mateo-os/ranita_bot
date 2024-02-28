@@ -14,4 +14,4 @@ async function incrementElement(amount=1) {
     }
 }
 
-module.exports = incrementElement;
+module.exports = {incrementElement};

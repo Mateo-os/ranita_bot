@@ -8,6 +8,7 @@ const { newPlayer } = require("./newplayer.js");
 const { findplayer } = require("./findplayer.js");
 const { ownerrolls } = require("./ownergift.js");
 const { checkcards } = require("./checkcards.js");
+const { checkseries } = require("./checkseries.js");
 const { help } = require("./help.js");
 const { repeats } = require("./repeats.js");
 
@@ -15,6 +16,7 @@ const newplayer = newPlayer;
 module.exports = {
   album,
   checkcards,
+  checkseries,
   findplayer,
   giftrolls,
   help,

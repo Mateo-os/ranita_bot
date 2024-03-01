@@ -29,13 +29,13 @@ async function sendCardEmbedSinglePage(message, pages){
     const msg = await message.channel.send({ embeds: pages });
 }
 
-async function sendCardEmbedPaginated(message, pages){
+async function sendCardEmbedPaginated(message, pages, interactionTime){
     let currentPage = 0;
     const buttonPanel = newPanel(pages.length);     
     const msg = await message.channel.send({ embeds: [pages[currentPage]], components: [buttonPanel] });
 
     const filter = i => i.customId === 'previous_button' || i.customId === 'next_button';
-    const collector = msg.createMessageComponentCollector({ filter, time: 60000 });
+    const collector = msg.createMessageComponentCollector({ filter, time: interactionTime*1000 });
 
     collector.on('collect', async interaction => {
         if (interaction.customId === 'previous_button') {
@@ -58,7 +58,7 @@ async function sendCardEmbedPaginated(message, pages){
 
 }
 
-async function sendCardEmbed(message, cards,paginated=false,showRepeats = false){
+async function sendCardEmbed(message, cards,paginated=false,showRepeats = false,interactionTime = 3){
     const pages = cards.map(c =>{
         const photopath = urljoin(albumURL,`${c.URLimagen}.png`);
         const embed = new EmbedBuilder()
@@ -79,7 +79,7 @@ async function sendCardEmbed(message, cards,paginated=false,showRepeats = false)
     });
 
     if(paginated)
-        sendCardEmbedPaginated(message,pages);
+        sendCardEmbedPaginated(message,pages,interactionTime);
     else
         sendCardEmbedSinglePage(message,pages);
 

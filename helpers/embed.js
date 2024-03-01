@@ -35,7 +35,8 @@ async function sendCardEmbedPaginated(message, pages, interactionTime){
     const msg = await message.channel.send({ embeds: [pages[currentPage]], components: [buttonPanel] });
 
     const filter = i => i.customId === 'previous_button' || i.customId === 'next_button';
-    const collector = msg.createMessageComponentCollector({ filter, time: interactionTime*1000 });
+    //The interaction time is expressed in minutes, convert to miliseconds
+     const collector = msg.createMessageComponentCollector({ filter, time: interactionTime*60*1000 });
 
     collector.on('collect', async interaction => {
         if (interaction.customId === 'previous_button') {
@@ -70,6 +71,7 @@ async function sendCardEmbed(message, cards,paginated=false,showRepeats = false,
                 { name: `Serie`, value: `${c.serie}  (${c.numero})`},
                 { name: `Rareza`, value: `${c.rareza}  (${rarities[c.rareza]})`},
             );
+            // The check for the Cromo object is a sanity check
             if (c.Cromo  && showRepeats){
                 embed.addFields(
                     {name: `En posesión`, value:`${c.Cromo.cantidad}`}

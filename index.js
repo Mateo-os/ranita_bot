@@ -9,6 +9,7 @@ const {
     info,
     ownerrolls,
     giftrolls,
+    give,
     newplayer,
     findplayer,
     checkcards,
@@ -66,6 +67,9 @@ client.on('messageCreate', async message => {
                 break;
             case 'giftrolls':
                 responses = responses.concat(await giftrolls(player, message, args));
+                break;
+            case 'give':
+                responses = responses.concat(await give(player, message, args));
                 break;
             case 'help':
                 responses = help(message);

@@ -8,7 +8,8 @@ async function checkcards(player, message, args) {
     const server_id = message.guild.id;
     const member = await findplayer(member_id, server_id);
     //Remome ids mentions using regular expressions
-    const name = (args.join(' ').replace(/<@![0-9]+>/, '')).trim() || "";
+    const name = (args.join(' ').replace(/<(@[0-9]+)>/g, '')).trim() || "";
+    console.log(name);
     if ( name.length == 0){
         return [
             `No diste ningun nombre`

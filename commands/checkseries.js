@@ -8,7 +8,7 @@ async function checkseries(player, message, args) {
     const server_id = message.guild.id;
     const member = await findplayer(member_id, server_id);
     //Remome ids mentions using regular expressions
-    const series = (args.join(' ').replace(/<@![0-9]+>/, '')).trim() || "";
+    const series = (args.join(' ').replace(/<@[0-9]+>/g, '')).trim() || "";
     if ( series.length == 0){
         return [
             `No diste ningun nombre`

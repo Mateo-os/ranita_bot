@@ -4,6 +4,7 @@ const { show } = require("./show.js");
 const { album } = require("./album.js");
 const { info } = require("./info.js");
 const { giftrolls } = require("./giftrolls.js");
+const { give } = require("./give.js");
 const { newPlayer } = require("./newplayer.js");
 const { findplayer } = require("./findplayer.js");
 const { ownerrolls } = require("./ownergift.js");
@@ -19,6 +20,7 @@ module.exports = {
   checkseries,
   findplayer,
   giftrolls,
+  give,
   help,
   incrementElement,
   info,

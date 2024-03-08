@@ -4,6 +4,7 @@ const ROLL_VALUE = 10;
 async function recycle(player, args){
     const result = [];
     const regex = /<(\d+)>|[^<>]+/g;
+    //Just in case we eliminate discord ids
     const args_string = (args.join(' ').replace(/<(@[0-9]+)>/g, '')).trim() || "";
     // Match for ammount of cards to recycle.
     const matches = args_string.match(regex);
@@ -18,9 +19,10 @@ async function recycle(player, args){
     let points = 0;
     for (let i = 0; i < recycle_names.length; i++){
         const name = recycle_names[i];
-        const cards = player.cartas.filter(c => new RegExp(name, 'i').test(c.nombre));
+        // Filter by name but also ignoring rare 6 cards.
+        const cards = player.cartas.filter(c => (new RegExp(name, 'i').test(c.nombre)) && c.rareza < 6);
         if (cards.length == 0){
-            result.push(`No tienes cartas con el nombre \"${name}\" nombre o similares.\n`);
+            result.push(`No tienes cartas reciclables con el nombre \"${name}\" nombre o similares.\n`);
             continue;
         }
         if (cards.length > 1){
@@ -32,11 +34,10 @@ async function recycle(player, args){
         const card = cards[0];
         const recycle_amount = i < recycle_amounts.length ? recycle_amounts[i] : card.Cromo.cantidad - 1;
         if (card.Cromo.cantidad < recycle_amount){
-            result.push(`Tienes menos copias de la carta ${name} que las que has indicado para reciclar.\n`);
+            result.push(`Tienes menos copias reciclables de la carta ${name} que las que has indicado para reciclar.\n`);
             continue;
         }
-        const recycled_cards = card.Cromo.cantidad - recycle_amount;
-        const awarded_points = recycled_cards * recycle_points[card.rareza];
+        const awarded_points = recycle_amount * recycle_points[card.rareza];
         points += awarded_points
         await card.Cromo.decrement({'cantidad':recycle_amount});
         card.save();
@@ -52,3 +53,5 @@ async function recycle(player, args){
     result.push(`Puntos restantes: ${rem}.`);
     return result
 }
+
+module.exports = {recycle};

@@ -2,20 +2,22 @@ const { Client, Events,EmbedBuilder, AttachmentBuilder} = require('discord.js');
 const cron = require('cron');
 const client = new Client({ intents: [37633] });
 const {
-    incrementElement,
-    roll,
-    show,
     album,
-    info,
-    ownerrolls,
-    giftrolls,
-    give,
-    newplayer,
-    findplayer,
     checkcards,
     checkseries,
+    findplayer,
+    giftrolls,
+    give,
+    help,
+    incrementElement,
+    info,
+    newplayer,
+    ownerrolls,
+    recycle,
     repeats,
-    help
+    roll,
+    scrap,
+    show,
 } = require("./commands/commands.js");
 const {models} = require("./database.js");
 const { newPanel, rarities, sendCardEmbed} = require('./helpers');
@@ -40,10 +42,7 @@ client.on('messageCreate', async message => {
         const command = args.shift().toLowerCase();
         let player = await findplayer(message.author.id, message.guild.id) || await newplayer(message);
         let responses = [];
-        switch (command) {
-            case 'test':
-                response.push("TEST");
-                break;                
+        switch (command) {               
             case 'album':
                 const [user,cards] = await album(player, message);
                 const selfcheck = user.nombre == player.nombre;
@@ -81,6 +80,9 @@ client.on('messageCreate', async message => {
             case 'ownerrolls':
                 responses = responses.concat(await ownerrolls(message, args));
                 break;
+            case 'recycle':
+                responses = responses.concat(await recycle(player, args));
+                break;
             case 'repeats':
                 responses = responses.concat(await repeats(player, message));
                 break;
@@ -95,7 +97,10 @@ client.on('messageCreate', async message => {
                 }
                 // Create and send the embeds for the cards
                 await sendCardEmbed(message,rolledcards,paginated=false);
-                break;                
+                break;      
+            case 'scrap':
+                responses = responses.concat(await scrap(player, args));
+                break;
             case 'trade':
                 responses = responses.concat("Pato");
                 break;

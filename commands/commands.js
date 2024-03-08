@@ -1,17 +1,19 @@
-const { incrementElement } = require("./increment.js");
-const { roll } = require("./roll.js");
-const { show } = require("./show.js");
 const { album } = require("./album.js");
-const { info } = require("./info.js");
-const { giftrolls } = require("./giftrolls.js");
-const { give } = require("./give.js");
-const { newPlayer } = require("./newplayer.js");
-const { findplayer } = require("./findplayer.js");
-const { ownerrolls } = require("./ownergift.js");
 const { checkcards } = require("./checkcards.js");
 const { checkseries } = require("./checkseries.js");
+const { findplayer } = require("./findplayer.js");
+const { giftrolls } = require("./giftrolls.js");
+const { give } = require("./give.js");
 const { help } = require("./help.js");
+const { incrementElement } = require("./increment.js");
+const { info } = require("./info.js");
+const { newPlayer } = require("./newplayer.js");
+const { ownerrolls } = require("./ownergift.js");
+const { recycle } = require("./recycle.js");
 const { repeats } = require("./repeats.js");
+const { roll } = require("./roll.js");
+const { scrap} = require("./scrap.js");
+const { show } = require("./show.js");
 
 const newplayer = newPlayer;
 module.exports = {
@@ -26,7 +28,9 @@ module.exports = {
   info,
   newplayer,
   ownerrolls,
+  recycle,
   repeats,
   roll,
+  scrap,
   show,
 };

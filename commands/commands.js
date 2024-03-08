@@ -9,10 +9,11 @@ const { incrementElement } = require("./increment.js");
 const { info } = require("./info.js");
 const { newPlayer } = require("./newplayer.js");
 const { ownerrolls } = require("./ownergift.js");
+const { recycle } = require("./recycle.js");
 const { repeats } = require("./repeats.js");
 const { roll } = require("./roll.js");
+const { scrap} = require("./scrap.js");
 const { show } = require("./show.js");
-const { trade } = require("./trade.js");
 
 const newplayer = newPlayer;
 module.exports = {
@@ -27,8 +28,10 @@ module.exports = {
   info,
   newplayer,
   ownerrolls,
+  recycle,
   repeats,
   roll,
+  scrap,
   show,
   trade,
 };

@@ -1,6 +1,5 @@
 const { Client, Events } = require('discord.js');
 const cron = require('cron');
-
 const config = require('./config/config.js');
 const helpers = require('./helpers');
 const commands = require("./commands/commands.js");
@@ -26,11 +25,7 @@ client.on('messageCreate', async message => {
         const command = args.shift().toLowerCase();
         const player = await commands.findplayer(message.author.id, message.guild.id) || await commands.newplayer(message);
         let responses = [];
-        let response,user,cards;
-        switch (command) {
-            case 'test':
-                responses.push("TEST");
-                break;                
+        switch (command) {               
             case 'album':
                 [user,cards] = await commands.album(player, message);
 
@@ -78,6 +73,9 @@ client.on('messageCreate', async message => {
             case 'ownerrolls':
                 responses = responses.concat(await commands.ownerrolls(message, args));
                 break;
+            case 'recycle':
+                responses = responses.concat(await recycle(player, args));
+                break;
             case 'repeats':
                 [response, cards] = await commands.repeats(player, message);
                 responses.push(response);
@@ -95,7 +93,10 @@ client.on('messageCreate', async message => {
                 }
                 // Create and send the embeds for the cards
                 await helpers.sendCardEmbed(message,rolledcards,paginated=false);
-                break;                
+                break;                 
+            case 'scrap':
+                responses = responses.concat(await scrap(player, args));
+                break;
             case 'trade':
                 responses.push('Trade');
                 break;

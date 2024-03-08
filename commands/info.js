@@ -20,6 +20,7 @@ async function info(player) {
     let info = "\`\`\`"
     info +=
         `Rolls: ${player.rolls}
+Puntos de Reciclaje: ${player.recycle_points}
 Cartas repetidas: ${repeat_amount}
 Colección: ${player.cartas.length}/${total_cards}
 Rarezas:\n`;

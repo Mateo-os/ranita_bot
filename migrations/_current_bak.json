@@ -28,6 +28,13 @@
                     "field": "numero",
                     "seqType": "Sequelize.INTEGER"
                 },
+                "URLimagen": {
+                    "defaultValue": {
+                        "value": "103N1r2"
+                    },
+                    "field": "URLimagen",
+                    "seqType": "Sequelize.STRING"
+                },
                 "createdAt": {
                     "allowNull": false,
                     "field": "createdAt",
@@ -115,6 +122,13 @@
                     "field": "rolls",
                     "seqType": "Sequelize.INTEGER"
                 },
+                "recicle_points": {
+                    "defaultValue": {
+                        "value": 0
+                    },
+                    "field": "recicle_points",
+                    "seqType": "Sequelize.INTEGER"
+                },
                 "createdAt": {
                     "allowNull": false,
                     "field": "createdAt",
@@ -132,5 +146,5 @@
     "path": "C:\\Users\\PC\\Documents\\ranita_bot\\migrations\\_current.json",
     "backupPath": "C:\\Users\\PC\\Documents\\ranita_bot\\migrations\\_current_bak.json",
     "exists": true,
-    "revision": 2
+    "revision": 4
 }

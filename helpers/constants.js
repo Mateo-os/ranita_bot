@@ -7,4 +7,12 @@ const rarities ={
     6:'IMPOSIBLE',
 }
 
-module.exports = {rarities}
+const recycle_points = {
+    1: 2,
+    2: 2,
+    3: 5,
+    4: 20,
+    5: 200
+}
+
+module.exports = {rarities, recycle_points}

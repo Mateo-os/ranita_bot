@@ -1,5 +1,5 @@
 const {parseCartas} = require("../helpers");
-const findplayer = require("./findplayer.js");
+const { findplayer } = require("./findplayer.js");
 
 function orderCards(c1, c2){
     //ORDER CRITERIA: 

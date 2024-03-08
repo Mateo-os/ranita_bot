@@ -16,6 +16,10 @@ module.exports = (sequelize) => {
     rolls: {
       type: DataTypes.INTEGER,
       defaultValue: 1,
+    },
+    recycle_points:{
+      type: DataTypes.INTEGER,
+      defaultValue: 0
     }
   }, {
     sequelize,

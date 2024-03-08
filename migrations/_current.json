@@ -30,7 +30,7 @@
                 },
                 "URLimagen": {
                     "defaultValue": {
-                        "value": "https://i.imgur.com/Fsgi9QT.jpeg"
+                        "value": "103N1r2"
                     },
                     "field": "URLimagen",
                     "seqType": "Sequelize.STRING"
@@ -122,6 +122,13 @@
                     "field": "rolls",
                     "seqType": "Sequelize.INTEGER"
                 },
+                "recycle_points": {
+                    "defaultValue": {
+                        "value": 0
+                    },
+                    "field": "recycle_points",
+                    "seqType": "Sequelize.INTEGER"
+                },
                 "createdAt": {
                     "allowNull": false,
                     "field": "createdAt",
@@ -139,5 +146,5 @@
     "path": "C:\\Users\\PC\\Documents\\ranita_bot\\migrations\\_current.json",
     "backupPath": "C:\\Users\\PC\\Documents\\ranita_bot\\migrations\\_current_bak.json",
     "exists": true,
-    "revision": 3
+    "revision": 5
 }

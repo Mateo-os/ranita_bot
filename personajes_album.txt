@@ -148,7 +148,7 @@ Madre,1,7,jMhANbV
 
 Monster (24)
 Logo,5,0,MGxqfmP
-LogoW,6,0,NE580Jp
+Logo (Ganador Trivia),6,0,NE580Jp
 Johan Liebert,4,1,YMj5lMa
 Kenzou Tenma,4,2,0Bo3JJA
 Anna Liebert,3,3,Ur8xl1I
@@ -175,7 +175,7 @@ Christof Sievernich,1,23,WORooW4
 
 Petshop of Horrors (11)
 Logo,5,0,8lJ5CyP
-LogoW,6,0,vCu0QAn
+Logo (Ganador Trivia),6,0,vCu0QAn
 Count D,4,1,qYHUw3F
 Leon Orcot,2,2,mwNz4xV
 Tetsu,1,3,p0fMgVO
@@ -188,7 +188,7 @@ Jill,1,9,C9BIIu4
 
 BLAME! (18)
 Logo,5,0,s8UcU93
-LogoW,6,0,oABuZov
+Logo (Ganador Trivia),6,0,oABuZov
 Killy,4,1,XBN4keP
 Cibo,3,2,vkmEsSB
 Sanakan,3,3,VzcivbU
@@ -208,7 +208,7 @@ Metajiini,1,16,hWDy60O
 
 Good Night World (12)
 Logo,5,0,3UF7NVB
-LogoW,6,0,0DsDhW8
+Logo (Ganador Trivia),6,0,0DsDhW8
 Taichirou Arima,2,1,iv3opg3
 Pico,2,2,f9WTeq9
 Kojirou Arima,2,3,fqC96lx
@@ -222,7 +222,7 @@ Aya Arima,1,10,w5msgpe
 
 Aku no Hana (9)
 Logo,5,0,2C0CKBA
-LogoW,6,0,BdgkWEb
+Logo (Ganador Trivia),6,0,BdgkWEb
 Sawa Nakamura,3,1,Ez78B9O
 Takao Kasuga,2,2,KG5U2td
 Aya Tokiwa,2,3,fuQfaOG
@@ -247,7 +247,7 @@ Osamu,1,11,upJDRsi
 
 Jagaaaaaan (20)
 Logo,5,0,N0M5uxH
-LogoW,6,0,f5I4e3k
+Logo (Ganador Trivia),6,0,f5I4e3k
 Shintarou Jagasaki,3,1,ydAp4Zg
 Chiharu Matsuyamachi,2,2,RDc23UQ
 Takemitsu Mikazuchi,2,3,bwEtIlx
@@ -286,7 +286,7 @@ Jou Koizumi,1,7,8QGsCye
 
 666 Satan (27)
 Logo,5,0,7mxmIIU
-LogoW,6,0,v9rQQWM
+Logo (Ganador Trivia),6,0,v9rQQWM
 Jio Freed,3,1,n5KQZD2
 Satan,3,2,kWNHsin
 Jajamaru,3,3,1lrOQw8
@@ -335,7 +335,7 @@ Padre,1,3,n655wP0
 
 Billy Bat (25)
 Logo,5,0,rQLTkp5
-LogoW,6,0,fiD81Xo
+Logo (Ganador Trivia),6,0,fiD81Xo
 Billy Bat,4,1,SPw7U6a
 Kevin Yamagata,3,2,bKjVaog
 Kevin Goodman,3,3,0TBKCd0
@@ -367,7 +367,7 @@ Phos,4,3,UmrxBUd
 
 Gunnm (27)
 Logo,5,0,7uWp0f3
-LogoW,6,0,FxwGcu5
+Logo (Ganador Trivia),6,0,FxwGcu5
 Alita,4,1,Nx6Wnrq
 Desty Nova,4,2,ESDvDZb
 Vilma Fachiri,3,3,CmzFVtH

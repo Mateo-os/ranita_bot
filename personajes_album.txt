@@ -1,4 +1,4 @@
-Club (10)
+Club (12)
 Logo,5,1,qeoz2pD
 Adry,5,2,Rk95SFB
 Cris,5,3,8AOA2HW
@@ -9,11 +9,15 @@ Nacho,5,7,TkCi6uw
 Nicolette,5,8,3p5LfR7
 Wally,5,9,XAyzRG3
 Juan,5,10,1JcsnKz
+Lujan,5,11,haWV5b5
+Meru,5,12,f4NfzjZ
 
-Watashitachi no Shiawase na Jikan (3)
+Watashitachi no Shiawase na Jikan (5)
 Logo,5,0,Wr7YAJV
 Yuu,2,1,xRa8Vhq
 Juri Mutou,2,2,MgpckuC
+Jirou Inoue,1,3,RD13o6y
+Monica,1,4,z8LrqXY
 
 The Climber (10)
 Logo,5,0,F7hSBAw
@@ -27,7 +31,7 @@ Keito Hara,1,7,2ITMurG
 Kobori,1,8,0UPkJjY
 Yumi Shirai,1,9,Nh0jH1a
 
-20th Century Boys (16)
+20th Century Boys (23)
 Logo,5,0,o50L5x8
 Friend,4,1,OBaDQPN
 Kenji,4,2,rp5Kuw3
@@ -44,14 +48,24 @@ Shohei Chono,1,12,Sc4N2qp
 Maruo,1,13,WPkHff2
 Shimon Masaaki,1,14,fsn2UAD
 Kiriko Endo,1,15,xkdWRXg
+Donkey,1,16,3awasEB
+Yanbo,1,17,eYWELHP
+Mabo,1,18,VJP3mYw
+Keroyon,1,19,xaepIuQ
+Takasu Mitsuyo,1,20,T0IdQ4N
+Sanae,1,21,B3386AW
+Masao Tamura,1,22,w00tlb7
 
-Subarashii Sekai (4)
+Subarashii Sekai (7)
 Logo,5,0,YeuwNiB
 Bear Bandit,2,1,iBi2oYE
 Syrup,1,2,ANNuojA
 Happy Girl,1,3,GAO8EYA
+Shinigami Dog,1,4,u3Hymmw
+Yuriko Togawa,1,5,cQTMEIc
+Horita Tomotsugu,1,6,lLN0YlJ
 
-Rainbow (13)
+Rainbow (20)
 Logo,5,0,haiCbLf
 Rokurouta Sakuragi,3,1,XWh9AYE
 Mario Minakami,3,2,lxSPfBK
@@ -65,6 +79,13 @@ Ishihara,1,9,1pytTX4
 Lilly,1,10,tGUWlpQ
 Setsuko Koike,1,11,UXjuLWP
 Sasaki Gisuke,1,12,yf4Ci4C
+Ruriko,1,13,OsVMrQx
+Tetsu Sakota,1,14,V5leicg
+Mr. Barandage,1,15,8YgdQQa
+Vera,1,16,5nFSmKx
+Harry,1,17,6fQy0iv
+Norimatsu,1,18,TF5RnRQ
+Iwasaki,1,19,o11HAEz
 
 Nijigahara Holograph (8)
 Logo,5,0,r2V2U94
@@ -76,7 +97,7 @@ Narumi Higure,1,5,JxcVPzk
 Maki Arakawa,1,6,8Px0dXV
 Arie Kimura,1,7,aU9aeiM
 
-GTO (11)
+GTO (17)
 Logo,5,0,kuf5o6t
 Eikichi Onizuka,4,1,3JWH5FV
 Urumi Kanzaki,3,2,IkcMYct
@@ -88,6 +109,12 @@ Azusa Fuyutsuki,1,7,y7EXV46
 Tomoko Nomura,1,8,KdaXJPo
 Noboru Yoshikawa,1,9,15VM3PP
 Kunio Murai,1,10,qERWapk
+Anko Uehara,1,11,pKyHfHv
+Teshigawara Suguru,1,12,VSgW66r
+Kouji Fujiyoshi,1,13,0cYvAmT
+Julia Murai,1,14,4n7XvbP
+Misuzu Daimon,1,15,5meZSst
+Ryouko Sakurai,1,16,07QLw3o
 
 Fetish (4)
 Logo,5,0,gmnFa2F
@@ -109,7 +136,7 @@ Tsuneko,1,2,wjuEhux
 Yoshiko,1,3,7RzKwMW
 Madam,1,4,aCLuzSo
 
-Adabana (7)
+Adabana (8)
 Logo,5,0,uECUEBL
 Mizuki Aikawa,3,1,TMD6Si2
 Mako Igarashi,2,2,KFFWE0g
@@ -117,8 +144,9 @@ Yuki Akatsuki,1,3,eSf64ll
 Tsuji,1,4,OZHPQqi
 Hayami,1,5,VKd1w2b
 Tatsuo Ishida,1,6,EcD3ZrB
+Madre,1,7,jMhANbV
 
-Monster (19)
+Monster (24)
 Logo,5,0,MGxqfmP
 Logo (Ganador Trivia),6,0,NE580Jp
 Johan Liebert,4,1,YMj5lMa
@@ -138,8 +166,14 @@ Rudy Gillen,1,14,kebgLhi
 Jan Suk,1,15,BUyXPsJ
 Lotte Frank,1,16,OBMIRTR
 Rosso,1,17,XkJT5zV
+Hans Georg Schuwald,1,18,Q2Qnfod
+Petr Čapek,1,19,fNBhkyh
+Helmut Wolf,1,20,KBiekXx
+Karl Neuman,1,21,55peyhb
+Bebé,1,22,BG7uUxe
+Christof Sievernich,1,23,WORooW4
 
-Petshop of Horrors (9)
+Petshop of Horrors (11)
 Logo,5,0,8lJ5CyP
 Logo (Ganador Trivia),6,0,vCu0QAn
 Count D,4,1,qYHUw3F
@@ -149,6 +183,8 @@ Q-chan,1,4,4J0WFTS
 Chris Orcot,1,5,lepYGs4
 Count D (Abuelo),1,6,DX0JDfS
 Papa D,1,7,GWN4Iu6
+Lady,1,8,k3zJfB8
+Jill,1,9,C9BIIu4
 
 BLAME! (18)
 Logo,5,0,s8UcU93
@@ -209,7 +245,7 @@ Akemi Hinazuki,1,9,80mIwTX
 Misato Yanagihara,1,10,TpZUxnS
 Osamu,1,11,upJDRsi
 
-Jagaaaaaan (17)
+Jagaaaaaan (20)
 Logo,5,0,N0M5uxH
 Logo (Ganador Trivia),6,0,f5I4e3k
 Shintarou Jagasaki,3,1,ydAp4Zg
@@ -227,6 +263,9 @@ Misogi Hakuto,1,12,pSFOurJ
 Yadori,1,13,ExbqhNz
 Yukimaru,1,14,K1oZV67
 Nakadai,1,15,KAQJF46
+Imocchi,1,16,f7TxJzc
+Yuriko,1,17,bJqFOIl
+Kimihito Mikazuchi,1,18,jRY1AZb
 
 Hideout (5)
 Logo,5,0,gpilaiY
@@ -245,7 +284,7 @@ Manabu Sakuma,1,5,hA7Wb7t
 Obaba Tamura,1,6,cLcIFWi
 Jou Koizumi,1,7,8QGsCye
 
-666 Satan (22)
+666 Satan (27)
 Logo,5,0,7mxmIIU
 Logo (Ganador Trivia),6,0,v9rQQWM
 Jio Freed,3,1,n5KQZD2
@@ -268,6 +307,11 @@ Amidaba,1,17,97yPgHE
 Futomomotarou,1,18,PygyXAT
 Yuri Wise,1,19,PygyXAT
 Tsubame,1,20,hxkY584
+Ikaros,1,21,zulY0sM
+Ponzu,1,22,5ivKfpw
+Baku,1,23,a1RgKNt
+Amaterasu Miko,1,24,ZebnVMS
+Dofuwa Longinus,1,25,hlSUzm1
 
 Versailles no Bara (8)
 Logo,5,0,WLOwUXN
@@ -283,11 +327,13 @@ Kami no Hidarite Akuma no Migite (2)
 Logo,5,0,NnGTVXk
 Sou Yamanobe,2,1,XjWcQU7
 
-Kabi Nagata (2)
+Kabi Nagata (4)
 Logo,5,0,lDohd7v
 Nagata Kabi,2,1,ZmCsLYi
+Madre,1,2,YL54m3h
+Padre,1,3,n655wP0
 
-Billy Bat (20)
+Billy Bat (25)
 Logo,5,0,rQLTkp5
 Logo (Ganador Trivia),6,0,fiD81Xo
 Billy Bat,4,1,SPw7U6a
@@ -308,8 +354,47 @@ Kotarou Akechi,1,15,Unt7j66
 Yamashita,1,16,1KiMfKl
 Finney,1,17,9W2pkW0
 Maggie Momochi,1,18,JXV4cC7
+Albert Einstein,1,19,cdgYknc
+Adolf Hitler,1,20,SebXHGN
+Jesus Christ,1,21,BOAZnTx
+Judas Iscariot,1,22,lG5Fnqz
+Kanbei,1,23,mmHbH15
 
 Ray's Choice (3)
 Asahina Samidare,4,1,N2gGaMj
 Gintoki Sakata,4,2,QQP764M
 Phos,4,3,UmrxBUd
+
+Gunnm (27)
+Logo,5,0,7uWp0f3
+Logo (Ganador Trivia),6,0,FxwGcu5
+Alita,4,1,Nx6Wnrq
+Desty Nova,4,2,ESDvDZb
+Vilma Fachiri,3,3,CmzFVtH
+Sechs,3,4,1zwa0o8
+Ido,3,5,NdAiEcM
+Zazie,3,6,6blKwaK
+Kaos,3,7,M3JttjI
+Mbadi,3,8,pGeS8K2
+Lou,2,9,ugtNpUo
+Jashugan,2,10,xD83HiU
+Zekka,2,11,bvVeup2
+Ping Wu,2,12,fxtssax
+Figure 4,2,13,Jj2XdCr
+Arthur,2,14,pOCv9Ec
+Elf,1,15,fWFgsKP
+Limeira,1,16,wcoUtTw
+Porta Nova,1,17,oeelRXX
+Zwolf,1,18,uOZ9Hxp
+Super Nova,1,19,VqB2rYp
+Toji,1,20,SLih3Qv
+Nova X,1,21,AKDa1UO
+Nova II,1,22,Ds2Q2z9
+Yugo,1,23,MeIYaxC
+Vector,1,24,RiQWNKu
+Victor,1,25,d5Sciq2
+
+Decay's Choice (3)
+Maquima Chiquita,4,1,sPugxEr
+Jotaro Kujoh,4,2,kVgIk3C
+DIO,4,3,hIKhfQ7

@@ -1,4 +1,4 @@
-Club (12)
+Club (14)
 Logo,5,1,qeoz2pD
 Adry,5,2,Rk95SFB
 Cris,5,3,8AOA2HW
@@ -11,6 +11,8 @@ Wally,5,9,XAyzRG3
 Juan,5,10,1JcsnKz
 Lujan,5,11,haWV5b5
 Meru,5,12,f4NfzjZ
+Piero,5,13,sKu49mb
+Coti,5,14,j22tlAj
 
 Watashitachi no Shiawase na Jikan (5)
 Logo,5,0,Wr7YAJV
@@ -146,7 +148,7 @@ Hayami,1,5,VKd1w2b
 Tatsuo Ishida,1,6,EcD3ZrB
 Madre,1,7,jMhANbV
 
-Monster (24)
+Monster (25)
 Logo,5,0,MGxqfmP
 Logo (Ganador Trivia),6,0,NE580Jp
 Johan Liebert,4,1,YMj5lMa

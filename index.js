@@ -48,7 +48,7 @@ client.on('messageCreate', async message => {
                 const [user,cards] = await album(player, message);
                 const selfcheck = user.nombre == player.nombre;
 
-                if (!album.length) {
+                if (!cards.length) {
                     const response = selfcheck ? "No tienes cartas" : `${user.nombre} no tiene cartas`;        
                     responses.push(response);
                     break;

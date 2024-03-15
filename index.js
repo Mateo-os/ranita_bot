@@ -46,8 +46,11 @@ client.on('messageCreate', async message => {
                 break;                
             case 'album':
                 const [user,cards] = await album(player, message);
+                if(!user){
+                    responses.push("Ese usuario no esta registrado.");
+                    break;
+                }
                 const selfcheck = user.nombre == player.nombre;
-
                 if (!cards.length) {
                     const response = selfcheck ? "No tienes cartas" : `${user.nombre} no tiene cartas`;        
                     responses.push(response);

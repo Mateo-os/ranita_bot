@@ -19,6 +19,7 @@ function orderCards(c1, c2){
 async function album(player, message) {
     const usuario = (message.mentions.members.first()) ?
         await findplayer(message.mentions.members.first().user.id, message.guild.id) : player;    
+    if (!usuario) return [null,[]];
     const rare6 = {};
     const regularcards = {};
     usuario.cartas.forEach(c => {

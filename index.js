@@ -48,19 +48,19 @@ client.on('messageCreate', async message => {
                 responses.push(response);
                 commands.show(responses,message);
                 responses.length = 0;
-                await helpers.sendCardEmbed(message,cards,paginated = true,showRepeats = true);
+                await helpers.sendCardEmbed(message,cards,true,true);
                 break;
             case 'checkcards':
                 [ response, cards] = await commands.checkcards(player, message, args);
                 responses.push(response);
                 commands.show(responses,message);
-                await helpers.sendCardListEmbed(message,cards,paginated = true);
+                await helpers.sendCardListEmbed(message,cards);
                 break;
             case 'checkseries':
                 [response, cards] = await commands.checkseries(player, message, args);
                 responses.push(response);
                 commands.show(responses,message);
-                await helpers.sendCardListEmbed(message,cards,paginated = true);
+                await helpers.sendCardListEmbed(message,cards);
                 break;
             case 'giftrolls':
                 responses = responses.concat(await commands.giftrolls(player, message, args));
@@ -82,7 +82,7 @@ client.on('messageCreate', async message => {
                 [response, cards] = await commands.repeats(player, message);
                 responses.push(response);
                 commands.show(responses,message);
-                await helpers.sendCardListEmbed(message,cards,paginated = true);
+                await helpers.sendCardListEmbed(message,cards);
                 break;
             case 'roll':
                 //Logic that handles the database update and returns the cards that were rolled 
@@ -94,7 +94,7 @@ client.on('messageCreate', async message => {
                     break;
                 }
                 // Create and send the embeds for the cards
-                await helpers.sendCardEmbed(message,rolledcards,paginated=false);
+                await helpers.sendCardEmbed(message,rolledcards, false,false,true);
                 break;                
             case 'trade':
                 responses.push('Trade');

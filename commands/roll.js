@@ -29,9 +29,10 @@ async function roll(player){
         }
     })
     
-    player.addCartas(new_cards.filter(elem => !(elem.id in card_ids)));
-    player.decrement('rolls');
-    return new_cards;
+    await player.addCartas(new_cards.filter(elem => !(elem.id in card_ids)));
+    await player.decrement('rolls');
+
+    return new_cards.map(c => (player.cartas.find(elem => elem.id === c.id) || c))
 }
 
 module.exports = {roll};

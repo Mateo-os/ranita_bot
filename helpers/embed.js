@@ -69,7 +69,7 @@ async function sendCardEmbed(message, cards,paginated=false,showRepeats = false,
             .setColor(0x31593B)
             .setImage(photopath)
             .addFields(
-                { name: `Carta`, value: `${nw}${c.nombre}`},
+                { name: `Carta`, value: `${c.nombre}`},
                 { name: `Serie`, value: `${c.serie}  (${c.numero})`},
                 { name: `Rareza`, value: `${c.rareza}  (${rarities[c.rareza]})`},
             );

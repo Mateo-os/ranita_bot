@@ -14,7 +14,7 @@ const { repeats } = require("./repeats.js");
 const { roll } = require("./roll.js");
 const { scrap} = require("./scrap.js");
 const { show } = require("./show.js");
-
+const { trade } = require("./trade.js");
 const newplayer = newPlayer;
 module.exports = {
   album,

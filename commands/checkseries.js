@@ -7,22 +7,26 @@ async function checkseries(player, message, args) {
     const member_id = mentionedMember ? mentionedMember.user.id : player.id_discord;
     const server_id = message.guild.id;
     const member = await findplayer(member_id, server_id);
+    const result = [];
     //Remome ids mentions using regular expressions
     const series = (args.join(' ').replace(/<@[0-9]+>/g, '')).trim() || "";
     if ( series.length == 0){
-        return [
-            `No diste ningun nombre`
-        ]
+        result.push(`No diste ningun nombre`,[]);
+        return result
     }
-    const selfcheck = player.id == member.id_discord;
-    if (!member) return ['Ese usuario no tiene un perfil activo'];
+    const selfcheck = player.id_discord == member.id_discord;
+    if (!member){
+        result.push('Ese usuario no tiene un perfil activo',[]);
+        return result;
+    } 
     const cartas = member.cartas.filter(c => new RegExp(series, 'i').test(c.serie));
     if (cartas.length == 0) {
-        return [
-            `${selfcheck ? 'No tienes' : `<@${member.id_discord}> no tiene`} cartas de esa serie o similares.`
-        ];
+        result.push(
+            `${selfcheck? 'No tienes' : `<@${member.id_discord}> no tiene`} cartas de esa serie o similares.`,
+            []
+        );
+        return result;
     }
-    const result = [];
     result.push(`Estas son ${selfcheck ? `tus cartas` : `las cartas de <@${member.id_discord}>`} que pertenezcan a series similares a \"${series}\"`);
     result.push(parseCartas(cartas, showRepeats = true));
     return result;

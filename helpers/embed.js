@@ -64,7 +64,6 @@ async function sendPaginatedEmbed(message, pages, interactionTime){
 async function sendCardEmbed(message, cards,paginated=false,showRepeats = false,interactionTime = 3){
     const pages = cards.map(c =>{
         const photopath = urljoin(albumURL,`${c.URLimagen}.png`);
-        const nw = (!showRepeats && c.Cromo.cantidad == 1) ? 'NEW! ' : '';
         const embed = new EmbedBuilder()
             .setTitle("Informacion de carta")
             .setColor(0x31593B)

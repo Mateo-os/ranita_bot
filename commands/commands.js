@@ -33,8 +33,5 @@ module.exports = {
   roll,
   scrap,
   show,
-<<<<<<< HEAD
   trade,
-=======
->>>>>>> 200c8f273ecb598ca80b524ed413e8b38374af3a
 };

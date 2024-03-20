@@ -22,6 +22,7 @@ function show(responses, message){
             message.channel.send(buffer);
         }
     }
+    responses.length = 0;
 }
 
 module.exports = {show};

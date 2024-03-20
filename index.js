@@ -2,10 +2,10 @@ const { Client, Events } = require('discord.js');
 const cron = require('cron');
 
 const config = require('./config/config.js');
-const { sendCardEmbed } = require('./helpers');
+const helpers = require('./helpers');
 const commands = require("./commands/commands.js");
 
-const {token,prefix,albumURL} = config;
+const {token,prefix} = config;
 const client = new Client({ intents: [37633] });
 
 client.once(Events.ClientReady, async readyClient => {
@@ -24,14 +24,15 @@ client.on('messageCreate', async message => {
         //Retreive all words separated by on or more spaces as arguments
         const args = message.content.slice(prefix.length).trim().split(/ +/g);
         const command = args.shift().toLowerCase();
-        let player = await commands.findplayer(message.author.id, message.guild.id) || await commands.newplayer(message);
+        const player = await commands.findplayer(message.author.id, message.guild.id) || await commands.newplayer(message);
         let responses = [];
+        let response,user,cards;
         switch (command) {
             case 'test':
-                response.push("TEST");
+                responses.push("TEST");
                 break;                
             case 'album':
-                const [user,cards] = await commands.album(player, message);
+                [user,cards] = await commands.album(player, message);
                 if(!user){
                     responses.push("Ese usuario no esta registrado.");
                     break;
@@ -43,17 +44,23 @@ client.on('messageCreate', async message => {
                     responses.push(response);
                     break;
                 }
-                const response = `Estas son todas ${selfcheck? `tus cartas`:`las cartas de ${user.nombre}`}:\n`
+                response = `Estas son todas ${selfcheck? `tus cartas`:`las cartas de ${user.nombre}`}:\n`
                 responses.push(response);
                 commands.show(responses,message);
                 responses.length = 0;
-                await sendCardEmbed(message,cards,paginated = true,showRepeats = true);
+                await helpers.sendCardEmbed(message,cards,paginated = true,showRepeats = true);
                 break;
             case 'checkcards':
-                responses = responses.concat(await commands.checkcards(player, message, args));
+                [ response, cards] = await commands.checkcards(player, message, args);
+                responses.push(response);
+                commands.show(responses,message);
+                await helpers.sendCardListEmbed(message,cards,paginated = true);
                 break;
             case 'checkseries':
-                responses = responses.concat(await commands.checkseries(player, message, args));
+                [response, cards] = await commands.checkseries(player, message, args);
+                responses.push(response);
+                commands.show(responses,message);
+                await helpers.sendCardListEmbed(message,cards,paginated = true);
                 break;
             case 'giftrolls':
                 responses = responses.concat(await commands.giftrolls(player, message, args));
@@ -72,7 +79,10 @@ client.on('messageCreate', async message => {
                 responses = responses.concat(await commands.ownerrolls(message, args));
                 break;
             case 'repeats':
-                responses = responses.concat(await commands.repeats(player, message));
+                [response, cards] = await commands.repeats(player, message);
+                responses.push(response);
+                commands.show(responses,message);
+                await helpers.sendCardListEmbed(message,cards,paginated = true);
                 break;
             case 'roll':
                 //Logic that handles the database update and returns the cards that were rolled 
@@ -84,9 +94,11 @@ client.on('messageCreate', async message => {
                     break;
                 }
                 // Create and send the embeds for the cards
-                await sendCardEmbed(message,rolledcards,paginated=false);
+                await helpers.sendCardEmbed(message,rolledcards,paginated=false);
                 break;                
             case 'trade':
+                responses.push('Trade');
+                break;
                 commands.trade(player,message,args);
                 responses = [];
                 break;

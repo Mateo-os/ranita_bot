@@ -20,16 +20,18 @@ function newPanel(totalPages){
                 .setCustomId('next_button')
                 .setEmoji('⏩')
                 .setStyle('Primary')
+                .setDisabled(totalPages == 1)
         );
 
     return row;
 }
 
-async function sendCardEmbedSinglePage(message, pages){
+async function sendEmbedSinglePage(message, pages){
     const msg = await message.channel.send({ embeds: pages });
 }
 
-async function sendCardEmbedPaginated(message, pages, interactionTime){
+async function sendPaginatedEmbed(message, pages, interactionTime){
+    if(pages.length == 0) return;
     let currentPage = 0;
     const buttonPanel = newPanel(pages.length);     
     const msg = await message.channel.send({ embeds: [pages[currentPage]], components: [buttonPanel] });
@@ -62,12 +64,13 @@ async function sendCardEmbedPaginated(message, pages, interactionTime){
 async function sendCardEmbed(message, cards,paginated=false,showRepeats = false,interactionTime = 3){
     const pages = cards.map(c =>{
         const photopath = urljoin(albumURL,`${c.URLimagen}.png`);
+        const nw = c.Cromo.cantidad == 1 ? 'NEW! ' : '';
         const embed = new EmbedBuilder()
             .setTitle("Informacion de carta")
             .setColor(0x31593B)
             .setImage(photopath)
             .addFields(
-                { name: `Carta`, value: c.nombre},
+                { name: `Carta`, value: `${nw}${c.nombre}`},
                 { name: `Serie`, value: `${c.serie}  (${c.numero})`},
                 { name: `Rareza`, value: `${c.rareza}  (${rarities[c.rareza]})`},
             );
@@ -81,13 +84,23 @@ async function sendCardEmbed(message, cards,paginated=false,showRepeats = false,
     });
 
     if(paginated)
-        sendCardEmbedPaginated(message,pages,interactionTime);
+        sendPaginatedEmbed(message,pages,interactionTime);
     else
-        sendCardEmbedSinglePage(message,pages);
+        sendEmbedSinglePage(message,pages);
 
 }
 
-async function sendCardListEmbed(message,pages,interactionTime=2){   
+async function sendCardListEmbed(message,textList,interactionTime=2){
+    if(!textList) return;
+    const pages = textList.map(text => {
+        const embed = new EmbedBuilder()
+            .setTitle('Listado de cartas')
+            .setColor(0x31593B)
+            .setDescription(text)
+        return embed
+    });
+
+    sendPaginatedEmbed(message,pages,interactionTime);
 }
 
-module.exports = {newPanel,sendCardEmbed};
+module.exports = {newPanel,sendCardEmbed, sendCardListEmbed};

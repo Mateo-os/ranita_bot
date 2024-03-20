@@ -1,5 +1,5 @@
 const {parseCartas} = require("../helpers");
-const findplayer = require("./findplayer.js");
+const {findplayer} = require("./findplayer.js");
 
 async function repeats(player, message) {
     const usuario = (message.mentions.members.first()) ?

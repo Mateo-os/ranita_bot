@@ -87,4 +87,7 @@ async function sendCardEmbed(message, cards,paginated=false,showRepeats = false,
 
 }
 
+async function sendCardListEmbed(message,pages,interactionTime=2){   
+}
+
 module.exports = {newPanel,sendCardEmbed};

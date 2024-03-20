@@ -1,32 +1,18 @@
-const { Client, Events,EmbedBuilder, AttachmentBuilder} = require('discord.js');
+const { Client, Events } = require('discord.js');
 const cron = require('cron');
-const client = new Client({ intents: [37633] });
-const {
-    incrementElement,
-    roll,
-    show,
-    album,
-    info,
-    ownerrolls,
-    giftrolls,
-    give,
-    newplayer,
-    findplayer,
-    checkcards,
-    checkseries,
-    repeats,
-    help
-} = require("./commands/commands.js");
-const {models} = require("./database.js");
-const { newPanel, rarities, sendCardEmbed} = require('./helpers');
+
 const config = require('./config/config.js');
+const { sendCardEmbed } = require('./helpers');
+const commands = require("./commands/commands.js");
+
 const {token,prefix,albumURL} = config;
+const client = new Client({ intents: [37633] });
 
 client.once(Events.ClientReady, async readyClient => {
     console.log(`Welcome to Ranita bot v${config.version}`);
     console.log(`Logged in as ${readyClient.user.tag}`);
     // Daily roll increment
-    const job = new cron.CronJob('00 19 * * *', () => incrementElement(), timeZone = "utc");
+    const job = new cron.CronJob('00 19 * * *', () => commands.incrementElement(), timeZone = "utc");
     job.start();
 });
 
@@ -38,14 +24,14 @@ client.on('messageCreate', async message => {
         //Retreive all words separated by on or more spaces as arguments
         const args = message.content.slice(prefix.length).trim().split(/ +/g);
         const command = args.shift().toLowerCase();
-        let player = await findplayer(message.author.id, message.guild.id) || await newplayer(message);
+        let player = await commands.findplayer(message.author.id, message.guild.id) || await commands.newplayer(message);
         let responses = [];
         switch (command) {
             case 'test':
                 response.push("TEST");
                 break;                
             case 'album':
-                const [user,cards] = await album(player, message);
+                const [user,cards] = await commands.album(player, message);
                 if(!user){
                     responses.push("Ese usuario no esta registrado.");
                     break;
@@ -59,38 +45,38 @@ client.on('messageCreate', async message => {
                 }
                 const response = `Estas son todas ${selfcheck? `tus cartas`:`las cartas de ${user.nombre}`}:\n`
                 responses.push(response);
-                show(responses,message);
+                commands.show(responses,message);
                 responses.length = 0;
                 await sendCardEmbed(message,cards,paginated = true,showRepeats = true);
                 break;
             case 'checkcards':
-                responses = responses.concat(await checkcards(player, message, args));
+                responses = responses.concat(await commands.checkcards(player, message, args));
                 break;
             case 'checkseries':
-                responses = responses.concat(await checkseries(player, message, args));
+                responses = responses.concat(await commands.checkseries(player, message, args));
                 break;
             case 'giftrolls':
-                responses = responses.concat(await giftrolls(player, message, args));
+                responses = responses.concat(await commands.giftrolls(player, message, args));
                 break;
             case 'give':
-                responses = responses.concat(await give(player, message, args));
+                responses = responses.concat(await commands.give(player, message, args));
                 break;
             case 'help':
-                responses = help(message);
+                responses = commands.help(message);
                 break;
             case 'info':
                 console.log(message.author);
-                responses = responses.concat(await info(player));
+                responses = responses.concat(await commands.info(player));
                 break;
             case 'ownerrolls':
-                responses = responses.concat(await ownerrolls(message, args));
+                responses = responses.concat(await commands.ownerrolls(message, args));
                 break;
             case 'repeats':
-                responses = responses.concat(await repeats(player, message));
+                responses = responses.concat(await commands.repeats(player, message));
                 break;
             case 'roll':
                 //Logic that handles the database update and returns the cards that were rolled 
-                const rolledcards = await roll(player);
+                const rolledcards = await commands.roll(player);
                 if (!rolledcards.length) {
                     // Rolls will only return an empty list when the player has 
                     // no rolls
@@ -101,10 +87,11 @@ client.on('messageCreate', async message => {
                 await sendCardEmbed(message,rolledcards,paginated=false);
                 break;                
             case 'trade':
-                responses = responses.concat("Pato");
+                commands.trade(player,message,args);
+                responses = [];
                 break;
         }
-        show(responses, message);
+        commands.show(responses, message);
     } catch (err) {
         console.log(err);
         /*message.channel.send("¡Hey! <@530487646766497792> y <@441325983363235841> he aquí un error.");

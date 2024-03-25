@@ -15,8 +15,12 @@ module.exports = (sequelize) => {
     id_servidor: DataTypes.BIGINT,
     rolls: {
       type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
+    freerolls: {
+      type: DataTypes.INTEGER,
       defaultValue: 1,
-    }
+    },
   }, {
     sequelize,
     modelName: 'Jugador',

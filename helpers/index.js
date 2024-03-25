@@ -1,4 +1,4 @@
-const {newPanel,sendCardEmbed, sendCardListEmbed} = require('./embed.js');
+const {newPanel,sendCardEmbed, sendCardListEmbed, sendCardDropDownEmbed} = require('./embed.js');
 const {parseCartas} = require('./parse.js');
 const {rarities} = require('./constants.js');
 
@@ -7,5 +7,6 @@ module.exports = {
     rarities,
     parseCartas,
     sendCardEmbed,
-    sendCardListEmbed
+    sendCardListEmbed,
+    sendCardDropDownEmbed
 };

@@ -3,7 +3,7 @@ const urljoin = require('urljoin');
 const {albumURL} = require('../config/config.js');
 const {rarities} = require('./constants.js');
 
-function newPanel(totalPages){
+function pagePanel(totalPages){
     const row = new ActionRowBuilder()
         .addComponents(
             new ButtonBuilder()
@@ -26,6 +26,19 @@ function newPanel(totalPages){
     return row;
 }
 
+function confimationPanel(){
+    const row = new ActionRowBuilder()
+        .addComponents(
+            new ButtonBuilder()
+                .setCustomId('confirm_button')
+                .setEmoji('✅')
+                .setStyle('Secondary')
+        );
+
+
+    return row;
+}
+
 async function sendEmbedSinglePage(message, pages){
     const msg = await message.channel.send({ embeds: pages });
 }
@@ -33,7 +46,7 @@ async function sendEmbedSinglePage(message, pages){
 async function sendPaginatedEmbed(message, pages, interactionTime){
     if(pages.length == 0) return;
     let currentPage = 0;
-    const buttonPanel = newPanel(pages.length);     
+    const buttonPanel = pagePanel(pages.length);     
     const msg = await message.channel.send({ embeds: [pages[currentPage]], components: [buttonPanel] });
 
     const filter = i => i.customId === 'previous_button' || i.customId === 'next_button';
@@ -99,8 +112,12 @@ async function sendCardListEmbed(message,textList,interactionTime=2){
             .setDescription(text)
         return embed
     });
-
     sendPaginatedEmbed(message,pages,interactionTime);
 }
 
-module.exports = {newPanel,sendCardEmbed, sendCardListEmbed};
+async function sendCardDropDownEmbed(message,cards,selectAmount,interactionTime=2){
+    const confimationPanel = new confimationPanel();
+    return
+}
+
+module.exports = {pagePanel,sendCardEmbed, sendCardListEmbed, sendCardDropDownEmbed};

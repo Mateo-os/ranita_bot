@@ -1,4 +1,5 @@
-function show(responses, message){
+async function show(responses, message){
+    const replies = [];
     for(let i in responses){
         r = responses[i]
         if(r.length < 2000){
@@ -19,10 +20,11 @@ function show(responses, message){
             if(mono){
                 buffer = wrap(buffer);
             }
-            message.channel.send(buffer);
+            replies.push(await message.channel.send(buffer));
         }
     }
     responses.length = 0;
+    return replies
 }
 
 module.exports = {show};

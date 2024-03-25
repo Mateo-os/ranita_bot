@@ -46,20 +46,20 @@ client.on('messageCreate', async message => {
                 }
                 response = `Estas son todas ${selfcheck? `tus cartas`:`las cartas de ${user.nombre}`}:\n`
                 responses.push(response);
-                commands.show(responses,message);
+                await commands.show(responses,message);
                 responses.length = 0;
                 await helpers.sendCardEmbed(message,cards,true,true);
                 break;
             case 'checkcards':
                 [ response, cards] = await commands.checkcards(player, message, args);
                 responses.push(response);
-                commands.show(responses,message);
+                await commands.show(responses,message);
                 await helpers.sendCardListEmbed(message,cards);
                 break;
             case 'checkseries':
                 [response, cards] = await commands.checkseries(player, message, args);
                 responses.push(response);
-                commands.show(responses,message);
+                await commands.show(responses,message);
                 await helpers.sendCardListEmbed(message,cards);
                 break;
             case 'giftrolls':
@@ -81,7 +81,7 @@ client.on('messageCreate', async message => {
             case 'repeats':
                 [response, cards] = await commands.repeats(player, message);
                 responses.push(response);
-                commands.show(responses,message);
+                await commands.show(responses,message);
                 await helpers.sendCardListEmbed(message,cards);
                 break;
             case 'roll':
@@ -97,12 +97,15 @@ client.on('messageCreate', async message => {
                 await helpers.sendCardEmbed(message,rolledcards, false,false,true);
                 break;                
             case 'trade':
+                [response,cards,cardsEmbed] = await commands.trade(player, message,args);
+                responses.push(response);
+                await commands.show(responses,message);
+                const newmsg = replies[replies.length - 1];
+                await helpers.sendCardListEmbed(message,cardEmbed);
+                await helpers.sendDropdownEmbed(message,cards);
                 break;
-                /*commands.trade(player,message,args);
-                responses = [];
-                break;*/
         }
-        commands.show(responses, message);
+        await commands.show(responses, message);
     } catch (err) {
         console.log(err);
         /*message.channel.send("¡Hey! <@530487646766497792> y <@441325983363235841> he aquí un error.");

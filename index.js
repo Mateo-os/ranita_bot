@@ -21,7 +21,7 @@ client.on('messageCreate', async message => {
         //Ignore bots and message without the prefix
         if (!message.content.startsWith(prefix) || message.author.bot)
             return;
-        //Retreive all words separated by on or more spaces as arguments
+        //Retreive all words separated by one or more spaces as arguments
         const args = message.content.slice(prefix.length).trim().split(/ +/g);
         const command = args.shift().toLowerCase();
         const player = await commands.findplayer(message.author.id, message.guild.id) || await commands.newplayer(message);
@@ -97,11 +97,10 @@ client.on('messageCreate', async message => {
                 await helpers.sendCardEmbed(message,rolledcards, false,false,true);
                 break;                
             case 'trade':
-                responses.push('Trade');
                 break;
-                commands.trade(player,message,args);
+                /*commands.trade(player,message,args);
                 responses = [];
-                break;
+                break;*/
         }
         commands.show(responses, message);
     } catch (err) {

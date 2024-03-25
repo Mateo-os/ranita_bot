@@ -5,7 +5,7 @@ const config = require('./config/config.js');
 const helpers = require('./helpers');
 const commands = require("./commands");
 
-const {token,prefix} = config;
+const { token, prefix } = config;
 const client = new Client({ intents: [37633] });
 
 client.once(Events.ClientReady, async readyClient => {
@@ -26,41 +26,41 @@ client.on('messageCreate', async message => {
         const command = args.shift().toLowerCase();
         const player = await commands.findplayer(message.author.id, message.guild.id) || await commands.newplayer(message);
         let responses = [];
-        let response,user,cards;
+        let response, user, cards;
         switch (command) {
             case 'test':
                 responses.push("TEST");
-                break;                
+                break;
             case 'album':
-                [user,cards] = await commands.album(player, message);
+                [user, cards] = await commands.album(player, message);
 
-                if(!user){
+                if (!user) {
                     responses.push("Ese usuario no esta registrado.");
                     break;
                 }
                 const selfcheck = user.nombre == player.nombre;
                 if (!cards.length) {
-                    const response = selfcheck ? "No tienes cartas" : `${user.nombre} no tiene cartas`;        
+                    const response = selfcheck ? "No tienes cartas" : `${user.nombre} no tiene cartas`;
                     responses.push(response);
                     break;
                 }
-                response = `Estas son todas ${selfcheck? `tus cartas`:`las cartas de ${user.nombre}`}:\n`
+                response = `Estas son todas ${selfcheck ? `tus cartas` : `las cartas de ${user.nombre}`}:\n`
                 responses.push(response);
-                await commands.show(responses,message);
+                await commands.show(responses, message);
                 responses.length = 0;
-                await helpers.sendCardEmbed(message,cards,true,true);
+                await helpers.sendCardEmbed(message, cards, true, true);
                 break;
             case 'checkcards':
-                [ response, cards] = await commands.checkcards(player, message, args);
+                [response, cards] = await commands.checkcards(player, message, args);
                 responses.push(response);
-                await commands.show(responses,message);
-                await helpers.sendCardListEmbed(message,cards);
+                await commands.show(responses, message);
+                await helpers.sendCardListEmbed(message, cards);
                 break;
             case 'checkseries':
                 [response, cards] = await commands.checkseries(player, message, args);
                 responses.push(response);
-                await commands.show(responses,message);
-                await helpers.sendCardListEmbed(message,cards);
+                await commands.show(responses, message);
+                await helpers.sendCardListEmbed(message, cards);
                 break;
             case 'giftrolls':
                 responses = responses.concat(await commands.giftrolls(player, message, args));
@@ -81,55 +81,56 @@ client.on('messageCreate', async message => {
             case 'repeats':
                 [response, cards] = await commands.repeats(player, message);
                 responses.push(response);
-                await commands.show(responses,message);
-                await helpers.sendCardListEmbed(message,cards);
+                await commands.show(responses, message);
+                await helpers.sendCardListEmbed(message, cards);
                 break;
             case 'roll':
-                //Logic that handles the database update and returns the cards that were rolled 
+                //Logic that handles the database update and returns the cards that were rolled
                 const rolledcards = await commands.roll(player);
                 if (!rolledcards.length) {
-                    // Rolls will only return an empty list when the player has 
+                    // Rolls will only return an empty list when the player has
                     // no rolls
                     responses.push("No tienes rolls");
                     break;
                 }
                 // Create and send the embeds for the cards
-                await helpers.sendCardEmbed(message,rolledcards, false,false,true);
-                break;                
+                await helpers.sendCardEmbed(message, rolledcards, false, false, true);
+                break;
             case 'trade':
-                let player1cards,player2cards, card1,card2, player2;
-                [response,player1cards,parsedCards, player2] = await commands.trade.pretrade(player, message,args);
+                let player1cards, player2cards, card1, card2, player2;
+                [response, player1cards, parsedCards, player2] = await commands.trade.pretrade(player, message, args);
                 responses.push(response);
-                await commands.show(responses,message,true);
+                await commands.show(responses, message, true);
 
-                async function preTradecallback(cardID){
+                async function preTradecallback(cardID) {
                     card1 = player1cards.find(c => c.id == cardID);
-                    await helpers.sendTradeRequest(message,player2.id_discord,tradeRequestcallback);
+                    await helpers.sendTradeRequest(message, player2.id_discord, tradeRequestcallback);
                 }
 
-                async function tradeRequestcallback(card2name){
-                    [response,player2cards,parsedCards] = await commands.trade.asktrade(player2, card1 ,card2name);
+                async function tradeRequestcallback(card2name) {
+                    [response, player2cards, parsedCards] = await commands.trade.asktrade(player2, card1, card2name);
                     callbackresponses = [response];
-                    await commands.show(callbackresponses,message);
+                    await commands.show(callbackresponses, message);
                     if (player2cards && player2cards.length > 1)
-                        await helpers.sendTradeSelector(message,player2.id_discord,player2cards,parsedCards,askTradecallback);
-                    else if(player2cards.length == 1)
+                        await helpers.sendTradeSelector(message, player2.id_discord, player2cards, parsedCards, askTradecallback);
+                    else if (player2cards.length == 1)
                         await askTradecallback(player2cards[0].id);
                 }
 
                 async function askTradecallback(cardID) {
                     card2 = player2cards.find(c => c.id == cardID);
-                    await helpers.sendTradeConfirmator(message,player.id_discord,card1,player2.id_discord,card2,completeTradeCallback);
+                    await helpers.sendTradeConfirmator(message, player.id_discord, card1, player2.id_discord, card2, completeTradeCallback);
                 }
-                async function completeTradeCallback(){
+                async function completeTradeCallback() {
                     const callbackresponses = [];
-                    callbackresponses.push(await commands.trade.trade(player,card1,player2,card2));
-                    await commands.show(callbackresponses,message);
+                    callbackresponses.push(await commands.trade.trade(player, card1, player2, card2));
+                    await commands.show(callbackresponses, message);
                 }
                 if (player1cards && player1cards.length > 1)
-                    await helpers.sendTradeSelector(message,message.author.id,player1cards,parsedCards,preTradecallback);
-                else if(player1cards.length == 1) 
+                    await helpers.sendTradeSelector(message, message.author.id, player1cards, parsedCards, preTradecallback);
+                else if (player1cards.length == 1)
                     await preTradecallback(player1cards[0].id);
+                break;
         }
         await commands.show(responses, message);
     } catch (err) {

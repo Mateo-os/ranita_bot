@@ -26,4 +26,4 @@ After a changes to the models is done, by either creating a new model or alterin
 
 ```npx sequelize-mig migration:make --name <migration_name>```
 
-This will create a new migration called timestamp_migration_name.js 
+This will create a new migration called XXXXXXXXX_migration_name.js where XXXXXXXXX is the unix timestamp 

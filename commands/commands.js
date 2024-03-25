@@ -1,11 +1,11 @@
 const { album } = require("./album.js");
+const { assignfreerolls } = require("./freerolls.js");
 const { checkcards } = require("./checkcards.js");
 const { checkseries } = require("./checkseries.js");
 const { findplayer } = require("./findplayer.js");
 const { giftrolls } = require("./giftrolls.js");
 const { give } = require("./give.js");
 const { help } = require("./help.js");
-const { incrementElement } = require("./increment.js");
 const { info } = require("./info.js");
 const { newPlayer } = require("./newplayer.js");
 const { ownerrolls } = require("./ownergift.js");
@@ -23,7 +23,7 @@ module.exports = {
   giftrolls,
   give,
   help,
-  incrementElement,
+  assignfreerolls,
   info,
   newplayer,
   ownerrolls,

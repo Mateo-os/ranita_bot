@@ -12,7 +12,7 @@ client.once(Events.ClientReady, async readyClient => {
     console.log(`Welcome to Ranita bot v${config.version}`);
     console.log(`Logged in as ${readyClient.user.tag}`);
     // Daily roll increment
-    const job = new cron.CronJob('00 19 * * *', () => commands.incrementElement(), timeZone = "utc");
+    const job = new cron.CronJob('00 19 * * *', () => commands.assignfreerolls(), timeZone = "utc");
     job.start();
 });
 

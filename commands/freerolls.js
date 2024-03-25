@@ -12,7 +12,7 @@ async function assignfreerolls(amount=1) {
         p.save();
         gifted += 1;
     });
-    console.log(`Gifted rolls to ${gifted} player${gifted > 1 ? 's' : ''}.`);
+    console.log(`Gifted rolls to ${gifted} player${gifted == 1 ? 's' : ''}.`);
   } catch (error) {
     console.error('Error awarding rolls: ', error);
   }

@@ -26,7 +26,7 @@ function pagePanel(totalPages) {
     return row;
 }
 
-function confimationPanel() {
+function confirmationPanel() {
     const row = new ActionRowBuilder()
         .addComponents(
             new ButtonBuilder()

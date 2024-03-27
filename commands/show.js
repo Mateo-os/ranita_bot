@@ -20,7 +20,7 @@ async function show(responses, message) {
             if (mono) {
                 buffer = wrap(buffer);
             }
-            replies.push(await message.channel.send(buffer));
+            replies.push(await message.reply({ content: buffer, ephemeral: ephemeral }));
         }
     }
     responses.length = 0;

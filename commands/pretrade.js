@@ -1,6 +1,6 @@
 const {MessageCollector,EmbedBuilder} = require('discord.js');
 const { parseCartas } = require('../helpers');
-
+const { findplayer  } = require('./findplayer.js')
 
 async function pretrade(player, message, args){
     const mentionedMember = message.mentions.members.first();
@@ -25,7 +25,7 @@ async function pretrade(player, message, args){
         return result;
     }
     
-    const cartas = player.cartas.cartas.filter(c => new RegExp(cardName, 'i').test(c.nombre));
+    const cartas = player.cartas.filter(c => new RegExp(name, 'i').test(c.nombre));
     if (cartas.length == 0) {
         result.push(
             'No tienes cartas con ese nombre o similares.',
@@ -37,6 +37,7 @@ async function pretrade(player, message, args){
     result.push(`Estas son tus cartas similares a \"${name}\".`);
     result.push(cartas);
     result.push(parseCartas(cartas, showRepeats = true));
+    result.push(member);
     return result;
 }
 

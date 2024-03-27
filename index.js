@@ -3,7 +3,7 @@ const cron = require('cron');
 
 const config = require('./config/config.js');
 const helpers = require('./helpers');
-const commands = require("./commands/commands.js");
+const commands = require("./commands");
 
 const {token,prefix} = config;
 const client = new Client({ intents: [37633] });
@@ -97,13 +97,26 @@ client.on('messageCreate', async message => {
                 await helpers.sendCardEmbed(message,rolledcards, false,false,true);
                 break;                
             case 'trade':
-                [response,cards,cardsEmbed] = await commands.trade(player, message,args);
+                [response,cards,parsedCards, tradeTarget] = await commands.trade.pretrade(player, message,args);
                 responses.push(response);
-                await commands.show(responses,message);
-                const newmsg = replies[replies.length - 1];
-                await helpers.sendCardListEmbed(message,cardEmbed);
-                await helpers.sendDropdownEmbed(message,cards);
-                break;
+                await commands.show(responses,message,true);
+                let card1,card2;
+                async function preTradecallback(cardID){
+                    [ response,cards,parsedCards] = await commands.trade.asktrade(tradeTarget, cardID)
+                    responses.push(response)
+                    card1 = cardID;
+                    await commands.show(responses,message);
+                    await helpers.sendTradeSelector(message,tradeTarget.id_discord,cards,parsedCards,askTradecallback);
+                }
+                async function askTradecallback(cardID) {
+                    card2 = cardID;
+                    await helpers.sendTradeConfirmator(message,player.id_discord,tradeTarget.id_discord,finaltradeCallback);
+                }
+                async function finaltradeCallback(){
+                    return
+                }
+                if (cards)
+                    await helpers.sendTradeSelector(message,message.author.id,cards,parsedCards,preTradecallback);
         }
         await commands.show(responses, message);
     } catch (err) {

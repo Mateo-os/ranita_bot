@@ -235,7 +235,6 @@ async function sendTradeConfirmator(message, user1_id, card1, user2_id, card2, c
     confirmed[user2_id] = false;
 
     const participants = [user1_id, user2_id]
-
     const confirm_button = confimDenyPanel(2);
 
     const msgbody = `Se va a intercambiar ${card1.nombre} por ${card2.nombre}. Confirmar: `

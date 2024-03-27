@@ -34,6 +34,14 @@ async function pretrade(player, message, args){
         return result;
 
     }
+
+    if(cards.length > 24){
+        result.push(
+            'Tiene muchas cartas con ese nombre o similares, por favor se mas especifico.',
+            [], [], []
+        );
+        return result;
+    }
     
     const response = cards.length > 1 ? `Estas son tus cartas similares a \"${name}\".` : 
                         `Vas a intercambiar a ${cards[0].nombre}`

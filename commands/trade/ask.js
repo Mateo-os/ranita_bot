@@ -7,7 +7,14 @@ async function asktrade( member,card1,card2name ) {
     const [cards,parsedCards] = retrieve(member,filter);
     if (!cards.length) {
         responses.push(
-            'No tienes cartas con ese nombre o similares.',
+            'No tienes cartas con ese nombre o similares. Se cancela el intercambio.',
+            [], [], []
+        );
+        return responses;
+    }
+    if(cards.length > 24){
+        responses.push(
+            'Tiene muchas cartas con ese nombre o similares, por favor se mas especifico. Se cancela el intercambio.',
             [], [], []
         );
         return responses;

@@ -98,23 +98,25 @@ client.on('messageCreate', async message => {
                 break;                
             case 'trade':
                 let player1cards,player2cards, card1,card2;
-                [response,player1cards,parsedCards, tradeTarget] = await commands.trade.pretrade(player, message,args);
+                [response,player1cards,parsedCards, player2] = await commands.trade.pretrade(player, message,args);
                 responses.push(response);
                 await commands.show(responses,message,true);
                 async function preTradecallback(cardID){
-                    [ response,player2cards,parsedCards] = await commands.trade.asktrade(tradeTarget, cardID)
+                    [ response,player2cards,parsedCards] = await commands.trade.asktrade(player2, cardID)
                     responses.push(response)
                     card1 = player1cards.find(c => c.id == cardID);
                     await commands.show(responses,message);
-                    await helpers.sendTradeSelector(message,tradeTarget.id_discord,player2cards,parsedCards,askTradecallback);
+                    await helpers.sendTradeSelector(message,player2.id_discord,player2cards,parsedCards,askTradecallback);
                 }
+
                 async function askTradecallback(cardID) {
                     card2 = player2cards.find(c => c.id == cardID);
-                    console.log(card1.nombre,card2.nombre);
-                    await helpers.sendTradeConfirmator(message,player.id_discord,tradeTarget.id_discord,finaltradeCallback);
+                    await helpers.sendTradeConfirmator(message,player.id_discord,card1,player2.id_discord,card2,completeTradeCallback);
                 }
-                async function finaltradeCallback(){
-                    return
+                async function completeTradeCallback(){
+                    response = await commands.trade.trade(player,card1,player2,card2);
+                    responses.push(response);
+                    await commands.show(responses,message);
                 }
                 if (player1cards)
                     await helpers.sendTradeSelector(message,message.author.id,player1cards,parsedCards,preTradecallback);

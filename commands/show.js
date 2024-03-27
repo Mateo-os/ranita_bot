@@ -1,4 +1,4 @@
-async function show(responses, message){
+async function show(responses, message, ephemeral = false) {
     const replies = [];
     for(let i in responses){
         r = responses[i]
@@ -20,7 +20,7 @@ async function show(responses, message){
             if(mono){
                 buffer = wrap(buffer);
             }
-            replies.push(await message.channel.send(buffer));
+            replies.push(await message.reply({content:buffer,ephemeral:ephemeral}));
         }
     }
     responses.length = 0;

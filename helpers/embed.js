@@ -182,7 +182,6 @@ async function sendTradeSelector(message, user_id ,cards, parsedCards,callback,i
     const button_collector = panelmsg.createMessageComponentCollector({ filter, time: interactionTime*60*100});
     
     
-    
     dropdown_collector.on('collect', async interaction => {
         selectCardID = interaction.values[0];
         confirm_button.components[0].setDisabled(false);
@@ -207,14 +206,45 @@ async function sendTradeSelector(message, user_id ,cards, parsedCards,callback,i
 
 }
 
-async function sendTradeConfirmator(message, user1_id, user2_id,callback, interactionTime = 2) {
-    const confirmed = {
-        user1_id: false,
-        user2_id: false,
-    }
+async function sendTradeConfirmator(message, user1_id,card1, user2_id,card2,callback, interactionTime = 2) {
+    const confirmed = {}
+    confirmed[user1_id] = false;
+    confirmed[user2_id] = false;
+
+    const participants = [user1_id, user2_id]
+  
     const confirm_button = confimDenyPanel(2);
 
-    message.channel.send({components:[confirm_button]});
+    const msgbody = `Se va a intercambiar ${card1.nombre} por ${card2.nombre}. Confirmar: `
+    const confirm_msg = await message.channel.send({
+        content: msgbody,
+        components:[confirm_button]
+    });
+
+    filter = filter = i => (i.customId === 'confirm_button' || i.customId === 'deny_button') && (participants.includes(i.user.id));
+    const collector = confirm_msg.createMessageComponentCollector({ filter, time: interactionTime*60*100})
+
+    let confirm_count = 0;
+    collector.on('collect', async interaction => {
+        if (interaction.customId === 'confirm_button' && !confirmed[interaction.user.id]) {
+            confirm_count++;
+            confirmed[interaction.user.id] = true;
+        } else if (interaction.customId === 'deny_button') {
+            await confirm_msg.edit( {content: `<@${interaction.user.id}> canceló el intercambio.`, components:[]})
+            interaction.deferUpdate()
+            return;
+        }
+        confirm_button.components[2].setLabel(`${confirm_count}/2`);
+        await confirm_msg.edit({
+            content:msgbody,
+            components:[confirm_button]
+        });
+        interaction.deferUpdate();
+        if(confirm_count == 2){
+            callback();
+        }
+
+    });
 }
 
 

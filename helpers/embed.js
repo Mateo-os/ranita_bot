@@ -206,6 +206,16 @@ async function sendTradeSelector(message, user_id ,cards, parsedCards,callback,i
 
 }
 
+async function sendTradeRequest(message, requested_player_id, callback, interactionTime = 2){
+    const msg = message.channel.send(`Hola <@${requested_player_id}>, escribe el nombre de la carta que quieres intercambiar.`)
+    const filter = m => m.author.id === requested_player_id;
+    const collector = message.channel.createMessageCollector({filter,  max: 1, time: interactionTime * 60 * 1000 });
+    collector.on('collect', collectedMessage => {
+        cardName = collectedMessage.content.trim();
+        callback(cardName);
+    });
+}
+
 async function sendTradeConfirmator(message, user1_id,card1, user2_id,card2,callback, interactionTime = 2) {
     const confirmed = {}
     confirmed[user1_id] = false;
@@ -221,7 +231,7 @@ async function sendTradeConfirmator(message, user1_id,card1, user2_id,card2,call
         components:[confirm_button]
     });
 
-    filter = filter = i => (i.customId === 'confirm_button' || i.customId === 'deny_button') && (participants.includes(i.user.id));
+    const filter = i => (i.customId === 'confirm_button' || i.customId === 'deny_button') && (participants.includes(i.user.id));
     const collector = confirm_msg.createMessageComponentCollector({ filter, time: interactionTime*60*100})
 
     let confirm_count = 0;
@@ -248,4 +258,4 @@ async function sendTradeConfirmator(message, user1_id,card1, user2_id,card2,call
 }
 
 
-module.exports = {pagePanel,sendCardEmbed, sendCardListEmbed, sendTradeSelector, sendTradeConfirmator};
+module.exports = {pagePanel,sendCardEmbed, sendCardListEmbed, sendTradeSelector, sendTradeRequest ,sendTradeConfirmator};

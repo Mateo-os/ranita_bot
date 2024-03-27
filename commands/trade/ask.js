@@ -1,11 +1,19 @@
 const helpers = require('../../helpers');
 const {models} = require('../../database.js');
 const { retrieve } = require('./retrieve.js');
-async function asktrade( member, cardID ) {
+async function asktrade( member,card1,card2name ) {
     const responses = [];
-    const card = await models.Carta.findOne({where:{id: cardID}});
-    const response = `Hola <@${member.id_discord}>, por favor elige que carta intercambiar por ${card.nombre}`;
-    const [cards,parsedCards] = retrieve(member);
+    const filter = c => new RegExp(card2name, 'i').test(c.nombre);
+    const [cards,parsedCards] = retrieve(member,filter);
+    if (!cards) {
+        responses.push(
+            'No tienes cartas con ese nombre o similares.',
+            [], [], []
+        );
+        return responses;
+    }
+    const response = cards.length > 1 ? `Por favor especifica que carta intercambiar por ${card1.nombre}` : 
+        `Vas a intercambiar a ${cards[0].nombre}`
     responses.push(response);
     responses.push(cards);
     responses.push(parsedCards);

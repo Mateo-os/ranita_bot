@@ -11,11 +11,11 @@ async function pretrade(player, message, args){
     }
     const member_id = mentionedMember.user.id
     const server_id = message.guild.id;
-    /*if (member_id === player.id_discord){
+    if (member_id === player.id_discord){
         result.push(`No puedes tradear contigo mismo`,[], [], []);
         return result;
     }
-    */
+    
     const member = await findplayer(member_id, server_id);
     //Remome ids mentions using regular expressions
     const name = (args.join(' ').replace(/<(@[0-9]+)>/g, '')).trim() || "";

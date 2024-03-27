@@ -5,7 +5,7 @@ async function asktrade( member,card1,card2name ) {
     const responses = [];
     const filter = c => new RegExp(card2name, 'i').test(c.nombre);
     const [cards,parsedCards] = retrieve(member,filter);
-    if (!cards) {
+    if (!cards.length) {
         responses.push(
             'No tienes cartas con ese nombre o similares.',
             [], [], []

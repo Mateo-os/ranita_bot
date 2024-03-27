@@ -12,7 +12,7 @@ const { ownerrolls } = require("./ownergift.js");
 const { repeats } = require("./repeats.js");
 const { roll } = require("./roll.js");
 const { show } = require("./show.js");
-const { pretrade } = require("./pretrade.js");
+const trade = require("./trade");
 
 const newplayer = newPlayer;
 module.exports = {
@@ -30,5 +30,5 @@ module.exports = {
   repeats,
   roll,
   show,
-  pretrade,
+  trade,
 };

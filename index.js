@@ -103,9 +103,10 @@ client.on('messageCreate', async message => {
                 await commands.show(responses,message,true);
                 async function preTradecallback(cardID){
                     [ response,player2cards,parsedCards] = await commands.trade.asktrade(player2, cardID)
-                    responses.push(response)
                     card1 = player1cards.find(c => c.id == cardID);
-                    await commands.show(responses,message);
+                    const callbackresponses = [];
+                    callbackresponses.push(response)
+                    await commands.show(callbackresponses,message);
                     await helpers.sendTradeSelector(message,player2.id_discord,player2cards,parsedCards,askTradecallback);
                 }
 
@@ -114,9 +115,9 @@ client.on('messageCreate', async message => {
                     await helpers.sendTradeConfirmator(message,player.id_discord,card1,player2.id_discord,card2,completeTradeCallback);
                 }
                 async function completeTradeCallback(){
-                    response = await commands.trade.trade(player,card1,player2,card2);
-                    responses.push(response);
-                    await commands.show(responses,message);
+                    const callbackresponses = [];
+                    callbackresponses.push(await commands.trade.trade(player,card1,player2,card2));
+                    await commands.show(callbackresponses,message);
                 }
                 if (player1cards)
                     await helpers.sendTradeSelector(message,message.author.id,player1cards,parsedCards,preTradecallback);

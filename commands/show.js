@@ -1,5 +1,5 @@
-async function show(responses, message) {
-    const replies = [];
+async function show(responses, message, ephemeral = false) {
+    const messagelist = [];
     for (let i in responses) {
         r = responses[i]
         if (r.length < 2000) {
@@ -20,11 +20,11 @@ async function show(responses, message) {
             if (mono) {
                 buffer = wrap(buffer);
             }
-            replies.push(await message.reply({ content: buffer, ephemeral: ephemeral }));
+            messagelist.push(await message.channel.send(buffer));
         }
     }
     responses.length = 0;
-    return replies
+    return messagelist;
 }
 
 module.exports = { show };

@@ -3,7 +3,7 @@ const cron = require('cron');
 
 const config = require('./config/config.js');
 const helpers = require('./helpers');
-const commands = require("./commands/commands.js");
+const commands = require("./commands");
 
 const {token,prefix} = config;
 const client = new Client({ intents: [37633] });
@@ -46,20 +46,20 @@ client.on('messageCreate', async message => {
                 }
                 response = `Estas son todas ${selfcheck? `tus cartas`:`las cartas de ${user.nombre}`}:\n`
                 responses.push(response);
-                commands.show(responses,message);
+                await commands.show(responses,message);
                 responses.length = 0;
                 await helpers.sendCardEmbed(message,cards,true,true);
                 break;
             case 'checkcards':
                 [ response, cards] = await commands.checkcards(player, message, args);
                 responses.push(response);
-                commands.show(responses,message);
+                await commands.show(responses,message);
                 await helpers.sendCardListEmbed(message,cards);
                 break;
             case 'checkseries':
                 [response, cards] = await commands.checkseries(player, message, args);
                 responses.push(response);
-                commands.show(responses,message);
+                await commands.show(responses,message);
                 await helpers.sendCardListEmbed(message,cards);
                 break;
             case 'giftrolls':
@@ -81,7 +81,7 @@ client.on('messageCreate', async message => {
             case 'repeats':
                 [response, cards] = await commands.repeats(player, message);
                 responses.push(response);
-                commands.show(responses,message);
+                await commands.show(responses,message);
                 await helpers.sendCardListEmbed(message,cards);
                 break;
             case 'roll':
@@ -97,12 +97,41 @@ client.on('messageCreate', async message => {
                 await helpers.sendCardEmbed(message,rolledcards, false,false,true);
                 break;                
             case 'trade':
-                break;
-                /*commands.trade(player,message,args);
-                responses = [];
-                break;*/
+                let player1cards,player2cards, card1,card2, player2;
+                [response,player1cards,parsedCards, player2] = await commands.trade.pretrade(player, message,args);
+                responses.push(response);
+                await commands.show(responses,message,true);
+
+                async function preTradecallback(cardID){
+                    card1 = player1cards.find(c => c.id == cardID);
+                    await helpers.sendTradeRequest(message,player2.id_discord,tradeRequestcallback);
+                }
+
+                async function tradeRequestcallback(card2name){
+                    [response,player2cards,parsedCards] = await commands.trade.asktrade(player2, card1 ,card2name);
+                    callbackresponses = [response];
+                    await commands.show(callbackresponses,message);
+                    if (player2cards && player2cards.length > 1)
+                        await helpers.sendTradeSelector(message,player2.id_discord,player2cards,parsedCards,askTradecallback);
+                    else if(player2cards.length == 1)
+                        await askTradecallback(player2cards[0].id);
+                }
+
+                async function askTradecallback(cardID) {
+                    card2 = player2cards.find(c => c.id == cardID);
+                    await helpers.sendTradeConfirmator(message,player.id_discord,card1,player2.id_discord,card2,completeTradeCallback);
+                }
+                async function completeTradeCallback(){
+                    const callbackresponses = [];
+                    callbackresponses.push(await commands.trade.trade(player,card1,player2,card2));
+                    await commands.show(callbackresponses,message);
+                }
+                if (player1cards && player1cards.length > 1)
+                    await helpers.sendTradeSelector(message,message.author.id,player1cards,parsedCards,preTradecallback);
+                else if(player1cards.length == 1) 
+                    await preTradecallback(player1cards[0].id);
         }
-        commands.show(responses, message);
+        await commands.show(responses, message);
     } catch (err) {
         console.log(err);
         /*message.channel.send("¡Hey! <@530487646766497792> y <@441325983363235841> he aquí un error.");

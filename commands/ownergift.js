@@ -7,7 +7,7 @@ async function ownerrolls(message, args) {
     if (!message.mentions.members.first()) return ["No mencionaste jugador."];
     try {
         const member = message.mentions.members.first().user.id;
-        const player = await findplayer(member, message.gulid.id);
+        const player = await findplayer(member, message.guild.id);
         if (!player) return ["Esta persona no tiene un perfil creado"]
         let rolls = (args[0] == `<@${member}>`) ? args[1] : args[0];
         player.increment('rolls', { 'by': rolls });

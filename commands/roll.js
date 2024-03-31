@@ -18,6 +18,7 @@ async function roll(player) {
             where: { rareza: rare },
             order: literal("RAND()"),
         },);
+
         if (!(card.id in pulled_cards)) {
             pulled_cards[card.id] = {
                 card: card,
@@ -31,9 +32,7 @@ async function roll(player) {
     const pulled_cards_id = Object.keys(pulled_cards).map(id => parseInt(id));
     const repeated_cards = player.cartas.filter(c => pulled_cards_id.includes(c.id));
     const repeated_cards_id = repeated_cards.map(c => c.id);
-    console.log(repeated_cards_id);
     const new_cards_id = pulled_cards_id.filter(c_id => !repeated_cards_id.includes(c_id));
-    console.log(new_cards_id);
     repeated_cards.forEach(async c => {
         c.Cromo.increment('cantidad', {
             by: pulled_cards[c.id].amount
@@ -51,7 +50,6 @@ async function roll(player) {
         await player.decrement('freerolls');
     //TODO: check if this code can be improved
     // (player.cartas should be properly updted at this instance but its not)
-    console.log(player.cartas.filter(c => pulled_cards_id.includes(c.id)));
     const result = [];
     pulled_cards_id.forEach(c_id => {
         const c = (player.cartas.find(c => c.id == c_id) || pulled_cards[c_id].card);

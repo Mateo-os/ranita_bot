@@ -1,5 +1,3 @@
-const helpers = require('../../helpers');
-const { models } = require('../../database.js');
 const { retrieve } = require('./retrieve.js');
 async function asktrade(member, card1, card2name) {
     const responses = [];

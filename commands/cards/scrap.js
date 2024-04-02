@@ -1,4 +1,4 @@
-const { recycle_points } = require('../helpers/constants');
+const { recycle_points } = require('../../helpers');
 const ROLL_VALUE = 10;
 
 async function scrap(player, args) {

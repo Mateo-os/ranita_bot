@@ -1,5 +1,4 @@
-const { recycle_points } = require('../helpers/constants');
-const { parseCartas } = require('../helpers/parse');
+const { recycle_points, parseCartas } = require('../../helpers');
 const ROLL_VALUE = 10;
 
 

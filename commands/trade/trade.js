@@ -12,25 +12,22 @@ async function trade(player1,card1,player2,card2){
     } else{
         await card2.Cromo.decrement({'cantidad':1});
     }
-    card1.save();
-    card2.save();
-
+    await player1.reload();
+    await player2.reload();
     // Check if the players already have 
     // copies of the cards.
     // If not, we add them
     const crd2 = player1.cartas.find(c => c.id == card2.id);
     let op1,op2;
     if(crd2){
-        crd2.Cromo.increment('cantidad');
-        crd2.save();
+        op1 = await crd2.Cromo.increment('cantidad');
     } else{
         op1 = await player1.addCarta(card2);
     }
     
     const crd1 = player2.cartas.find(c => c.id == card1.id);
     if(crd1){
-        crd1.Cromo.increment('cantidad');
-        crd1.save();  
+        op2 = await crd1.Cromo.increment('cantidad');
     } else{
         op2 = await player2.addCarta(card1);
     }

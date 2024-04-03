@@ -13,10 +13,12 @@ const { repeats } = require("./repeats.js");
 const { roll } = require("./roll.js");
 const { show } = require("./show.js");
 const trade = require("./trade");
-
+const cards = require("./cards");
 const newplayer = newPlayer;
+
 module.exports = {
   album,
+  cards,
   checkcards,
   checkseries,
   findplayer,

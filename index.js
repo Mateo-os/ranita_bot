@@ -78,6 +78,9 @@ client.on('messageCreate', async message => {
             case 'ownerrolls':
                 responses = responses.concat(await commands.ownerrolls(message, args));
                 break;
+            case 'recycle':
+                responses = responses.concat(await commands.cards.recycle(player, args));
+                break;
             case 'repeats':
                 [response, cards] = await commands.repeats(player, message);
                 responses.push(response);
@@ -95,6 +98,9 @@ client.on('messageCreate', async message => {
                 }
                 // Create and send the embeds for the cards
                 await helpers.sendCardEmbed(message, rolledcards, false, false, true);
+                break;
+            case 'scrap':
+                responses = responses.concat(await commands.cards.scrap(player, args));
                 break;
             case 'trade':
                 let player1cards, player2cards, card1, card2, player2;

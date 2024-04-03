@@ -1,6 +1,5 @@
-const {parseCartas} = require("../helpers");
-const { findplayer } = require("./findplayer.js");
-const helpers = require("../helpers");
+const { findplayer } = require("../findplayer.js");
+const helpers = require("../../helpers/index.js");
 
 async function album(player, message) {
     const usuario = (message.mentions.members.first()) ?

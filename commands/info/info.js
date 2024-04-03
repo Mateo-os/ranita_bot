@@ -1,4 +1,4 @@
-const { models } = require('../database');
+const { models } = require('../../database');
 const { fn, col } = require('sequelize');
 
 async function info(player) {

@@ -1,12 +1,9 @@
-const { album } = require("./album.js");
 const { assignfreerolls } = require("./freerolls.js");
-const { checkcards } = require("./checkcards.js");
-const { checkseries } = require("./checkseries.js");
+const info = require("./info");
 const { findplayer } = require("./findplayer.js");
 const { giftrolls } = require("./giftrolls.js");
 const { give } = require("./give.js");
 const { help } = require("./help.js");
-const { info } = require("./info.js");
 const { newPlayer } = require("./newplayer.js");
 const { ownerrolls } = require("./ownergift.js");
 const { repeats } = require("./repeats.js");
@@ -17,15 +14,12 @@ const cards = require("./cards");
 const newplayer = newPlayer;
 
 module.exports = {
-  album,
+  assignfreerolls,
   cards,
-  checkcards,
-  checkseries,
   findplayer,
   giftrolls,
   give,
   help,
-  assignfreerolls,
   info,
   newplayer,
   ownerrolls,

@@ -32,7 +32,7 @@ client.on('messageCreate', async message => {
                 responses.push("TEST");
                 break;
             case 'album':
-                [user, cards] = await commands.album(player, message);
+                [user, cards] = await commands.info.album(player, message);
 
                 if (!user) {
                     responses.push("Ese usuario no esta registrado.");
@@ -51,13 +51,13 @@ client.on('messageCreate', async message => {
                 await helpers.sendCardEmbed(message, cards, true, true);
                 break;
             case 'checkcards':
-                [response, cards] = await commands.checkcards(player, message, args);
+                [response, cards] = await commands.info.checkcards(player, message, args);
                 responses.push(response);
                 await commands.show(responses, message);
                 await helpers.sendCardListEmbed(message, cards);
                 break;
             case 'checkseries':
-                [response, cards] = await commands.checkseries(player, message, args);
+                [response, cards] = await commands.info.checkseries(player, message, args);
                 responses.push(response);
                 await commands.show(responses, message);
                 await helpers.sendCardListEmbed(message, cards);
@@ -73,7 +73,7 @@ client.on('messageCreate', async message => {
                 break;
             case 'info':
                 console.log(message.author);
-                responses = responses.concat(await commands.info(player));
+                responses = responses.concat(await commands.info.info(player));
                 break;
             case 'ownerrolls':
                 responses = responses.concat(await commands.ownerrolls(message, args));

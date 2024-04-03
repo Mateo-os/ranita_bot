@@ -23,34 +23,34 @@ function separateStringsAndNumbers(input) {
 
 
 async function recycle(player, args) {
-    const result = [];
     const args_string = (args.join(' ').replace(/<(@[0-9]+)>/g, '')) || "";
     const [recycle_names, recycle_amounts] = separateStringsAndNumbers(args_string);
     if (!recycle_names.length) {
         return [
-            "No has dado ningún nombre"
+            "No has dado ningún nombre.\n"
         ]
     }
     let points = 0;
+    let response = ''
     for (let i = 0; i < recycle_names.length; i++) {
         const name = recycle_names[i];
         // Filter by name but also ignoring rare 6 cards.
         const canRecycle = c => (new RegExp(name, 'i').test(c.nombre)) && (c.rareza < 6);
         const cards = player.cartas.filter(canRecycle);
         if (cards.length == 0) {
-            result.push(`No tienes cartas reciclables con el nombre \"${name}\" nombre o similares.\n`);
+            response += `No tienes cartas reciclables con el nombre \"${name}\" nombre o similares.\n`
             continue;
         }
         if (cards.length > 1) {
-            result.push(`Estas son tus reciclables cartas similares a \"${name}\".`);
-            result.push(parseCartas(cards, showRepeats = true));
-            result.push(`Por favor especifica.\n`);
+            response += `Estas son tus reciclables cartas similares a \"${name}\:"\n`;
+            response += parseCartas(cards, showRepeats = true)
+            response += `Por favor especifica.\n`;
             continue;
         }
         const card = cards[0];
         const recycle_amount = i < recycle_amounts.length ? recycle_amounts[i] : card.Cromo.cantidad - 1;
         if (card.Cromo.cantidad < recycle_amount) {
-            result.push(`Tienes menos copias reciclables de la carta ${name} que las que has indicado para reciclar.\n`);
+            response += `Tienes menos copias reciclables de la carta ${card.nombre} que las que has indicado para reciclar.\n`;
             continue;
         }
         const awarded_points = recycle_amount * recycle_points[card.rareza];
@@ -62,7 +62,7 @@ async function recycle(player, args) {
         }
         await card.save();
 
-        result.push(`Recicladas ${recycle_amount} copia${recycle_amount > 1 ? 's' : ''} de la carta ${name}, por un valor de ${awarded_points} punto${awarded_points > 1 ? 's' : ''}.\n`);
+        response += `Recicladas ${recycle_amount} copia${recycle_amount > 1 ? 's' : ''} de la carta ${card.nombre}, por un valor de ${awarded_points} punto${awarded_points > 1 ? 's' : ''}.\n`;
     }
     const player_points = player.recycle_points + points;
     const rem = player_points % ROLL_VALUE;
@@ -70,9 +70,9 @@ async function recycle(player, args) {
     await player.increment({ 'rolls': rolls });
     player.recycle_points = rem;
     player.save();
-    result.push(`Entregados ${rolls} roll${rolls > 1 ? 's' : ''}`);
-    result.push(`Puntos restantes: ${rem}.`);
-    return result
+    response += `Entregados ${rolls} roll${rolls > 1 ? 's' : ''}.\n`;
+    response += `Puntos restantes: ${rem}.\n`;
+    return response
 }
 
 module.exports = { recycle };

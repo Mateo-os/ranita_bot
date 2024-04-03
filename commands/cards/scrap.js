@@ -2,7 +2,7 @@ const { recycle_points } = require('../../helpers');
 const ROLL_VALUE = 10;
 
 async function scrap(player, args) {
-    const result = [];
+    let result = '';
     if (args.length < 0 || isNaN(parseInt(args[0]))) return ['No ingresaste ninguna rareza.'];
     const rarity = parseInt(args[0]);
     if (rarity < 1 || rarity > 6) return ['Ingresa una rareza válida.'];
@@ -16,7 +16,7 @@ async function scrap(player, args) {
         card.Cromo.cantidad = 1;
         card.Cromo.save();
         card.save();
-        result.push(`Reciclada${recycle_amount > 1 ? 's' : ''} ${recycle_amount} copia${recycle_amount > 1 ? 's' : ''} de la carta ${card.nombre}, por un valor de ${awarded_points} punto${awarded_points > 1 ? 's' : ''}.\n`);
+        result += `Reciclada${recycle_amount > 1 ? 's' : ''} ${recycle_amount} copia${recycle_amount > 1 ? 's' : ''} de la carta ${card.nombre}, por un valor de ${awarded_points} punto${awarded_points > 1 ? 's' : ''}.\n`;
     });
     const player_points = player.recycle_points + points;
     const rem = player_points % ROLL_VALUE;
@@ -24,9 +24,9 @@ async function scrap(player, args) {
     await player.increment({ 'rolls': rolls });
     player.recycle_points = rem;
     player.save();
-    result.push(`Entregados ${rolls} roll${rolls > 1 ? 's' : ''}`);
-    result.push(`Puntos restantes: ${rem}.`);
-    return result
+    result += `Entregados ${rolls} roll${rolls > 1 ? 's' : ''}.\n`;
+    result += `Puntos restantes: ${rem}.\n`;
+    return [result]
 }
 
 module.exports = { scrap };

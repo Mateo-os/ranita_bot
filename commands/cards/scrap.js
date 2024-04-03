@@ -1,5 +1,5 @@
-const { recycle_points } = require('../../helpers');
-const ROLL_VALUE = 10;
+const helpers = require('../../helpers');
+
 
 async function scrap(player, args) {
     let result = '';
@@ -11,7 +11,7 @@ async function scrap(player, args) {
     let points = 0;
     cards.forEach(card => {
         const recycle_amount = card.Cromo.cantidad - 1;
-        const awarded_points = recycle_amount * recycle_points[card.rareza];
+        const awarded_points = recycle_amount * helpers.recycle_points[card.rareza];
         points += awarded_points
         card.Cromo.cantidad = 1;
         card.Cromo.save();
@@ -19,8 +19,8 @@ async function scrap(player, args) {
         result += `Reciclada${recycle_amount > 1 ? 's' : ''} ${recycle_amount} copia${recycle_amount > 1 ? 's' : ''} de la carta ${card.nombre}, por un valor de ${awarded_points} punto${awarded_points > 1 ? 's' : ''}.\n`;
     });
     const player_points = player.recycle_points + points;
-    const rem = player_points % ROLL_VALUE;
-    const rolls = (player_points - rem) / ROLL_VALUE;
+    const rem = player_points % helpers.REC_POINTS_PER_ROLL;
+    const rolls = (player_points - rem) / helpers.REC_POINTS_PER_ROLL;
     await player.increment({ 'rolls': rolls });
     player.recycle_points = rem;
     player.save();

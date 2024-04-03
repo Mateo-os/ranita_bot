@@ -1,5 +1,4 @@
-const { recycle_points, parseCartas } = require('../../helpers');
-const ROLL_VALUE = 10;
+const helpers = require('../../helpers');
 
 
 function separateStringsAndNumbers(input) {
@@ -43,17 +42,21 @@ async function recycle(player, args) {
         }
         if (cards.length > 1) {
             response += `Estas son tus reciclables cartas similares a \"${name}\:"\n`;
-            response += parseCartas(cards, showRepeats = true)
+            response += helpers.parseCartas(cards, showRepeats = true)
             response += `Por favor especifica.\n`;
             continue;
         }
         const card = cards[0];
         const recycle_amount = i < recycle_amounts.length ? recycle_amounts[i] : card.Cromo.cantidad - 1;
+        if(recycle_amount == 0){
+            response += `Solamente tienes una copia de la carta ${card.nombre}. Para reciclarla, indicalo explicitamente.\n`;
+            continue;
+        }
         if (card.Cromo.cantidad < recycle_amount) {
             response += `Tienes menos copias reciclables de la carta ${card.nombre} que las que has indicado para reciclar.\n`;
             continue;
         }
-        const awarded_points = recycle_amount * recycle_points[card.rareza];
+        const awarded_points = recycle_amount * helpers.recycle_points[card.rareza];
         points += awarded_points
         if (card.Cromo.cantidad == recycle_amount) {
             await card.Cromo.destroy()
@@ -65,8 +68,8 @@ async function recycle(player, args) {
         response += `Recicladas ${recycle_amount} copia${recycle_amount > 1 ? 's' : ''} de la carta ${card.nombre}, por un valor de ${awarded_points} punto${awarded_points > 1 ? 's' : ''}.\n`;
     }
     const player_points = player.recycle_points + points;
-    const rem = player_points % ROLL_VALUE;
-    const rolls = (player_points - rem) / ROLL_VALUE;
+    const rem = player_points % helpers.REC_POINTS_PER_ROLL;
+    const rolls = (player_points - rem) / helpers.REC_POINTS_PER_ROLL;
     await player.increment({ 'rolls': rolls });
     player.recycle_points = rem;
     player.save();

@@ -1,5 +1,6 @@
 const EPHIMERAL_ROLL_LIMIT = 15;
 
+
 const CARDS_PER_ROLL = 3;
 
 const rarities = {
@@ -11,6 +12,8 @@ const rarities = {
     6: 'IMPOSIBLE',
 }
 
+const REC_POINTS_PER_ROLL = 10;
+
 const recycle_points = {
     1: 2,
     2: 2,
@@ -20,4 +23,4 @@ const recycle_points = {
 }
 
 
-module.exports = { rarities, recycle_points, EPHIMERAL_ROLL_LIMIT, CARDS_PER_ROLL }
+module.exports = { rarities, recycle_points, EPHIMERAL_ROLL_LIMIT, CARDS_PER_ROLL, REC_POINTS_PER_ROLL }

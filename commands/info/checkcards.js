@@ -30,7 +30,8 @@ async function checkcards(player, message, args) {
         );
         return result;
 
-    }    
+    }
+    cartas.sort((c1,c2) => { return helpers.orderCards(c1,c2)});   
     result.push(`Estas son ${selfcheck ? `tus cartas` : `las cartas de <@${member.id_discord}>`} similares a \"${name}\"`);
     result.push(helpers.parseCartas(cartas, showRepeats = true));
     return result;

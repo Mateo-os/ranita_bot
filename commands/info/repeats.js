@@ -12,6 +12,7 @@ async function repeats(player, message) {
         result.push(response,[]);
         return result;
     }
+    cartas.sort((c1,c2) => { return helpers.orderCards(c1,c2)});
     const header = selfcheck ? `Estas son tus cartas duplicadas: \n`:
         `Estas son las cartas duplicadas de ${usuario.nombre}: \n`;
     result.push(header)

@@ -1,36 +1,21 @@
-const { album } = require("./album.js");
-const { assignfreerolls } = require("./freerolls.js");
-const { checkcards } = require("./checkcards.js");
-const { checkseries } = require("./checkseries.js");
-const { findplayer } = require("./findplayer.js");
-const { giftrolls } = require("./giftrolls.js");
-const { give } = require("./give.js");
-const { help } = require("./help.js");
-const { info } = require("./info.js");
-const { newPlayer } = require("./newplayer.js");
-const { ownerrolls } = require("./ownergift.js");
-const { repeats } = require("./repeats.js");
-const { roll } = require("./roll.js");
-const { show } = require("./show.js");
-const trade = require("./trade");
 const cards = require("./cards");
-const newplayer = newPlayer;
+const info = require("./info");
+const rolls = require("./rolls");
+const trade = require("./trade");
+const owner = require("./owner");
+const { findplayer } = require("./findplayer.js");
+const { help } = require("./help.js");
+const { newplayer } = require("./newplayer.js");
+const { show } = require("./show.js");
 
 module.exports = {
-  album,
   cards,
-  checkcards,
-  checkseries,
-  findplayer,
-  giftrolls,
-  give,
-  help,
-  assignfreerolls,
   info,
-  newplayer,
-  ownerrolls,
-  repeats,
-  roll,
-  show,
   trade,
+  rolls,
+  owner,
+  findplayer,
+  help,
+  newplayer,
+  show,
 };

@@ -1,5 +1,5 @@
-const {models} = require('../database');
-const helpers = require('../helpers');
+const {models} = require('../../database');
+const helpers = require('../../helpers');
 
 async function assignfreerolls(amount=1) {
   try {

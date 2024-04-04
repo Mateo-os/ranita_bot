@@ -12,7 +12,7 @@ client.once(Events.ClientReady, async readyClient => {
     console.log(`Welcome to Ranita bot v${config.version}`);
     console.log(`Logged in as ${readyClient.user.tag}`);
     // Daily roll increment
-    const job = new cron.CronJob('00 19 * * *', () => commands.assignfreerolls(), timeZone = "utc");
+    const job = new cron.CronJob('00 19 * * *', () => commands.rolls.assignfreerolls(), timeZone = "utc");
     job.start();
 });
 
@@ -28,12 +28,9 @@ client.on('messageCreate', async message => {
         let responses = [];
         let response, user, cards;
         switch (command) {
-            case 'test':
-                responses.push("TEST");
-                break;
             case 'album':
-                [user, cards] = await commands.album(player, message);
-
+                [user, cards] = await commands.info.album(player, message);
+                
                 if (!user) {
                     responses.push("Ese usuario no esta registrado.");
                     break;
@@ -50,46 +47,46 @@ client.on('messageCreate', async message => {
                 responses.length = 0;
                 await helpers.sendCardEmbed(message, cards, true, true);
                 break;
+            case 'award':
+                responses = responses.concat(await commands.owner.award(message, args));
+                break;
             case 'checkcards':
-                [response, cards] = await commands.checkcards(player, message, args);
+                [response, cards] = await commands.info.checkcards(player, message, args);
                 responses.push(response);
                 await commands.show(responses, message);
                 await helpers.sendCardListEmbed(message, cards);
                 break;
             case 'checkseries':
-                [response, cards] = await commands.checkseries(player, message, args);
+                [response, cards] = await commands.info.checkseries(player, message, args);
                 responses.push(response);
                 await commands.show(responses, message);
                 await helpers.sendCardListEmbed(message, cards);
                 break;
             case 'giftrolls':
-                responses = responses.concat(await commands.giftrolls(player, message, args));
+                responses = responses.concat(await commands.rolls.giftrolls(player, message, args));
                 break;
             case 'give':
-                responses = responses.concat(await commands.give(player, message, args));
+                responses = responses.concat(await commands.owner.give(player, message, args));
                 break;
             case 'help':
                 responses = commands.help(message);
                 break;
             case 'info':
                 console.log(message.author);
-                responses = responses.concat(await commands.info(player));
-                break;
-            case 'ownerrolls':
-                responses = responses.concat(await commands.ownerrolls(message, args));
+                responses = responses.concat(await commands.info.info(player));
                 break;
             case 'recycle':
                 responses = responses.concat(await commands.cards.recycle(player, args));
                 break;
             case 'repeats':
-                [response, cards] = await commands.repeats(player, message);
+                [response, cards] = await commands.info.repeats(player, message);
                 responses.push(response);
                 await commands.show(responses, message);
                 await helpers.sendCardListEmbed(message, cards);
                 break;
             case 'roll':
                 //Logic that handles the database update and returns the cards that were rolled
-                const rolledcards = await commands.roll(player);
+                const rolledcards = await commands.rolls.roll(player);
                 if (!rolledcards.length) {
                     // Rolls will only return an empty list when the player has
                     // no rolls

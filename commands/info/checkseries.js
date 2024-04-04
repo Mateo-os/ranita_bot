@@ -1,6 +1,5 @@
-const { models } = require('../database');
-const { findplayer } = require('./findplayer');
-const {parseCartas} = require('../helpers/');
+const { findplayer } = require('../findplayer');
+const {parseCartas} = require('../../helpers');
 
 async function checkseries(player, message, args) {
     const mentionedMember = message.mentions.members.first();

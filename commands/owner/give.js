@@ -1,6 +1,6 @@
-const { models } = require('../database');
-const { findplayer } = require('./findplayer');
-const config = require('../config/config.js');
+const { models } = require('../../database');
+const { findplayer } = require('../findplayer');
+const config = require('../../config/config.js');
 const owner = config.owner;
 
 async function give(player, message, args){

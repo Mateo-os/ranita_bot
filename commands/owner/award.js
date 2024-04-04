@@ -1,8 +1,8 @@
-const { findplayer } = require('./findplayer.js');
-const config = require('../config/config.js');
+const { findplayer } = require('../findplayer.js');
+const config = require('../../config/config.js');
 const owner = config.owner;
 
-async function ownerrolls(message, args) {
+async function award(message, args) {
     if (message.author.id != owner) return ["No sos el owner."];
     if (!message.mentions.members.first()) return ["No mencionaste jugador."];
     try {
@@ -17,4 +17,4 @@ async function ownerrolls(message, args) {
     }
 }
 
-module.exports = { ownerrolls };
+module.exports = { award };

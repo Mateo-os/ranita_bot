@@ -12,14 +12,14 @@ const rarities = {
     6: 'IMPOSIBLE',
 }
 
-const REC_POINTS_PER_ROLL = 10;
+const REC_POINTS_PER_ROLL = 100;
 
 const recycle_points = {
-    1: 2,
-    2: 2,
-    3: 5,
-    4: 20,
-    5: 200
+    1: 13,
+    2: 130,
+    3: 390,
+    4: 2100,
+    5: 21700
 }
 
 

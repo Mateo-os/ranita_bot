@@ -28,12 +28,9 @@ client.on('messageCreate', async message => {
         let responses = [];
         let response, user, cards;
         switch (command) {
-            case 'test':
-                responses.push("TEST");
-                break;
             case 'album':
                 [user, cards] = await commands.info.album(player, message);
-
+                
                 if (!user) {
                     responses.push("Ese usuario no esta registrado.");
                     break;
@@ -49,6 +46,9 @@ client.on('messageCreate', async message => {
                 await commands.show(responses, message);
                 responses.length = 0;
                 await helpers.sendCardEmbed(message, cards, true, true);
+                break;
+            case 'award':
+                responses = responses.concat(await commands.owner.award(message, args));
                 break;
             case 'checkcards':
                 [response, cards] = await commands.info.checkcards(player, message, args);
@@ -66,7 +66,7 @@ client.on('messageCreate', async message => {
                 responses = responses.concat(await commands.rolls.giftrolls(player, message, args));
                 break;
             case 'give':
-                responses = responses.concat(await commands.give(player, message, args));
+                responses = responses.concat(await commands.owner.give(player, message, args));
                 break;
             case 'help':
                 responses = commands.help(message);
@@ -74,9 +74,6 @@ client.on('messageCreate', async message => {
             case 'info':
                 console.log(message.author);
                 responses = responses.concat(await commands.info.info(player));
-                break;
-            case 'ownerrolls':
-                responses = responses.concat(await commands.ownerrolls(message, args));
                 break;
             case 'recycle':
                 responses = responses.concat(await commands.cards.recycle(player, args));

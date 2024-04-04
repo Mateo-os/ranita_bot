@@ -12,7 +12,7 @@ client.once(Events.ClientReady, async readyClient => {
     console.log(`Welcome to Ranita bot v${config.version}`);
     console.log(`Logged in as ${readyClient.user.tag}`);
     // Daily roll increment
-    const job = new cron.CronJob('00 19 * * *', () => commands.assignfreerolls(), timeZone = "utc");
+    const job = new cron.CronJob('00 19 * * *', () => commands.rolls.assignfreerolls(), timeZone = "utc");
     job.start();
 });
 
@@ -63,7 +63,7 @@ client.on('messageCreate', async message => {
                 await helpers.sendCardListEmbed(message, cards);
                 break;
             case 'giftrolls':
-                responses = responses.concat(await commands.giftrolls(player, message, args));
+                responses = responses.concat(await commands.rolls.giftrolls(player, message, args));
                 break;
             case 'give':
                 responses = responses.concat(await commands.give(player, message, args));
@@ -89,7 +89,7 @@ client.on('messageCreate', async message => {
                 break;
             case 'roll':
                 //Logic that handles the database update and returns the cards that were rolled
-                const rolledcards = await commands.roll(player);
+                const rolledcards = await commands.rolls.roll(player);
                 if (!rolledcards.length) {
                     // Rolls will only return an empty list when the player has
                     // no rolls

@@ -129,6 +129,13 @@
                     "field": "freerolls",
                     "seqType": "Sequelize.INTEGER"
                 },
+                "recycle_points": {
+                    "defaultValue": {
+                        "value": 0
+                    },
+                    "field": "recycle_points",
+                    "seqType": "Sequelize.INTEGER"
+                },
                 "createdAt": {
                     "allowNull": false,
                     "field": "createdAt",
@@ -143,8 +150,8 @@
             "indexes": []
         }
     },
-    "path": "C:\\Users\\PC\\Documents\\ranita_bot\\migrations\\_current.json",
-    "backupPath": "C:\\Users\\PC\\Documents\\ranita_bot\\migrations\\_current_bak.json",
+    "path": "C:\\Users\\Dev1\\Documents\\ranita_bot\\migrations\\_current.json",
+    "backupPath": "C:\\Users\\Dev1\\Documents\\ranita_bot\\migrations\\_current_bak.json",
     "exists": true,
-    "revision": 4
+    "revision": 5
 }

@@ -6,7 +6,6 @@ const owner = require("./owner");
 const { findplayer } = require("./findplayer.js");
 const { help } = require("./help.js");
 const { newplayer } = require("./newplayer.js");
-const { repeats } = require("./repeats.js");
 const { show } = require("./show.js");
 
 module.exports = {
@@ -18,6 +17,5 @@ module.exports = {
   findplayer,
   help,
   newplayer,
-  repeats,
   show,
 };

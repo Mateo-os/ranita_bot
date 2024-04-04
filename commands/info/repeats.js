@@ -1,5 +1,5 @@
-const {parseCartas} = require("../helpers");
-const {findplayer} = require("./findplayer.js");
+const helpers = require("../../helpers");
+const {findplayer} = require("../findplayer.js");
 
 async function repeats(player, message) {
     const usuario = (message.mentions.members.first()) ?
@@ -15,7 +15,7 @@ async function repeats(player, message) {
     const header = selfcheck ? `Estas son tus cartas duplicadas: \n`:
         `Estas son las cartas duplicadas de ${usuario.nombre}: \n`;
     result.push(header)
-        return [header,parseCartas(cartas, showRepeats = true)];
+        return [header,helpers.parseCartas(cartas, showRepeats = true)];
 }
 
 module.exports = {repeats};

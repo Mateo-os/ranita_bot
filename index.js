@@ -79,7 +79,7 @@ client.on('messageCreate', async message => {
                 responses = responses.concat(await commands.cards.recycle(player, args));
                 break;
             case 'repeats':
-                [response, cards] = await commands.repeats(player, message);
+                [response, cards] = await commands.info.repeats(player, message);
                 responses.push(response);
                 await commands.show(responses, message);
                 await helpers.sendCardListEmbed(message, cards);

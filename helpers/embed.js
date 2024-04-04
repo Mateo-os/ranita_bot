@@ -182,7 +182,7 @@ async function sendCardDropDownEmbed(message, cards, placeholder, minSelect, max
     return message.channel.send({ components: [dropdown] });
 }
 
-async function sendTradeSelector(message, user_id, cards, parsedCards, callback, interactionTime = 2) {
+async function sendTradeSelector(message, user_id, cards, parsedCards, callback, interactionTime = 5) {
 
     await sendCardListEmbed(message, parsedCards, interactionTime);
     const msg = await sendCardDropDownEmbed(message, cards, "Elige una carta.", 1, 1, interactionTime);
@@ -192,7 +192,7 @@ async function sendTradeSelector(message, user_id, cards, parsedCards, callback,
     //The interaction time is expressed in minutes, convert to miliseconds
     let selectCardID;
     const dropdown_collector = msg.createMessageComponentCollector({ filter, time: interactionTime * 60 * 1000 });
-    const button_collector = panelmsg.createMessageComponentCollector({ filter, time: interactionTime * 60 * 100 });
+    const button_collector = panelmsg.createMessageComponentCollector({ filter, time: interactionTime * 60 * 1000 });
 
 
     dropdown_collector.on('collect', async interaction => {
@@ -219,7 +219,7 @@ async function sendTradeSelector(message, user_id, cards, parsedCards, callback,
 
 }
 
-async function sendTradeRequest(message, requested_player_id, callback, interactionTime = 2) {
+async function sendTradeRequest(message, requested_player_id, callback, interactionTime = 5) {
     const msg = message.channel.send(`Hola <@${requested_player_id}>, escribe el nombre de la carta que quieres intercambiar.`)
     const filter = m => m.author.id === requested_player_id;
     const collector = message.channel.createMessageCollector({ filter, max: 1, time: interactionTime * 60 * 1000 });
@@ -229,7 +229,7 @@ async function sendTradeRequest(message, requested_player_id, callback, interact
     });
 }
 
-async function sendTradeConfirmator(message, user1_id, card1, user2_id, card2, callback, interactionTime = 2) {
+async function sendTradeConfirmator(message, user1_id, card1, user2_id, card2, callback, interactionTime = 5) {
     const confirmed = {}
     confirmed[user1_id] = false;
     confirmed[user2_id] = false;
@@ -244,7 +244,7 @@ async function sendTradeConfirmator(message, user1_id, card1, user2_id, card2, c
     });
 
     const filter = i => (i.customId === 'confirm_button' || i.customId === 'deny_button') && (participants.includes(i.user.id));
-    const collector = confirm_msg.createMessageComponentCollector({ filter, time: interactionTime * 60 * 100 })
+    const collector = confirm_msg.createMessageComponentCollector({ filter, time: interactionTime * 60 * 1000 })
 
     let confirm_count = 0;
     collector.on('collect', async interaction => {

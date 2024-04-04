@@ -47,6 +47,7 @@ async function info(player) {
     info +=
         `Rolls: ${player.rolls}
 Rolls efímeros: ${player.freerolls}
+Puntos de reciclaje: ${player.recycle_points}
 Cartas repetidas: ${repeat_amount}
 Colección: ${card_count}/${total_cards}
 Rarezas:\n`;

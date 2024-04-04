@@ -26,7 +26,7 @@ client.on('messageCreate', async message => {
         const command = args.shift().toLowerCase();
         const player = await commands.findplayer(message.author.id, message.guild.id) || await commands.newplayer(message);
         let responses = [];
-        let response, user, cards;
+        let response, user, cards,selfcheck;
         switch (command) {
             case 'album':
                 [user, cards] = await commands.info.album(player, message);
@@ -35,7 +35,7 @@ client.on('messageCreate', async message => {
                     responses.push("Ese usuario no esta registrado.");
                     break;
                 }
-                const selfcheck = user.nombre == player.nombre;
+                selfcheck = user.nombre == player.nombre;
                 if (!cards.length) {
                     const response = selfcheck ? "No tienes cartas" : `${user.nombre} no tiene cartas`;
                     responses.push(response);
@@ -98,6 +98,25 @@ client.on('messageCreate', async message => {
                 break;
             case 'scrap':
                 responses = responses.concat(await commands.cards.scrap(player, args));
+                break;
+            case 'textalbum':
+                [user, cards] = await commands.info.album(player, message);
+                
+                if (!user) {
+                    responses.push("Ese usuario no esta registrado.");
+                    break;
+                }
+                selfcheck = user.nombre == player.nombre;
+                if (!cards.length) {
+                    const response = selfcheck ? "No tienes cartas" : `${user.nombre} no tiene cartas`;
+                    responses.push(response);
+                    break;
+                }
+                response = `Estas son todas ${selfcheck ? `tus cartas` : `las cartas de ${user.nombre}`}:\n`
+                responses.push(response);
+                await commands.show(responses, message);
+                responses.length = 0;
+                await helpers.sendCardListEmbed(message, helpers.parseCartas(cards,true));
                 break;
             case 'trade':
                 let player1cards, player2cards, card1, card2, player2;

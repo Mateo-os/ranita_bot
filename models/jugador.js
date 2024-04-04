@@ -6,7 +6,7 @@ const {
 module.exports = (sequelize) => {
   class Jugador extends Model {
     static associate(models) {
-      Jugador.belongsToMany(models.Carta, {through: 'Cromo', as: 'cartas'});
+      Jugador.belongsToMany(models.Carta, { through: 'Cromo', as: 'cartas' });
     }
   }
   Jugador.init({
@@ -21,6 +21,10 @@ module.exports = (sequelize) => {
       type: DataTypes.INTEGER,
       defaultValue: 1,
     },
+    recycle_points: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
+    }
   }, {
     sequelize,
     modelName: 'Jugador',

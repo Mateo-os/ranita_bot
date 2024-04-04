@@ -1,5 +1,5 @@
-const helpers = require('../helpers');
-const { models } = require('../database.js');
+const helpers = require('../../helpers');
+const { models } = require('../../database.js');
 const { literal } = require('sequelize');
 
 

@@ -1,6 +1,5 @@
-const { models } = require('../database');
-const { findplayer } = require('./findplayer');
-const {parseCartas} = require('../helpers/');
+const { findplayer } = require('../findplayer');
+const helpers = require('../../helpers');
 
 async function checkseries(player, message, args) {
     const mentionedMember = message.mentions.members.first();
@@ -27,8 +26,9 @@ async function checkseries(player, message, args) {
         );
         return result;
     }
+    cartas.sort((c1,c2) => { return helpers.orderCards(c1,c2)});
     result.push(`Estas son ${selfcheck ? `tus cartas` : `las cartas de <@${member.id_discord}>`} que pertenezcan a series similares a \"${series}\"`);
-    result.push(parseCartas(cartas, showRepeats = true));
+    result.push(helpers.parseCartas(cartas, showRepeats = true));
     return result;
 }
 

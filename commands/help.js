@@ -7,6 +7,7 @@ async function help(message) {
         .setTitle(`Información sobre el bot`)
         .addFields(
             { name: `${prefix}album`, value: `Muestra todos los personajes que tienes.` },
+            { name: `${prefix}award`, value: "Comando solo para el admin. Otorga rolls al jugador mencionado."}, 
             { name: `${prefix}checkcards`, value: "Comprobás si tenés el personaje que escribís." },
             { name: `${prefix}checkseries`, value: "Muestra todos las cartas de la serie que escribas." },
             { name: `${prefix}giftrolls`, value: "Ponés un número, mencionás a un usuario y le regalás las rolls indicadas." },

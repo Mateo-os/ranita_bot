@@ -2,6 +2,7 @@ const { ActionRowBuilder, ButtonBuilder, EmbedBuilder, StringSelectMenuBuilder }
 const urljoin = require('urljoin');
 const { albumURL } = require('../config/config.js');
 const { rarities } = require('./constants.js');
+const mutex = require('./async.js');
 
 function pagePanel(totalPages) {
     const row = new ActionRowBuilder()
@@ -229,11 +230,13 @@ async function sendTradeRequest(message, requested_player_id, callback, interact
     });
 }
 
+
 async function sendTradeConfirmator(message, user1_id, card1, user2_id, card2, callback, interactionTime = 5) {
     const confirmed = {}
     confirmed[user1_id] = false;
     confirmed[user2_id] = false;
-
+    let called = false;
+    let lock = false;
     const participants = [user1_id, user2_id]
     const confirm_button = confimDenyPanel(2);
 
@@ -249,23 +252,35 @@ async function sendTradeConfirmator(message, user1_id, card1, user2_id, card2, c
     let confirm_count = 0;
     collector.on('collect', async interaction => {
         if (interaction.customId === 'confirm_button' && !confirmed[interaction.user.id]) {
-            confirm_count++;
             confirmed[interaction.user.id] = true;
         } else if (interaction.customId === 'deny_button') {
             await confirm_msg.edit({ content: `<@${interaction.user.id}> canceló el intercambio.`, components: [] })
             interaction.deferUpdate()
             return;
         }
+        
+        let count = 0; 
+        for(let usr_id in confirmed){
+            if (confirmed[usr_id]) {
+                count++;
+            }
+        }
+        confirm_count = count;
+        
         confirm_button.components[2].setLabel(`${confirm_count}/2`);
         await confirm_msg.edit({
             content: msgbody,
             components: [confirm_button]
         });
         interaction.deferUpdate();
-        if (confirm_count == 2) {
+        lock = mutex.lock(lock);
+        if (!called && confirm_count == 2) {
+            called = true;
+            lock = mutex.unlock(lock);
             callback();
-        }
-
+            return;
+        } 
+        lock = mutex.unlock(lock);
     });
 }
 

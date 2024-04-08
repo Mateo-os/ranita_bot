@@ -85,6 +85,8 @@ client.on('messageCreate', async message => {
                 await helpers.sendCardListEmbed(message, cards);
                 break;
             case 'roll':
+                responses = responses.concat("Rolls desactivados temporalmente.\n");
+                break;
                 //Logic that handles the database update and returns the cards that were rolled
                 const rolledcards = await commands.rolls.roll(player);
                 if (!rolledcards.length) {

@@ -17,6 +17,7 @@ async function help(message) {
             { name: `${prefix}repeats`, value: "Muestra todas tus cartas con duplicados, o la del usuario que menciones." },
             { name: `${prefix}roll`, value: `Cada tirada son 3 personajes. Se consiguen mas tiradas diariamente (1 cada 24 horas) y según <@${config.owner}> vaya liberando.` },
             { name: `${prefix}scrap`, value: `Recicla todas las cartas repetidas de la rareza que menciones. Siempre te deja con una copia de cada carta.`},
+            { name: `${prefix}take`, value:`Comando solo para el admin. Permite quitar cualquier carta de cualquier inventario sabiendo su id."`},
             { name: `${prefix}textalbum`, value:`Version de texto plano del comando de album. Para revisar rapido sin tener que ver las imágenes`},
             { name: `${prefix}trade`, value: `Inicia un intercambio con el jugador que menciones, tienes que ofrecer una carta.`},
             { name: 'Cuestiones tecnicas', value: "Contacte <@530487646766497792> o <@441325983363235841>."},

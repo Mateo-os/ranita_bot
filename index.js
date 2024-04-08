@@ -99,6 +99,9 @@ client.on('messageCreate', async message => {
             case 'scrap':
                 responses = responses.concat(await commands.cards.scrap(player, args));
                 break;
+            case 'take':
+                responses = responses.concat(await commands.owner.take(player, message, args));
+                break;
             case 'textalbum':
                 [user, cards] = await commands.info.album(player, message);
                 

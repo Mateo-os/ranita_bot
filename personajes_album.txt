@@ -397,12 +397,12 @@ Yugo,1,23,MeIYaxC
 Vector,1,24,RiQWNKu
 Victor,1,25,d5Sciq2
 
-Decay's Choice:
+Decay's Choice (3):
 Makima Chiquita,4,1,sPugxEr
 Jotaro Kujoh,4,2,kVgIk3C
 DIO,4,3,hIKhfQ7
 
-Mushishi:
+Mushishi (11):
 Logo,5,0,4BkNrDK
 Logo (Ganador Trivia),6,0,l4kZRKT
 Ginko,4,1,lArwVfX
@@ -415,7 +415,7 @@ Tama Minai,1,7,BhyCNid
 Kumado Minai,1,8,VAiaJbL
 Kaya,1,9,ORBLqMQ
 
-Mateo's Choice:
+Mateo's Choice (3):
 Kobeni,4,1,Lkx8ZIK
 Agni,4,2,1gP0Ca5
 Arthur Boyle,4,3,zGb3I66

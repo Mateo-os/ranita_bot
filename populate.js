@@ -43,11 +43,13 @@ seriesArray.forEach(series => {
                     changes += `Number changed from ${carta.numero} to ${elementNumber}. ` 
                     carta.numero = elementNumber;
                     change = true;
-                }else if(carta.rareza != elementRarity){
+                }
+                if(carta.rareza != elementRarity){
                     changes += `Rarity changed from ${carta.rareza} to ${elementRarity}. `;
                     carta.rareza = elementRarity;
                     change = true;
-                }else if(carta.URLimagen != elementURL){
+                }
+                if(carta.URLimagen != elementURL){
                     changes += `URL changed from ${carta.URLimagen} to ${elementURL}. `;
                     carta.URLimagen = elementURL;
                     change = true;

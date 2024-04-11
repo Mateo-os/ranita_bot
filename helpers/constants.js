@@ -16,7 +16,7 @@ const REC_POINTS_PER_ROLL = 100;
 
 const recycle_points = {
     1: 6,
-    2: 60,
+    2: 30,
     3: 190,
     4: 100,
     5: 10800

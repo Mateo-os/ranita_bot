@@ -1,7 +1,7 @@
 const { Client, Events } = require('discord.js');
 const cron = require('cron');
 
-const config = require('./config/config.js');
+const { config } = require('./config/config.js');
 const helpers = require('./helpers');
 const commands = require("./commands");
 

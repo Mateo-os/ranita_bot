@@ -26,4 +26,4 @@ const Config = {
 
 const config = Config[env];
 config.sequelize = sequelize[env];
-module.exports = config;
+module.exports = { config };

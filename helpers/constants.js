@@ -12,6 +12,23 @@ const rarities = {
     6: 'IMPOSIBLE',
 }
 
+const buy_price = {
+    1: 1.0,
+    2: 0.5,
+    3: 3,
+    4: 21,
+    5: 150
+}
+
+const sell_price = {
+    1: 0.02,
+    2: 0.1,
+    3: 0.7,
+    4: 4,
+    5: 44
+}
+
+
 const REC_POINTS_PER_ROLL = 100;
 
 const recycle_points = {

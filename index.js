@@ -1,16 +1,28 @@
 const { Client, Events } = require('discord.js');
 const cron = require('cron');
 
-const { config } = require('./config/config.js');
+const { config, setBotID } = require('./config/config.js');
 const helpers = require('./helpers');
 const commands = require("./commands");
 
 const { token, prefix } = config;
 const client = new Client({ intents: [37633] });
 
+async function startbanks(){
+    const servers = await commands.server.retrieve();
+    servers.forEach( async server_id => {
+        const id = config.botID();
+        (await commands.findplayer(id, server_id,true)) || (await commands.createplayer('',id,server_id));         
+    })
+}
+
+
 client.once(Events.ClientReady, async readyClient => {
     console.log(`Welcome to Ranita bot v${config.version}`);
     console.log(`Logged in as ${readyClient.user.tag}`);
+    setBotID(readyClient.user.id);
+    const servers = await commands.server.retrieve();
+    await startbanks();
     // Daily roll increment
     const job = new cron.CronJob('00 19 * * *', () => commands.rolls.assignfreerolls(), timeZone = "utc");
     job.start();

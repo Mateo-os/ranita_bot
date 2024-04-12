@@ -15,11 +15,11 @@ const rarities = {
 const REC_POINTS_PER_ROLL = 100;
 
 const recycle_points = {
-    1: 6,
-    2: 30,
-    3: 190,
-    4: 1000,
-    5: 10800
+    1: 3,
+    2: 15,
+    3: 95,
+    4: 500,
+    5: 5400
 }
 
 

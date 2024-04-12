@@ -24,7 +24,7 @@ If everything is set up correctly, you should run the migrations, by doing:
 
 ## How to make new migrations
 
-After a changes to the models is done, by either creating a new model or altering existing ones. You must run 
+After a change to the models is done, by either creating a new model or altering existing ones. You must run 
 
 ```npx sequelize-mig migration:make --name <migration_name>```
 

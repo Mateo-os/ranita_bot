@@ -1,3 +1,4 @@
+const bank = require('./bank');
 const cards = require("./cards");
 const info = require("./info");
 const rolls = require("./rolls");
@@ -12,6 +13,7 @@ const { show } = require("./show.js");
 
 
 module.exports = {
+  bank,
   cards,
   info,
   trade,

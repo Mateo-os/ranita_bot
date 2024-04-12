@@ -92,6 +92,9 @@ client.on('messageCreate', async message => {
                     await giftcallback(cards[0].id,false)
                 }
                 break;
+            case 'giftcoins':
+                responses = responses.concat(await commands.bank.giftcoins(player,message,args))
+                break;
             case 'giftrolls':
                 responses = responses.concat(await commands.rolls.giftrolls(player, message, args));
                 break;

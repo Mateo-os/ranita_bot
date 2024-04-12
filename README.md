@@ -13,6 +13,8 @@ DBPASSWORD= Yor database password
 DBNAME= Your databse name
 DBUSER= Your database user
 PORT= Database port
+IDOWNER= Server Admin DiscordID
+PREFIX= The prefix that the bot will listen to
 TOKEN= Discord bot token
 ``` 
 

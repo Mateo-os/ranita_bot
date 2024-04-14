@@ -41,4 +41,12 @@ const recycle_points = {
 }
 
 
-module.exports = { rarities, recycle_points, EPHIMERAL_ROLL_LIMIT, CARDS_PER_ROLL, REC_POINTS_PER_ROLL }
+module.exports = { 
+    rarities, 
+    recycle_points,
+    sell_price,
+    buy_price, 
+    EPHIMERAL_ROLL_LIMIT, 
+    CARDS_PER_ROLL, 
+    REC_POINTS_PER_ROLL
+}

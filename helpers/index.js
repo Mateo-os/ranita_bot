@@ -1,8 +1,17 @@
 const { sendCardEmbed, sendCardListEmbed, sendCardSelector, sendTradeConfirmator, sendTradeRequest } = require('./embed.js');
 const { parseCartas,escapeRegExp } = require('./parse.js');
-const { rarities, EPHIMERAL_ROLL_LIMIT, CARDS_PER_ROLL, recycle_points, REC_POINTS_PER_ROLL } = require('./constants.js');
+const { rarities, 
+        EPHIMERAL_ROLL_LIMIT, 
+        CARDS_PER_ROLL, 
+        recycle_points, 
+        REC_POINTS_PER_ROLL,
+        buy_price,
+        sell_price
+    } = require('./constants.js');
 const { orderCards } = require('./sort.js')
 module.exports = {
+    buy_price,
+    sell_price,
     escapeRegExp,
     orderCards,
     parseCartas,

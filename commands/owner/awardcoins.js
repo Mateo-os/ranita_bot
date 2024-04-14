@@ -10,7 +10,13 @@ async function awardcoins(message, args) {
         const player = await findplayer(member, message.guild.id);
         if (!player) return ["Esta persona no tiene un perfil creado"]
         let amount = (args[0] == `<@${member}>`) ? args[1] : args[0];
-        player.increment('coins', { 'by': amount });
+        amount = parseFloat(parseFloat(amount).toFixed(2));
+        const playercoins = player.coins;
+        let newamount = playercoins + amount;
+        // We trim the new amount to avois precision errors  
+        newamount = parseFloat(parseFloat(newamount).toFixed(2));
+        player.coins = newamount;
+        player.save();
         let response;
         if(amount >= 0){
             response = `Regalada${amount > 1 ? 's' : ''} ${amount} Ranita${amount > 1 ? 's' : ''} a <@${member}>.`

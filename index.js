@@ -38,7 +38,7 @@ client.on('messageCreate', async message => {
         const command = args.shift().toLowerCase();
         const player = await commands.findplayer(message.author.id, message.guild.id) || await commands.newplayer(message);
         let responses = [];
-        let response, user, cards,selfcheck,player2;
+        let response, user, cards,selfcheck,player2,bank;
         switch (command) {
             case 'album':
                 [user, cards] = await commands.info.album(player, message);
@@ -64,6 +64,26 @@ client.on('messageCreate', async message => {
                 break;
             case 'awardcoins':
                 responses = responses.concat(await commands.owner.awardcoins(message, args));
+                break;
+            case 'buy':
+                bank = await commands.bank.get(message.guild.id);
+                if (!bank) {
+                    responses.push("Ocurrió un error en el banco. No esta inicializado.");
+                    break;
+                }
+                [response, cards, parsedCards] = await commands.bank.buy.prebuy(bank,player,message,args);
+                responses.push(response);
+                await commands.show(responses, message);
+                async function buycallback(card_id,response=true){
+                    callbackresponses = await commands.bank.buy.buy(player,bank,card_id,response)
+                    await commands.show(callbackresponses, message);
+                    return
+                }
+                if(cards && cards.length > 1){
+                    await helpers.sendCardSelector(message,message.author.id,cards,parsedCards,buycallback)
+                }else if(cards.length == 1){
+                    await buycallback(cards[0].id,false)
+                }
                 break;
             case 'checkcards':
                 [response, cards] = await commands.info.checkcards(player, message, args);
@@ -131,6 +151,29 @@ client.on('messageCreate', async message => {
                 break;
             case 'scrap':
                 responses = responses.concat(await commands.cards.scrap(player, args));
+                break;
+            case 'sell':
+                bank = await commands.bank.get(message.guild.id);
+                if (!bank) {
+                    responses.push("Ocurrió un error en el banco. No esta inicializado.");
+                    break;
+                }
+                [response, cards, parsedCards] = await commands.bank.sell.presell(player,message,args);
+                responses.push(response);
+                await commands.show(responses, message);
+                async function sellcallback(card_id,response=true){
+                    callbackresponses = await commands.bank.sell.sell(player,bank,card_id,response)
+                    await commands.show(callbackresponses, message);
+                    return
+                }
+                if(cards && cards.length > 1){
+                    await helpers.sendCardSelector(message,message.author.id,cards,parsedCards,sellcallback)
+                }else if(cards.length == 1){
+                    await sellcallback(cards[0].id,false)
+                }
+                break;
+            case 'stock':
+                responses = responses.concat(await commands.owner.stock(player, message, args));
                 break;
             case 'take':
                 responses = responses.concat(await commands.owner.take(player, message, args));

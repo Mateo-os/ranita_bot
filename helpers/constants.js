@@ -16,7 +16,7 @@ const rarities = {
 }
 
 const buy_price = {
-    1: 1.0,
+    1: 0.1,
     2: 0.5,
     3: 3,
     4: 21,

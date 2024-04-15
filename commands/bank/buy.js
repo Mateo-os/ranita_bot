@@ -1,5 +1,6 @@
 const helpers = require('../../helpers'); 
 const { retrieve } = require('../retrieve.js');
+const { parseCartas } = require('./parse.js');
 async function prebuy(bank, player,message, args){
     const result = [];
     //Remome ids mentions using regular expressions
@@ -9,7 +10,7 @@ async function prebuy(bank, player,message, args){
         return result;
     }
     const filter = c => new RegExp(helpers.escapeRegExp(name), 'i').test(c.nombre);
-    [cards, parsedCards] = retrieve(bank, filter);
+    [cards, parsedCards] = retrieve(bank, filter,parseCartas);
     if (cards.length == 0) {
         result.push(
             'No hay cartas en el banco con ese nombre o similares.',
@@ -49,8 +50,12 @@ async function buy(player,bank,card_id,response){
 
     let newamount = parseFloat((playercoins - buy_price).toFixed(2))
     player.coins = newamount;
-    player.save();
-    const op = await player.addCarta(card);
+    const playercard = player.cartas.find(c => c.id == card_id);
+    let op;
+    if(!playercard)
+        op = await player.addCarta(card);
+    else 
+        op = await playercard.Cromo.increment('cantidad');
     if(!op){
         return "Ha ocurrido un error."
     }

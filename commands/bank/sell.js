@@ -1,5 +1,6 @@
 const helpers = require('../../helpers'); 
 const { retrieve } = require('../retrieve.js');
+const { parseCartas } = require('./parse.js');
 
 async function presell(player, message, args){
     const result = [];
@@ -10,7 +11,7 @@ async function presell(player, message, args){
         return result;
     }
     const filter = c => new RegExp(helpers.escapeRegExp(name), 'i').test(c.nombre);
-    [cards, parsedCards] = retrieve(player, filter);
+    [cards, parsedCards] = retrieve(player, filter,parseCartas);
     if (cards.length == 0) {
         result.push(
             'No tienes cartas con ese nombre o similares.',
@@ -47,7 +48,12 @@ async function sell(player,bank,card_id,response){
     const newamount = parseFloat((playercoins + sell_price).toFixed(2));
     player.coins = newamount;
     await player.save();
-    const op = await bank.addCarta(card);
+    const bankcard = bank.cartas.find(c => c.id == card_id);
+    let op;
+    if(!bankcard)
+        op = await bank.addCarta(card);
+    else
+        op = await bankcard.Cromo.increment('cantidad')
     if(!op){
         return "Ha ocurrido un error."
     }

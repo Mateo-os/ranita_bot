@@ -172,6 +172,12 @@ client.on('messageCreate', async message => {
                     await sellcallback(cards[0].id,false)
                 }
                 break;
+            case 'shop':
+                [response, cards] = await commands.bank.shop(message);
+                responses.push(response);
+                await commands.show(responses, message);
+                await helpers.sendCardListEmbed(message, cards);
+                break;
             case 'stock':
                 responses = responses.concat(await commands.owner.stock(player, message, args));
                 break;

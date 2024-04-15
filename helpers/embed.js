@@ -1,9 +1,10 @@
 const { ActionRowBuilder, ButtonBuilder, EmbedBuilder, StringSelectMenuBuilder } = require('discord.js');
 const urljoin = require('urljoin');
-const { albumURL } = require('../config/config.js');
+const { config} = require('../config/config.js');
 const { rarities } = require('./constants.js');
 const mutex = require('./async.js');
 
+const albumURL = config.albumURL;
 function pagePanel(totalPages) {
     const row = new ActionRowBuilder()
         .addComponents(

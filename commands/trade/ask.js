@@ -1,7 +1,8 @@
-const { retrieve } = require('./retrieve.js');
+const helpers = require('../../helpers')
+const { retrieve } = require('../retrieve.js');
 async function asktrade(member, card1, card2name) {
     const responses = [];
-    const filter = c => new RegExp(card2name, 'i').test(c.nombre);
+    const filter = c => new RegExp(helpers.escapeRegExp(card2name), 'i').test(c.nombre);
     const [cards, parsedCards] = retrieve(member, filter);
     if (!cards.length) {
         responses.push(

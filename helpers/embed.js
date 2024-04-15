@@ -183,7 +183,7 @@ async function sendCardDropDownEmbed(message, cards, placeholder, minSelect, max
     return message.channel.send({ components: [dropdown] });
 }
 
-async function sendTradeSelector(message, user_id, cards, parsedCards, callback, interactionTime = 5) {
+async function sendCardSelector(message, user_id, cards, parsedCards, callback, interactionTime = 5) {
 
     await sendCardListEmbed(message, parsedCards, interactionTime);
     const msg = await sendCardDropDownEmbed(message, cards, "Elige una carta.", 1, 1, interactionTime);
@@ -285,4 +285,4 @@ async function sendTradeConfirmator(message, user1_id, card1, user2_id, card2, c
 }
 
 
-module.exports = { pagePanel, sendCardEmbed, sendCardListEmbed, sendTradeSelector, sendTradeRequest, sendTradeConfirmator };
+module.exports = { pagePanel, sendCardEmbed, sendCardListEmbed, sendCardSelector, sendTradeRequest, sendTradeConfirmator };

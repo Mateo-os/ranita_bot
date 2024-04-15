@@ -24,7 +24,11 @@ module.exports = (sequelize) => {
     recycle_points: {
       type: DataTypes.INTEGER,
       defaultValue: 0
-    }
+    },
+    coins: {
+      type: DataTypes.DOUBLE,
+      defaultValue: 0
+    },
   }, {
     sequelize,
     modelName: 'Jugador',

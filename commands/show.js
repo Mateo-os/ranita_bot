@@ -2,6 +2,8 @@ async function show(responses, message, ephemeral = false) {
     const messagelist = [];
     for (let i in responses) {
         r = responses[i]
+        if(!r)
+            continue
         if (r.length < 2000) {
             message.channel.send(r);
             continue;

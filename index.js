@@ -1,16 +1,28 @@
 const { Client, Events } = require('discord.js');
 const cron = require('cron');
 
-const config = require('./config/config.js');
+const { config, setBotID } = require('./config/config.js');
 const helpers = require('./helpers');
 const commands = require("./commands");
 
 const { token, prefix } = config;
 const client = new Client({ intents: [37633] });
 
+async function startbanks(){
+    const servers = await commands.server.retrieve();
+    servers.forEach( async server_id => {
+        const id = config.botID();
+        (await commands.findplayer(id, server_id,true)) || (await commands.createplayer('',id,server_id));         
+    })
+}
+
+
 client.once(Events.ClientReady, async readyClient => {
     console.log(`Welcome to Ranita bot v${config.version}`);
     console.log(`Logged in as ${readyClient.user.tag}`);
+    setBotID(readyClient.user.id);
+    const servers = await commands.server.retrieve();
+    await startbanks();
     // Daily roll increment
     const job = new cron.CronJob('00 19 * * *', () => commands.rolls.assignfreerolls(), timeZone = "utc");
     job.start();
@@ -26,7 +38,7 @@ client.on('messageCreate', async message => {
         const command = args.shift().toLowerCase();
         const player = await commands.findplayer(message.author.id, message.guild.id) || await commands.newplayer(message);
         let responses = [];
-        let response, user, cards,selfcheck;
+        let response, user, cards,selfcheck,player2,bank;
         switch (command) {
             case 'album':
                 [user, cards] = await commands.info.album(player, message);
@@ -50,6 +62,32 @@ client.on('messageCreate', async message => {
             case 'award':
                 responses = responses.concat(await commands.owner.award(message, args));
                 break;
+            case 'awardcoins':
+                responses = responses.concat(await commands.owner.awardcoins(message, args));
+                break;
+            case 'buy':
+                bank = await commands.bank.get(message.guild.id);
+                if (!bank) {
+                    responses.push("Ocurrió un error en el banco. No esta inicializado.");
+                    break;
+                }
+                [response, cards, parsedCards] = await commands.bank.buy.prebuy(bank,player,message,args);
+                responses.push(response);
+                await commands.show(responses, message);
+                async function buycallback(card_id,response=true){
+                    callbackresponses = await commands.bank.buy.buy(player,bank,card_id,response)
+                    await commands.show(callbackresponses, message);
+                    return
+                }
+                if(cards && cards.length > 1){
+                    await helpers.sendCardSelector(message,message.author.id,cards,parsedCards,buycallback)
+                }else if(cards.length == 1){
+                    await buycallback(cards[0].id,false)
+                }
+                break;
+            case 'buyrolls':
+                responses = responses.concat(await commands.bank.buyrolls(player,message, args));
+                break;
             case 'checkcards':
                 [response, cards] = await commands.info.checkcards(player, message, args);
                 responses.push(response);
@@ -61,6 +99,24 @@ client.on('messageCreate', async message => {
                 responses.push(response);
                 await commands.show(responses, message);
                 await helpers.sendCardListEmbed(message, cards);
+                break;
+            case 'gift':
+                [response, cards, parsedCards, player2] = await commands.cards.gift.pregift(player,message,args)
+                responses.push(response);
+                await commands.show(responses, message);
+                async function giftcallback(card_id,response=true){
+                    callbackresponses = await commands.cards.gift.gift(player,player2,card_id,response)
+                    await commands.show(callbackresponses, message);
+                    return
+                }
+                if(cards && cards.length > 1){
+                    await helpers.sendCardSelector(message,message.author.id,cards,parsedCards,giftcallback)
+                }else if(cards.length == 1){
+                    await giftcallback(cards[0].id,false)
+                }
+                break;
+            case 'giftcoins':
+                responses = responses.concat(await commands.bank.giftcoins(player,message,args))
                 break;
             case 'giftrolls':
                 responses = responses.concat(await commands.rolls.giftrolls(player, message, args));
@@ -99,6 +155,35 @@ client.on('messageCreate', async message => {
             case 'scrap':
                 responses = responses.concat(await commands.cards.scrap(player, args));
                 break;
+            case 'sell':
+                bank = await commands.bank.get(message.guild.id);
+                if (!bank) {
+                    responses.push("Ocurrió un error en el banco. No esta inicializado.");
+                    break;
+                }
+                [response, cards, parsedCards] = await commands.bank.sell.presell(player,message,args);
+                responses.push(response);
+                await commands.show(responses, message);
+                async function sellcallback(card_id,response=true){
+                    callbackresponses = await commands.bank.sell.sell(player,bank,card_id,response)
+                    await commands.show(callbackresponses, message);
+                    return
+                }
+                if(cards && cards.length > 1){
+                    await helpers.sendCardSelector(message,message.author.id,cards,parsedCards,sellcallback)
+                }else if(cards.length == 1){
+                    await sellcallback(cards[0].id,false)
+                }
+                break;
+            case 'shop':
+                [response, cards] = await commands.bank.shop(message);
+                responses.push(response);
+                await commands.show(responses, message);
+                await helpers.sendCardListEmbed(message, cards);
+                break;
+            case 'stock':
+                responses = responses.concat(await commands.owner.stock(player, message, args));
+                break;
             case 'take':
                 responses = responses.concat(await commands.owner.take(player, message, args));
                 break;
@@ -122,7 +207,7 @@ client.on('messageCreate', async message => {
                 await helpers.sendCardListEmbed(message, helpers.parseCartas(cards,true));
                 break;
             case 'trade':
-                let player1cards, player2cards, card1, card2, player2;
+                let player1cards, player2cards, card1, card2;
                 [response, player1cards, parsedCards, player2] = await commands.trade.pretrade(player, message, args);
                 responses.push(response);
                 await commands.show(responses, message, true);
@@ -137,7 +222,7 @@ client.on('messageCreate', async message => {
                     callbackresponses = [response];
                     await commands.show(callbackresponses, message);
                     if (player2cards && player2cards.length > 1)
-                        await helpers.sendTradeSelector(message, player2.id_discord, player2cards, parsedCards, askTradecallback);
+                        await helpers.sendCardSelector(message, player2.id_discord, player2cards, parsedCards, askTradecallback);
                     else if (player2cards.length == 1)
                         await askTradecallback(player2cards[0].id);
                 }
@@ -152,7 +237,7 @@ client.on('messageCreate', async message => {
                     await commands.show(callbackresponses, message);
                 }
                 if (player1cards && player1cards.length > 1)
-                    await helpers.sendTradeSelector(message, message.author.id, player1cards, parsedCards, preTradecallback);
+                    await helpers.sendCardSelector(message, message.author.id, player1cards, parsedCards, preTradecallback);
                 else if (player1cards.length == 1)
                     await preTradecallback(player1cards[0].id);
                 break;

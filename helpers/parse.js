@@ -28,6 +28,9 @@ function parseCartas(cards,showRepeats=false){
     );
 }
 
+const escapeRegExp = (string) => {
+    return string.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&');
+  };
 
-module.exports = {parseCartas};
+module.exports = {parseCartas,escapeRegExp};
 

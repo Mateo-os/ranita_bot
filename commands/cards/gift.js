@@ -1,8 +1,7 @@
-const { findplayer } = require('../findplayer.js')
+const helpers = require('../../helpers'); 
 const { retrieve } = require('../retrieve.js');
-const helpers = require('../../helpers')
-
-async function pretrade(player, message, args) {
+const { findplayer } = require('../findplayer.js');
+async function pregift(player, message, args){
     const mentionedMember = message.mentions.members.first();
     const result = [];
     if (!mentionedMember) {
@@ -12,7 +11,7 @@ async function pretrade(player, message, args) {
     const member_id = mentionedMember.user.id
     const server_id = message.guild.id;
     if (member_id === player.id_discord) {
-        result.push(`No puedes tradear contigo mismo`, [], [], []);
+        result.push(`No puedes regalarte cartas a ti mismo`, [], [], []);
         return result;
     }
 
@@ -32,7 +31,6 @@ async function pretrade(player, message, args) {
             [], [], []
         );
         return result;
-
     }
 
     if (cards.length > 24) {
@@ -44,7 +42,7 @@ async function pretrade(player, message, args) {
     }
 
     const response = cards.length > 1 ? `Estas son tus cartas similares a \"${name}\".` :
-        `Vas a intercambiar a ${cards[0].nombre}`
+        `Se le regaló ${cards[0].nombre} a ${member.nombre}.`
     result.push(response);
     result.push(cards);
     result.push(parsedCards);
@@ -52,4 +50,21 @@ async function pretrade(player, message, args) {
     return result;
 }
 
-module.exports = { pretrade };
+async function gift(player1,player2,card_id,response)
+{
+    result = []
+    card = player1.cartas.find(c => c.id == card_id);
+    if(card.Cromo.cantidad == 1){
+        await card.Cromo.destroy();
+    }else{
+        await card.Cromo.decrement({'cantidad':1});
+    }
+    const op = await player2.addCarta(card);
+    if(!op)
+        return "Ha ocurrido un error."
+    if (response)
+        result.push(`Se le regaló ${card.nombre} a ${player2.nombre}.`);
+    return result;
+}
+
+module.exports = {pregift, gift}

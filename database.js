@@ -1,6 +1,6 @@
 
 const { Sequelize } = require('sequelize');
-const config = require('./config/config');
+const { config } = require('./config/config');
 const sequelize = new Sequelize(config.sequelize);
 const models = {
   Carta: require('./models/carta')(sequelize),

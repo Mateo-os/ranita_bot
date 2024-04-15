@@ -5,7 +5,7 @@ const process = require('process');
 const basename = path.basename(__filename);
 const db = {};
 
-const config = require('../config/config');
+const { config } = require('../config/config');
 
 const sequelize = new Sequelize(config.sequelize);
 fs

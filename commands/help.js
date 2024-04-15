@@ -10,7 +10,7 @@ async function help(message) {
             { name: `${prefix}award`, value: "Comando solo para el admin. Otorga rolls al jugador mencionado."}, 
             { name: `${prefix}awardcoins`, value: "Comando solo para el admin. Permite otorgar dinero al jugador mencionado."},
             { name: `${prefix}buy`, value: "Permite comprar la carta nombrada al banco, si se tiene el dinero"},
-            { name: `${prefix}buyrolls`, value: "Permite comprar los rolls especifcados a cambio de dinero. Se pueden comprar para uno o para el jugador mencionado.\n No especifacar numero compra 1 Roll."},
+            { name: `${prefix}buyrolls`, value: "Permite comprar los rolls especifcados a cambio de dinero. Se pueden comprar para uno o para el jugador mencionado.\n No especificar numero compra 1 Roll."},
             { name: `${prefix}checkcards`, value: "Comprobás si tenés el personaje que escribís." },
             { name: `${prefix}checkseries`, value: "Muestra todos las cartas de la serie que escribas." },
             { name: `${prefix}gift`, value: "Permite regalar una carta de tu inventario a un jugador mencionado."},

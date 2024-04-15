@@ -1,5 +1,5 @@
 const { findplayer } = require('../findplayer.js');
-const config = require('../../config/config.js');
+const { config } = require('../../config/config.js');
 const owner = config.owner;
 
 async function award(message, args) {

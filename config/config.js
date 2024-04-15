@@ -12,6 +12,8 @@ const prefix = process.env.PREFIX;
 const version = process.env.VERSION;
 const owner = process.env.IDOWNER;
 const albumURL = process.env.ALBUMURL;
+let botID = undefined;
+
 
 const Config = {
   "development": {
@@ -21,9 +23,17 @@ const Config = {
     "prefix": prefix,
     "version": version,
     "owner": owner,
+    "botID": () => botID,
   },
 }
 
+
 const config = Config[env];
 config.sequelize = sequelize[env];
-module.exports = config;
+
+function setBotID(id){
+  botID = id;
+  config.botID = () => botID;
+}
+
+module.exports = { config, setBotID};

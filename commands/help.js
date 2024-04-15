@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
-const config = require('../config/config');
+const { config } = require('../config/config');
 const prefix = config.prefix;
 async function help(message) {
     const infoE = new EmbedBuilder()

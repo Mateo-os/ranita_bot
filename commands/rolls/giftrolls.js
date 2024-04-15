@@ -1,4 +1,3 @@
-const {models} = require('../../database');
 const { findplayer } = require("../findplayer.js");
 
 async function giftrolls(player, message, args){

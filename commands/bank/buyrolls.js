@@ -5,6 +5,8 @@ async function buyrolls(player,message, args) {
     const member_id = mentionedMember ? mentionedMember.user.id : player.id_discord;
     const server_id = message.guild.id;
     const member = await findplayer(member_id, server_id);
+    if (!member)
+        return 'Ese usuario no tiene un perfil activo';
     let amount = ((args[0]==`<@${member_id}>`)?args[1]:args[0]) || 1;
     amount = parseInt(amount, 10);
     if(amount < 0)

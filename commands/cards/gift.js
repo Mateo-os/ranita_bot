@@ -59,7 +59,13 @@ async function gift(player1,player2,card_id,response)
     }else{
         await card.Cromo.decrement({'cantidad':1});
     }
-    const op = await player2.addCarta(card);
+    const player2card = player2.cartas.find(c => c.id == card_id);
+    let op;
+    if(!player2card){
+        op = await player2.addCarta(card);
+    }else{
+        op = await player2card.Cromo.increment('cantidad');
+    }
     if(!op)
         return "Ha ocurrido un error."
     if (response)

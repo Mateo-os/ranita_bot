@@ -85,6 +85,9 @@ client.on('messageCreate', async message => {
                     await buycallback(cards[0].id,false)
                 }
                 break;
+            case 'buyrolls':
+                responses = responses.concat(await commands.bank.buyrolls(player,message, args));
+                break;
             case 'checkcards':
                 [response, cards] = await commands.info.checkcards(player, message, args);
                 responses.push(response);

@@ -4,6 +4,8 @@ const CARDS_PER_ROLL = 3;
 
 const REC_POINTS_PER_ROLL = 100;
 
+const ROLL_PRICE = 1;
+
 const rarities = {
     1: 'COMÚN',
     2: 'POCO COMÚN',
@@ -48,5 +50,7 @@ module.exports = {
     buy_price, 
     EPHIMERAL_ROLL_LIMIT, 
     CARDS_PER_ROLL, 
-    REC_POINTS_PER_ROLL
+    REC_POINTS_PER_ROLL,
+    ROLL_PRICE
 }
+

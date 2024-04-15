@@ -6,7 +6,8 @@ const { rarities,
         recycle_points, 
         REC_POINTS_PER_ROLL,
         buy_price,
-        sell_price
+        sell_price,
+        ROLL_PRICE
     } = require('./constants.js');
 const { orderCards } = require('./sort.js')
 module.exports = {
@@ -22,6 +23,7 @@ module.exports = {
     CARDS_PER_ROLL,
     EPHIMERAL_ROLL_LIMIT,
     REC_POINTS_PER_ROLL,
+    ROLL_PRICE,
     sendCardSelector,
     sendTradeConfirmator,
     sendTradeRequest

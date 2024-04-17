@@ -147,7 +147,7 @@ Yuki Akatsuki,2,3,o9MG5cD
 Tsuji,1,4,OZHPQqi
 Hayami,1,5,VKd1w2b
 Tatsuo Ishida,1,6,EcD3ZrB
-Madre,1,7,jMhANbV
+Madre,1,7,sVT0Lqr
 
 Monster (24)
 Logo,5,0,MGxqfmP

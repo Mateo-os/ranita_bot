@@ -53,12 +53,13 @@ async function buy(player,bank,card_id,response){
     const playercard = player.cartas.find(c => c.id == card_id);
     let op;
     if(!playercard)
-        op = await player.addCarta(card);
+    op = await player.addCarta(card);
     else 
         op = await playercard.Cromo.increment('cantidad');
     if(!op){
         return "Ha ocurrido un error."
     }
+    player.save();
     result.push(`Vendida ${card.nombre} a ${player.nombre} por ${buy_price} Ranitas.`);
     return result;
 

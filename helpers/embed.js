@@ -277,6 +277,12 @@ async function sendTradeConfirmator(message, user1_id, card1, user2_id, card2, c
         lock = mutex.lock(lock);
         if (!called && confirm_count == 2) {
             called = true;
+            confirm_button.components[0].setDisabled(true);
+            confirm_button.components[1].setDisabled(true);
+            await confirm_msg.edit({
+                content: msgbody,
+                components: [confirm_button]
+            });                
             lock = mutex.unlock(lock);
             callback();
             return;
@@ -286,4 +292,4 @@ async function sendTradeConfirmator(message, user1_id, card1, user2_id, card2, c
 }
 
 
-module.exports = { pagePanel, sendCardEmbed, sendCardListEmbed, sendCardSelector, sendTradeRequest, sendTradeConfirmator };
+module.exports = { pagePanel, sendCardEmbed, sendCardListEmbed, sendCardSelector, sendTradeRequest, sendTradeConfirmator, sendPaginatedEmbed};

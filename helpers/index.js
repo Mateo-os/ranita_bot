@@ -1,4 +1,9 @@
-const { sendCardEmbed, sendCardListEmbed, sendCardSelector, sendTradeConfirmator, sendTradeRequest } = require('./embed.js');
+const { sendCardEmbed, 
+        sendCardListEmbed, 
+        sendCardSelector, 
+        sendPaginatedEmbed,
+        sendTradeConfirmator, 
+        sendTradeRequest } = require('./embed.js');
 const { parseCartas,escapeRegExp } = require('./parse.js');
 const { rarities, 
         EPHIMERAL_ROLL_LIMIT, 
@@ -26,5 +31,6 @@ module.exports = {
     ROLL_PRICE,
     sendCardSelector,
     sendTradeConfirmator,
-    sendTradeRequest
+    sendTradeRequest,
+    sendPaginatedEmbed,
 };

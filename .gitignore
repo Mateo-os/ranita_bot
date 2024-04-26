@@ -95,5 +95,5 @@ Thumbs.db
 *.sql
 
 #.txt
-./personajes_album.txt
+personajes_album.txt
 

@@ -142,15 +142,15 @@ client.on('messageCreate', async message => {
                 break;
             case 'roll':
                 //Logic that handles the database update and returns the cards that were rolled
-                const rolledcards = await commands.rolls.roll(player);
-                if (!rolledcards.length) {
-                    // Rolls will only return an empty list when the player has
-                    // no rolls
-                    responses.push("No tienes rolls");
-                    break;
+                const [response,rolledcards] = await commands.rolls.roll(player,args);
+                responses.push(response);
+                await commands.show(responses, message);
+                if(rolledcards.length){
+                    const step = 3*helpers.CARDS_PER_ROLL
+                    for(let i = 0; i < rolledcards.length; i += step){
+                        await helpers.sendCardEmbed(message, rolledcards.slice(i,i + step), false, false, true);
+                    }
                 }
-                // Create and send the embeds for the cards
-                await helpers.sendCardEmbed(message, rolledcards, false, false, true);
                 break;
             case 'scrap':
                 responses = responses.concat(await commands.cards.scrap(player, args));

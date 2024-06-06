@@ -38,7 +38,7 @@ client.on('messageCreate', async message => {
         const command = args.shift().toLowerCase();
         const player = await commands.findplayer(message.author.id, message.guild.id) || await commands.newplayer(message);
         let responses = [];
-        let response, user, cards,selfcheck,player2,bank;
+        let response, user, cards,selfcheck,player2,bank,rolledcards;
         switch (command) {
             case 'album':
                 [user, cards] = await commands.info.album(player, message);
@@ -142,7 +142,7 @@ client.on('messageCreate', async message => {
                 break;
             case 'roll':
                 //Logic that handles the database update and returns the cards that were rolled
-                const [response,rolledcards] = await commands.rolls.roll(player,args);
+                [response,rolledcards] = await commands.rolls.roll(player,args);
                 responses.push(response);
                 await commands.show(responses, message);
                 if(rolledcards.length){

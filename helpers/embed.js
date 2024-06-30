@@ -191,7 +191,7 @@ async function sendCardDropDownEmbed(message, cards, placeholder) {
     return [msg,labels]
 }
 
-async function sendCardSelector(message, user_id, cards, parsedCards, callback, interactionTime = 5) {
+async function sendCardSelector(message, user_id, cards, parsedCards, callback, emergency_callback, interactionTime = 5) {
 
     await sendCardListEmbed(message, parsedCards, interactionTime);
     //The interaction time is expressed in minutes, convert to miliseconds
@@ -203,6 +203,7 @@ async function sendCardSelector(message, user_id, cards, parsedCards, callback, 
     const dropdown_collector = msg.createMessageComponentCollector({ filter, time: expiration_time  });
     const button_collector = panelmsg.createMessageComponentCollector({ filter, time: expiration_time });
     
+    let good_exit = false;
     
     let selectCardID = "";
     dropdown_collector.on('collect', async interaction => {
@@ -216,33 +217,43 @@ async function sendCardSelector(message, user_id, cards, parsedCards, callback, 
         const placeholder = selectCardID != "" ? labels[selectCardID] : "Elige una carta."
         const disabledDropdown = cardDropdown(cards,placeholder, true)[0];
         await msg.edit({ components: [disabledDropdown] });
+        if (!good_exit) {
+            emergency_callback("Se canceló el intercambio por falta de respuesta.");
+        }
     });
 
     button_collector.on('collect', async interaction => {
         confirm_button.components[0].setStyle('Success');
         confirm_button.components[0].setDisabled(true);
         await interaction.update({ components: [confirm_button] });
+        good_exit = true;
         callback(selectCardID);
     });
 
     button_collector.on('end', async () => {
         await panelmsg.delete();
     });
-
 }
 
-async function sendTradeRequest(message, requested_player_id, callback, interactionTime = 5) {
+async function sendTradeRequest(message, requested_player_id, callback, emergency_callback ,interactionTime = 5) {
     const msg = message.channel.send(`Hola <@${requested_player_id}>, escribe el nombre de la carta que quieres intercambiar.`)
     const filter = m => m.author.id === requested_player_id;
-    const collector = message.channel.createMessageCollector({ filter, max: 1, time: interactionTime * 60 * 1000 });
+    const collector = message.channel.createMessageCollector({ filter, max: 1, time: interactionTime  * 60 * 1000 });
+    let good_exit = false
     collector.on('collect', collectedMessage => {
         cardName = collectedMessage.content.trim();
+        good_exit = true;
         callback(cardName);
+    });
+    collector.on('end', () => {
+        if (!good_exit) {
+            emergency_callback("Se canceló el intercambio por falta de respuesta.");
+        }
     });
 }
 
 
-async function sendTradeConfirmator(message, user1_id, card1, user2_id, card2, callback, interactionTime = 5) {
+async function sendTradeConfirmator(message, user1_id, card1, user2_id, card2, callback, emergency_callback ,interactionTime = 5) {
     const confirmed = {}
     confirmed[user1_id] = false;
     confirmed[user2_id] = false;
@@ -260,13 +271,14 @@ async function sendTradeConfirmator(message, user1_id, card1, user2_id, card2, c
     const filter = i => (i.customId === 'confirm_button' || i.customId === 'deny_button') && (participants.includes(i.user.id));
     const collector = confirm_msg.createMessageComponentCollector({ filter, time: interactionTime * 60 * 1000 })
 
-    let confirm_count = 0;
+    let confirm_count = 0,good_exit = false;
     collector.on('collect', async interaction => {
         if (interaction.customId === 'confirm_button' && !confirmed[interaction.user.id]) {
             confirmed[interaction.user.id] = true;
         } else if (interaction.customId === 'deny_button') {
-            await confirm_msg.edit({ content: `<@${interaction.user.id}> canceló el intercambio.`, components: [] })
+            good_exit = true;
             interaction.deferUpdate()
+            emergency_callback(`<@${interaction.user.id}> canceló el intercambio.`)
             return;
         }
         
@@ -294,10 +306,16 @@ async function sendTradeConfirmator(message, user1_id, card1, user2_id, card2, c
                 components: [confirm_button]
             });                
             lock = mutex.unlock(lock);
+            good_exit = true;
             callback();
             return;
         } 
         lock = mutex.unlock(lock);
+    });
+    collector.on('end', () => {
+        if (!good_exit) {
+            emergency_callback("Se canceló el intercambio por falta de respuesta.");
+        }
     });
 }
 

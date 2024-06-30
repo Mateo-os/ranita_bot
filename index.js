@@ -214,30 +214,36 @@ client.on('messageCreate', async message => {
 
                 async function preTradecallback(cardID) {
                     card1 = player1cards.find(c => c.id == cardID);
-                    await helpers.sendTradeRequest(message, player2.id_discord, tradeRequestcallback);
+                    await helpers.sendTradeRequest(message, player2.id_discord, tradeRequestcallback, emergencyExitCallback);
                 }
 
                 async function tradeRequestcallback(card2name) {
                     [response, player2cards, parsedCards] = await commands.trade.asktrade(player2, card1, card2name);
-                    callbackresponses = [response];
+                    const callbackresponses = [response];
                     await commands.show(callbackresponses, message);
                     if (player2cards && player2cards.length > 1)
-                        await helpers.sendCardSelector(message, player2.id_discord, player2cards, parsedCards, askTradecallback);
+                        await helpers.sendCardSelector(message, player2.id_discord, player2cards, parsedCards, askTradecallback, emergencyExitCallback);
                     else if (player2cards.length == 1)
                         await askTradecallback(player2cards[0].id);
                 }
 
                 async function askTradecallback(cardID) {
                     card2 = player2cards.find(c => c.id == cardID);
-                    await helpers.sendTradeConfirmator(message, player.id_discord, card1, player2.id_discord, card2, completeTradeCallback);
+                    await helpers.sendTradeConfirmator(message, player.id_discord, card1, player2.id_discord, card2, completeTradeCallback, emergencyExitCallback);
                 }
                 async function completeTradeCallback() {
                     const callbackresponses = [];
                     callbackresponses.push(await commands.trade.trade(player, card1, player2, card2));
                     await commands.show(callbackresponses, message);
                 }
+
+                async function emergencyExitCallback(exit_message){
+                    const callbackResponses = [exit_message];
+                    await commands.show(callbackResponses, message);
+                }
+
                 if (player1cards && player1cards.length > 1)
-                    await helpers.sendCardSelector(message, message.author.id, player1cards, parsedCards, preTradecallback);
+                    await helpers.sendCardSelector(message, message.author.id, player1cards, parsedCards, preTradecallback, emergencyExitCallback);
                 else if (player1cards.length == 1)
                     await preTradecallback(player1cards[0].id);
                 break;

@@ -7,6 +7,7 @@ const commands = require("./commands");
 
 const { token, prefix } = config;
 const client = new Client({ intents: [37633] });
+let ongoing_trades = 0;
 
 async function startbanks(){
     const servers = await commands.server.retrieve();
@@ -208,38 +209,61 @@ client.on('messageCreate', async message => {
                 break;
             case 'trade':
                 let player1cards, player2cards, card1, card2;
+                if(ongoing_trades > 0){
+                    if(ongoing_trades > 1)
+                        ongoing_trades = 1;
+                    responses.push("Ya hay un intercambio en curso. Por favor espera a que termine.");
+                    await commands.show(responses, message);
+                    break;
+                }
+                ongoing_trades += 1;
                 [response, player1cards, parsedCards, player2] = await commands.trade.pretrade(player, message, args);
                 responses.push(response);
                 await commands.show(responses, message, true);
 
                 async function preTradecallback(cardID) {
                     card1 = player1cards.find(c => c.id == cardID);
-                    await helpers.sendTradeRequest(message, player2.id_discord, tradeRequestcallback);
+                    await helpers.sendTradeRequest(message, player2.id_discord, tradeRequestcallback, emergencyExitcallback);
                 }
 
                 async function tradeRequestcallback(card2name) {
                     [response, player2cards, parsedCards] = await commands.trade.asktrade(player2, card1, card2name);
-                    callbackresponses = [response];
+                    const callbackresponses = [response];
                     await commands.show(callbackresponses, message);
                     if (player2cards && player2cards.length > 1)
-                        await helpers.sendCardSelector(message, player2.id_discord, player2cards, parsedCards, askTradecallback);
+                        await helpers.sendCardSelector(message, player2.id_discord, player2cards, parsedCards, askTradecallback, emergencyExitcallback);
                     else if (player2cards.length == 1)
                         await askTradecallback(player2cards[0].id);
+                    else
+                        await emergencyExitcallback("", false);
                 }
 
                 async function askTradecallback(cardID) {
                     card2 = player2cards.find(c => c.id == cardID);
-                    await helpers.sendTradeConfirmator(message, player.id_discord, card1, player2.id_discord, card2, completeTradeCallback);
+                    await helpers.sendTradeConfirmator(message, player.id_discord, card1, player2.id_discord, card2, completeTradeCallback, emergencyExitcallback);
                 }
+                
                 async function completeTradeCallback() {
                     const callbackresponses = [];
                     callbackresponses.push(await commands.trade.trade(player, card1, player2, card2));
+                    ongoing_trades -= 1;
                     await commands.show(callbackresponses, message);
                 }
+
+                async function emergencyExitcallback(exit_message,showmessage = true){
+                    if(showmessage) {
+                        const callbackResponses = [exit_message];
+                        await commands.show(callbackResponses, message);
+                    }
+                    ongoing_trades -= 1;
+                }
+            
                 if (player1cards && player1cards.length > 1)
-                    await helpers.sendCardSelector(message, message.author.id, player1cards, parsedCards, preTradecallback);
+                    await helpers.sendCardSelector(message, message.author.id, player1cards, parsedCards, preTradecallback, emergencyExitcallback);
                 else if (player1cards.length == 1)
                     await preTradecallback(player1cards[0].id);
+                else
+                    await emergencyExitcallback("", false);
                 break;
         }
         await commands.show(responses, message);

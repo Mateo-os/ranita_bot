@@ -234,12 +234,15 @@ client.on('messageCreate', async message => {
                         await helpers.sendCardSelector(message, player2.id_discord, player2cards, parsedCards, askTradecallback, emergencyExitcallback);
                     else if (player2cards.length == 1)
                         await askTradecallback(player2cards[0].id);
+                    else
+                        await emergencyExitcallback("", false);
                 }
 
                 async function askTradecallback(cardID) {
                     card2 = player2cards.find(c => c.id == cardID);
                     await helpers.sendTradeConfirmator(message, player.id_discord, card1, player2.id_discord, card2, completeTradeCallback, emergencyExitcallback);
                 }
+                
                 async function completeTradeCallback() {
                     const callbackresponses = [];
                     callbackresponses.push(await commands.trade.trade(player, card1, player2, card2));

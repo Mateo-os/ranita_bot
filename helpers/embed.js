@@ -233,7 +233,7 @@ async function sendCardSelector(message, user_id, cards, parsedCards, callback, 
         if(!good_exit){
             confirm_button.components[0].setDisabled(true);
             await panelmsg.edit({ components: [confirm_button] });
-            emergency_callback("Esto no se tendria que correr, pero corre.")
+            emergency_callback("Se canceló el intercambio por falta de respuesta.")
         }      
     });
 }
@@ -282,6 +282,7 @@ async function sendTradeConfirmator(message, user1_id, card1, user2_id, card2, c
         } else if (interaction.customId === 'deny_button') {
             good_exit = true;
             interaction.deferUpdate()
+            collector.stop();
             emergency_callback(`<@${interaction.user.id}> canceló el intercambio.`)
             return;
         }

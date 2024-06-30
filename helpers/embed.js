@@ -217,9 +217,6 @@ async function sendCardSelector(message, user_id, cards, parsedCards, callback, 
         const placeholder = selectCardID != "" ? labels[selectCardID] : "Elige una carta."
         const disabledDropdown = cardDropdown(cards,placeholder, true)[0];
         await msg.edit({ components: [disabledDropdown] });
-        if (!good_exit) {
-            emergency_callback("Se canceló el intercambio por falta de respuesta.");
-        }
     });
 
     button_collector.on('collect', async interaction => {
@@ -227,11 +224,17 @@ async function sendCardSelector(message, user_id, cards, parsedCards, callback, 
         confirm_button.components[0].setDisabled(true);
         await interaction.update({ components: [confirm_button] });
         good_exit = true;
+        button_collector.stop();
+        dropdown_collector.stop();
         callback(selectCardID);
     });
 
     button_collector.on('end', async () => {
-        await panelmsg.delete();
+        if(!good_exit){
+            confirm_button.components[0].setDisabled(true);
+            await panelmsg.edit({ components: [confirm_button] });
+            emergency_callback("Esto no se tendria que correr, pero corre.")
+        }      
     });
 }
 
@@ -243,6 +246,7 @@ async function sendTradeRequest(message, requested_player_id, callback, emergenc
     collector.on('collect', collectedMessage => {
         cardName = collectedMessage.content.trim();
         good_exit = true;
+        collector.stop();
         callback(cardName);
     });
     collector.on('end', () => {
@@ -307,6 +311,7 @@ async function sendTradeConfirmator(message, user1_id, card1, user2_id, card2, c
             });                
             lock = mutex.unlock(lock);
             good_exit = true;
+            collector.stop();
             callback();
             return;
         } 

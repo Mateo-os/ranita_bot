@@ -132,7 +132,6 @@ function confirmationPanel() {
 }
 
 function confimDenyPanel(confirmcount) {
-
     const row = new ActionRowBuilder()
         .addComponents(
             new ButtonBuilder()
@@ -157,46 +156,55 @@ function confimDenyPanel(confirmcount) {
 }
 
 
-function dropdownPanel(placeholder, options) {
+function dropdownPanel(placeholder, options,disabled=false) {
     const row = new ActionRowBuilder()
         .addComponents(
             new StringSelectMenuBuilder()
                 .setCustomId('dropdown')
                 .setPlaceholder(placeholder)
-                .setOptions(
-                    options.map(option => ({
-                        label: option.label,
-                        value: option.value,
-                    }))
-                )
+                .setDisabled(disabled)
+                .setOptions(options)
         );
-
     return row;
 }
 
-async function sendCardDropDownEmbed(message, cards, placeholder, minSelect, maxSelect, interactionTime) {
+function cardDropdown(cards,placeholder,disabled = false){
     const cardOptions = cards.map(c => ({
         label: `${c.nombre} - ${c.serie}`,
         value: c.id.toString()
     }));
-    const dropdown = dropdownPanel(placeholder, cardOptions);
+    
+    const labels = cardOptions.reduce((acc, option) => {
+        acc[option.value] = option.label;
+        return acc;
+    }, {});
 
-    return message.channel.send({ components: [dropdown] });
+    const dropdown = dropdownPanel(placeholder, cardOptions,disabled);
+    return [dropdown,labels];
+}
+
+async function sendCardDropDownEmbed(message, cards, placeholder) {
+
+    const [dropdown,labels] = cardDropdown(cards,placeholder);
+    const msg = await message.channel.send({ components: [dropdown] })
+
+    return [msg,labels]
 }
 
 async function sendCardSelector(message, user_id, cards, parsedCards, callback, interactionTime = 5) {
 
     await sendCardListEmbed(message, parsedCards, interactionTime);
-    const msg = await sendCardDropDownEmbed(message, cards, "Elige una carta.", 1, 1, interactionTime);
+    //The interaction time is expressed in minutes, convert to miliseconds
+    const expiration_time = interactionTime * 60 * 1000
+    const [msg,labels] = await sendCardDropDownEmbed(message, cards, "Elige una carta.");
     const confirm_button = confirmationPanel();
     const panelmsg = await msg.channel.send({ embeds: [], components: [confirm_button] });
     const filter = i => (i.customId === 'confirm_button' || i.customId === 'dropdown') && (i.user.id === user_id);
-    //The interaction time is expressed in minutes, convert to miliseconds
-    let selectCardID;
-    const dropdown_collector = msg.createMessageComponentCollector({ filter, time: interactionTime * 60 * 1000 });
-    const button_collector = panelmsg.createMessageComponentCollector({ filter, time: interactionTime * 60 * 1000 });
-
-
+    const dropdown_collector = msg.createMessageComponentCollector({ filter, time: expiration_time  });
+    const button_collector = panelmsg.createMessageComponentCollector({ filter, time: expiration_time });
+    
+    
+    let selectCardID = "";
     dropdown_collector.on('collect', async interaction => {
         selectCardID = interaction.values[0];
         confirm_button.components[0].setDisabled(false);
@@ -205,7 +213,9 @@ async function sendCardSelector(message, user_id, cards, parsedCards, callback, 
     });
 
     dropdown_collector.on('end', async () => {
-        await msg.delete();
+        const placeholder = selectCardID != "" ? labels[selectCardID] : "Elige una carta."
+        const disabledDropdown = cardDropdown(cards,placeholder, true)[0];
+        await msg.edit({ components: [disabledDropdown] });
     });
 
     button_collector.on('collect', async interaction => {

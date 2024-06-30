@@ -191,7 +191,7 @@ async function sendCardDropDownEmbed(message, cards, placeholder) {
     return [msg,labels]
 }
 
-async function sendCardSelector(message, user_id, cards, parsedCards, callback, emergency_callback, interactionTime = 0.5) {
+async function sendCardSelector(message, user_id, cards, parsedCards, callback, emergency_callback, interactionTime = 5) {
 
     await sendCardListEmbed(message, parsedCards, interactionTime);
     //The interaction time is expressed in minutes, convert to miliseconds
@@ -238,7 +238,7 @@ async function sendCardSelector(message, user_id, cards, parsedCards, callback, 
     });
 }
 
-async function sendTradeRequest(message, requested_player_id, callback, emergency_callback ,interactionTime = 0.5) {
+async function sendTradeRequest(message, requested_player_id, callback, emergency_callback ,interactionTime = 5) {
     const msg = message.channel.send(`Hola <@${requested_player_id}>, escribe el nombre de la carta que quieres intercambiar.`)
     const filter = m => m.author.id === requested_player_id;
     const collector = message.channel.createMessageCollector({ filter, max: 1, time: interactionTime  * 60 * 1000 });
@@ -257,7 +257,7 @@ async function sendTradeRequest(message, requested_player_id, callback, emergenc
 }
 
 
-async function sendTradeConfirmator(message, user1_id, card1, user2_id, card2, callback, emergency_callback ,interactionTime = 0.5) {
+async function sendTradeConfirmator(message, user1_id, card1, user2_id, card2, callback, emergency_callback ,interactionTime = 5) {
     const confirmed = {}
     confirmed[user1_id] = false;
     confirmed[user2_id] = false;

@@ -132,7 +132,6 @@ function confirmationPanel() {
 }
 
 function confimDenyPanel(confirmcount) {
-
     const row = new ActionRowBuilder()
         .addComponents(
             new ButtonBuilder()
@@ -157,46 +156,56 @@ function confimDenyPanel(confirmcount) {
 }
 
 
-function dropdownPanel(placeholder, options) {
+function dropdownPanel(placeholder, options,disabled=false) {
     const row = new ActionRowBuilder()
         .addComponents(
             new StringSelectMenuBuilder()
                 .setCustomId('dropdown')
                 .setPlaceholder(placeholder)
-                .setOptions(
-                    options.map(option => ({
-                        label: option.label,
-                        value: option.value,
-                    }))
-                )
+                .setDisabled(disabled)
+                .setOptions(options)
         );
-
     return row;
 }
 
-async function sendCardDropDownEmbed(message, cards, placeholder, minSelect, maxSelect, interactionTime) {
+function cardDropdown(cards,placeholder,disabled = false){
     const cardOptions = cards.map(c => ({
         label: `${c.nombre} - ${c.serie}`,
         value: c.id.toString()
     }));
-    const dropdown = dropdownPanel(placeholder, cardOptions);
+    
+    const labels = cardOptions.reduce((acc, option) => {
+        acc[option.value] = option.label;
+        return acc;
+    }, {});
 
-    return message.channel.send({ components: [dropdown] });
+    const dropdown = dropdownPanel(placeholder, cardOptions,disabled);
+    return [dropdown,labels];
 }
 
-async function sendCardSelector(message, user_id, cards, parsedCards, callback, interactionTime = 5) {
+async function sendCardDropDownEmbed(message, cards, placeholder) {
+
+    const [dropdown,labels] = cardDropdown(cards,placeholder);
+    const msg = await message.channel.send({ components: [dropdown] })
+
+    return [msg,labels]
+}
+
+async function sendCardSelector(message, user_id, cards, parsedCards, callback, emergency_callback, interactionTime = 5) {
 
     await sendCardListEmbed(message, parsedCards, interactionTime);
-    const msg = await sendCardDropDownEmbed(message, cards, "Elige una carta.", 1, 1, interactionTime);
+    //The interaction time is expressed in minutes, convert to miliseconds
+    const expiration_time = interactionTime * 60 * 1000
+    const [msg,labels] = await sendCardDropDownEmbed(message, cards, "Elige una carta.");
     const confirm_button = confirmationPanel();
     const panelmsg = await msg.channel.send({ embeds: [], components: [confirm_button] });
     const filter = i => (i.customId === 'confirm_button' || i.customId === 'dropdown') && (i.user.id === user_id);
-    //The interaction time is expressed in minutes, convert to miliseconds
-    let selectCardID;
-    const dropdown_collector = msg.createMessageComponentCollector({ filter, time: interactionTime * 60 * 1000 });
-    const button_collector = panelmsg.createMessageComponentCollector({ filter, time: interactionTime * 60 * 1000 });
-
-
+    const dropdown_collector = msg.createMessageComponentCollector({ filter, time: expiration_time  });
+    const button_collector = panelmsg.createMessageComponentCollector({ filter, time: expiration_time });
+    
+    let good_exit = false;
+    
+    let selectCardID = "";
     dropdown_collector.on('collect', async interaction => {
         selectCardID = interaction.values[0];
         confirm_button.components[0].setDisabled(false);
@@ -205,34 +214,50 @@ async function sendCardSelector(message, user_id, cards, parsedCards, callback, 
     });
 
     dropdown_collector.on('end', async () => {
-        await msg.delete();
+        const placeholder = selectCardID != "" ? labels[selectCardID] : "Elige una carta."
+        const disabledDropdown = cardDropdown(cards,placeholder, true)[0];
+        await msg.edit({ components: [disabledDropdown] });
     });
 
     button_collector.on('collect', async interaction => {
         confirm_button.components[0].setStyle('Success');
         confirm_button.components[0].setDisabled(true);
         await interaction.update({ components: [confirm_button] });
+        good_exit = true;
+        button_collector.stop();
+        dropdown_collector.stop();
         callback(selectCardID);
     });
 
     button_collector.on('end', async () => {
-        await panelmsg.delete();
+        if(!good_exit){
+            confirm_button.components[0].setDisabled(true);
+            await panelmsg.edit({ components: [confirm_button] });
+            emergency_callback("Se canceló el intercambio por falta de respuesta.")
+        }      
     });
-
 }
 
-async function sendTradeRequest(message, requested_player_id, callback, interactionTime = 5) {
+async function sendTradeRequest(message, requested_player_id, callback, emergency_callback ,interactionTime = 5) {
     const msg = message.channel.send(`Hola <@${requested_player_id}>, escribe el nombre de la carta que quieres intercambiar.`)
     const filter = m => m.author.id === requested_player_id;
-    const collector = message.channel.createMessageCollector({ filter, max: 1, time: interactionTime * 60 * 1000 });
+    const collector = message.channel.createMessageCollector({ filter, max: 1, time: interactionTime  * 60 * 1000 });
+    let good_exit = false
     collector.on('collect', collectedMessage => {
         cardName = collectedMessage.content.trim();
+        good_exit = true;
+        collector.stop();
         callback(cardName);
+    });
+    collector.on('end', () => {
+        if (!good_exit) {
+            emergency_callback("Se canceló el intercambio por falta de respuesta.");
+        }
     });
 }
 
 
-async function sendTradeConfirmator(message, user1_id, card1, user2_id, card2, callback, interactionTime = 5) {
+async function sendTradeConfirmator(message, user1_id, card1, user2_id, card2, callback, emergency_callback ,interactionTime = 5) {
     const confirmed = {}
     confirmed[user1_id] = false;
     confirmed[user2_id] = false;
@@ -250,13 +275,20 @@ async function sendTradeConfirmator(message, user1_id, card1, user2_id, card2, c
     const filter = i => (i.customId === 'confirm_button' || i.customId === 'deny_button') && (participants.includes(i.user.id));
     const collector = confirm_msg.createMessageComponentCollector({ filter, time: interactionTime * 60 * 1000 })
 
-    let confirm_count = 0;
+    let confirm_count = 0,good_exit = false;
     collector.on('collect', async interaction => {
         if (interaction.customId === 'confirm_button' && !confirmed[interaction.user.id]) {
             confirmed[interaction.user.id] = true;
         } else if (interaction.customId === 'deny_button') {
-            await confirm_msg.edit({ content: `<@${interaction.user.id}> canceló el intercambio.`, components: [] })
-            interaction.deferUpdate()
+            good_exit = true;
+            confirm_button.components[0].setDisabled(true);
+            confirm_button.components[1].setDisabled(true);
+            await confirm_msg.edit({
+                content: msgbody,
+                components: [confirm_button]
+            }); 
+            collector.stop();
+            emergency_callback(`<@${interaction.user.id}> canceló el intercambio.`)
             return;
         }
         
@@ -284,10 +316,23 @@ async function sendTradeConfirmator(message, user1_id, card1, user2_id, card2, c
                 components: [confirm_button]
             });                
             lock = mutex.unlock(lock);
+            good_exit = true;
+            collector.stop();
             callback();
             return;
         } 
         lock = mutex.unlock(lock);
+    });
+    collector.on('end',async () => {
+        if (!good_exit) {
+            confirm_button.components[0].setDisabled(true);
+            confirm_button.components[1].setDisabled(true);
+            await confirm_msg.edit({
+                content: msgbody,
+                components: [confirm_button]
+            }); 
+            emergency_callback("Se canceló el intercambio por falta de respuesta.");
+        }
     });
 }
 

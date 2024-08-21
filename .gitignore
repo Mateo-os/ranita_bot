@@ -94,6 +94,9 @@ Thumbs.db
 #SQL
 *.sql
 
+#Server configuration
+config/serverData.json
+
 #.txt
 personajes_album.txt
 

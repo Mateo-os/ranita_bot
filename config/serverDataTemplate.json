@@ -1,0 +1,23 @@
+{
+  "00000000000000000000":{
+    "BANNED_COMMANDS": [],
+    "CHANNELS": {
+      "channel1": {
+        "allow": [],
+        "deny": []
+      },
+      "channel2": {
+        "allow": [],
+        "deny": []
+      }
+    },
+    "DEFAULT":{
+      "allow": [],
+      "deny": ["*"]
+    },
+    "ALBUMURL": "http://i.imgur.com/",
+    "OWNER":0,
+    "TOKEN":"/"
+  }
+}
+  

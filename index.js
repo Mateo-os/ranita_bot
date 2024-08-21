@@ -22,7 +22,6 @@ client.once(Events.ClientReady, async readyClient => {
     console.log(`Welcome to Ranita bot v${config.version}`);
     console.log(`Logged in as ${readyClient.user.tag}`);
     setBotID(readyClient.user.id);
-    const servers = await commands.server.retrieve();
     await startbanks();
     // Daily roll increment
     const job = new cron.CronJob('00 19 * * *', () => commands.rolls.assignfreerolls(), timeZone = "utc");
@@ -34,10 +33,21 @@ client.on('messageCreate', async message => {
         //Ignore bots and message without the prefix
         if (!message.content.startsWith(prefix) || message.author.bot)
             return;
-        //Retreive all words separated by one or more spaces as arguments
+        //Retrieve all words separated by one or more spaces as arguments
         const args = message.content.slice(prefix.length).trim().split(/ +/g);
         const command = args.shift().toLowerCase();
-        const player = await commands.findplayer(message.author.id, message.guild.id) || await commands.newplayer(message);
+        if (!/^[a-z]*$/i.test(command)){
+            //check if the command nane only contains letters 
+            return;
+        }
+        const channel = message.channel.name
+        const server = message.guild.id
+        const validation = commands.validateCommand(server,channel,command);
+        if(!validation[0]) {
+            await commands.show(validation[1],message);
+            return;
+        }
+        const player = await commands.findplayer(message.author.id, server) || await commands.newplayer(message);
         let responses = [];
         let response, user, cards,selfcheck,player2,bank,rolledcards;
         switch (command) {

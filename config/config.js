@@ -1,12 +1,8 @@
 require('dotenv').config();
 const sequelize = require('./sequelize');
 
+const serverConfig = require('./serverConfig.js');
 const env = process.env.NODE_ENV || 'development';
-const host = (process.env.DBHOST || 'localhost');
-const port = (process.env.PORT || 3306);
-const user = process.env.DBUSER;
-const password = process.env.DBPASSWORD;
-const name = process.env.DBNAME;
 const token = process.env.TOKEN;
 const prefix = process.env.PREFIX;
 const version = process.env.VERSION;
@@ -18,6 +14,7 @@ let botID = undefined;
 const Config = {
   "development": {
     "sequelize": {},
+    "serverConfig": serverConfig,
     "albumURL": albumURL,
     "token": token,
     "prefix": prefix,

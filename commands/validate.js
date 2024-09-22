@@ -3,12 +3,12 @@ const { config } = require('../config/config');
 const globalServerConfig = config.serverConfig || {};
 
 function validateCommand(server_id, channel, command) {
-    if (!(server_id in globalChannelConfig))
+    if (!(server_id in globalServerConfig))
         return [true, []];  // Allow by default if no specific config exists for the server
 
     let enable = true;
     const response = [];
-    const serverConfig = globalChannelConfig[server_id];
+    const serverConfig = globalServerConfig[server_id];
 
     // Check if the command is banned globally
     if (serverConfig.BANNED_COMMANDS.includes(command)) {

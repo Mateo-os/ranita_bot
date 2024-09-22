@@ -37,14 +37,14 @@ client.on('messageCreate', async message => {
         const args = message.content.slice(prefix.length).trim().split(/ +/g);
         const command = args.shift().toLowerCase();
         if (!/^[a-z]*$/i.test(command)){
-            //check if the command nane only contains letters 
+            //check if the command name only contains letters 
             return;
         }
-        const channel = message.channel.name
+        const channel = message.channel.id
         const server = message.guild.id
-        const validation = commands.validateCommand(server,channel,command);
-        if(!validation[0]) {
-            await commands.show(validation[1],message);
+        const [validation,validationresponse] = commands.validateCommand(server,channel,command);
+        if(!validation) {
+            await commands.show(validationresponse,message);
             return;
         }
         const player = await commands.findplayer(message.author.id, server) || await commands.newplayer(message);

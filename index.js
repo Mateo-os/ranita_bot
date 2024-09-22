@@ -5,7 +5,7 @@ const { config, setBotID } = require('./config/config.js');
 const helpers = require('./helpers');
 const commands = require("./commands");
 
-const { token, prefix } = config;
+const token = config.token;
 const client = new Client({ intents: [37633] });
 let ongoing_trades = 0;
 
@@ -22,7 +22,6 @@ client.once(Events.ClientReady, async readyClient => {
     console.log(`Welcome to Ranita bot v${config.version}`);
     console.log(`Logged in as ${readyClient.user.tag}`);
     setBotID(readyClient.user.id);
-    const servers = await commands.server.retrieve();
     await startbanks();
     // Daily roll increment
     const job = new cron.CronJob('00 19 * * *', () => commands.rolls.assignfreerolls(), timeZone = "utc");
@@ -31,13 +30,25 @@ client.once(Events.ClientReady, async readyClient => {
 
 client.on('messageCreate', async message => {
     try {
+        const prefix = config.serverConfig[message.guild.id].PREFIX 
         //Ignore bots and message without the prefix
         if (!message.content.startsWith(prefix) || message.author.bot)
             return;
-        //Retreive all words separated by one or more spaces as arguments
+        //Retrieve all words separated by one or more spaces as arguments
         const args = message.content.slice(prefix.length).trim().split(/ +/g);
         const command = args.shift().toLowerCase();
-        const player = await commands.findplayer(message.author.id, message.guild.id) || await commands.newplayer(message);
+        if (!/^[a-z]*$/i.test(command)){
+            //check if the command name only contains letters 
+            return;
+        }
+        const channel = message.channel.id
+        const server = message.guild.id
+        const [validation,validationresponse] = commands.validateCommand(server,channel,command);
+        if(!validation) {
+            await commands.show(validationresponse,message);
+            return;
+        }
+        const player = await commands.findplayer(message.author.id, server) || await commands.newplayer(message);
         let responses = [];
         let response, user, cards,selfcheck,player2,bank,rolledcards;
         switch (command) {

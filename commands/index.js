@@ -10,6 +10,7 @@ const { findplayer } = require("./findplayer.js");
 const { help } = require("./help.js");
 const { newplayer } = require("./newplayer.js");
 const { show } = require("./show.js");
+const {validateCommand} = require("./validate.js");
 
 
 module.exports = {
@@ -25,4 +26,5 @@ module.exports = {
   help,
   newplayer,
   show,
+  validateCommand,
 };

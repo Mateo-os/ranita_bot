@@ -9,11 +9,11 @@ function validateCommand(server_id, channel, command) {
     let enable = true;
     const response = [];
     const serverConfig = globalServerConfig[server_id];
-
+    const prefix = serverConfig.PREFIX
     // Check if the command is banned globally
     if (serverConfig.BANNED_COMMANDS.includes(command)) {
         enable = false;
-        response.push(`El comando ${config.prefix}${command} está prohibido en el servidor.`);
+        response.push(`El comando ${prefix}${command} está prohibido en el servidor.`);
         return [enable, response];
     }
 
@@ -28,7 +28,7 @@ function validateCommand(server_id, channel, command) {
         (!(channelConfig.allow.includes('*') || channelConfig.allow.length === 0) && !channelConfig.allow.includes(command))
     ) {
         enable = false;
-        response.push(`El comando ${config.prefix}${command} no existe o está deshabilitado en este canal.`);
+        response.push(`El comando ${prefix}${command} no existe o está deshabilitado en este canal.`);
     }
 
     return [enable, response];

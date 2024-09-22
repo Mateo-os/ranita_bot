@@ -2,11 +2,13 @@
   "00000000000000000000":{
     "BANNED_COMMANDS": [],
     "CHANNELS": {
-      "channel1": {
+      "00000000000000000001": {
+        "name": "channel1",
         "allow": [],
         "deny": []
       },
-      "channel2": {
+      "00000000000000000002": {
+        "name": "channel2",
         "allow": [],
         "deny": []
       }

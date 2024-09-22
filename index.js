@@ -5,7 +5,7 @@ const { config, setBotID } = require('./config/config.js');
 const helpers = require('./helpers');
 const commands = require("./commands");
 
-const { token, prefix } = config;
+const token = config.token;
 const client = new Client({ intents: [37633] });
 let ongoing_trades = 0;
 
@@ -30,6 +30,7 @@ client.once(Events.ClientReady, async readyClient => {
 
 client.on('messageCreate', async message => {
     try {
+        const prefix = config.serverConfig[message.guild.id].PREFIX 
         //Ignore bots and message without the prefix
         if (!message.content.startsWith(prefix) || message.author.bot)
             return;

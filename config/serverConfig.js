@@ -7,9 +7,9 @@ function validateConfig(cfg) {
         config.BANNED_COMMANDS = config.BANNED_COMMANDS || [];
         config.CHANNELS = config.CHANNELS || {};
         config.DEFAULT =  config.DEFAULT || { allow: [], deny: ["*"] };
-        config.owner = config.owner || 0;
-        config.token = config.token || '/';
-        config.albumURL = config.albumURL || 'https://i.imgur.com/';
+        config.OWNER = config.OWNER || 0;
+        config.PREFIX = config.PREFIX || '/';
+        config.ALBUMURL = config.ALBUMURL || 'https://i.imgur.com/';
 
 
         const bannedCommandsSet = new Set(config.BANNED_COMMANDS);

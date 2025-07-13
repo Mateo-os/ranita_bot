@@ -12,10 +12,12 @@ async function findplayer(iduser, idserver,getbot = false){
     });
     if (!player)
         return null;
-    player = player.reload({
+    player = await player.reload({
         include: 'cartas'
     }
     );
+
+    return player
 }
 
 module.exports = {findplayer};

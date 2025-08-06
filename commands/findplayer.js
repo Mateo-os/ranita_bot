@@ -12,10 +12,6 @@ async function findplayer(iduser, idserver,getbot = false){
     });
     if (!player)
         return null;
-    player = await player.reload({
-        include: 'cartas'
-    }
-    );
 
     return player
 }

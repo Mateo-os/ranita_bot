@@ -14,7 +14,9 @@ async function repeats(player, message) {
         console.log(e);
         return ["Ha ocurrido un error", []];
     } 
-    const cards = user.cartas.filter(c => c.Cromo.cantidad > 1).slice();
+    if (!user)
+        return ["Ha ocurrido un error", []];
+    const cards = user.cartas.filter(c => c.Cromo.cantidad > 1);
     const selfcheck = (player.id_discord == user.id_discord);
     if (!cards.length){
         const response =  selfcheck ? "No posees duplicados": `${user.nombre} no posee duplicados`

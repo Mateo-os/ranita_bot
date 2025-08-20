@@ -1,5 +1,4 @@
 const helpers = require('../../helpers');
-const { retrieve } = require('../retrieve.js');
 
 function separateStringsAndNumbers(input) {
     // Regular expression to match alphanumeric strings and numbers wrapped in angle brackets

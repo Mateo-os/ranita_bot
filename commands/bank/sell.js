@@ -11,7 +11,7 @@ async function presell(player, message, args){
         return result;
     }
     const filter = c => new RegExp(helpers.escapeRegExp(name), 'i').test(c.nombre);
-    [cards, parsedCards] = retrieve(player, filter,parseCartas);
+    const [cards, parsedCards] = retrieve(player, filter,parseCartas);
     if (cards.length == 0) {
         result.push(
             'No tienes cartas con ese nombre o similares.',

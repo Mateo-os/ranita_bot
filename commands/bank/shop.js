@@ -8,7 +8,7 @@ async function shop(message){
         responses.push("Ocurrió un error en el banco. No esta inicializado.",[]);
         return responses;
     }
-    const cards = bank.cartas;
+    const cards = bank.cartas.slice();
     if(!cards.length){
         responses.push("El banco no tiene cartas actualmente en venta.",[]);
         return responses;

@@ -10,7 +10,7 @@ async function prebuy(bank, player,message, args){
         return result;
     }
     const filter = c => new RegExp(helpers.escapeRegExp(name), 'i').test(c.nombre);
-    [cards, parsedCards] = retrieve(bank, filter,parseCartas);
+    const [cards, parsedCards] = retrieve(bank, filter,parseCartas);
     if (cards.length == 0) {
         result.push(
             'No hay cartas en el banco con ese nombre o similares.',

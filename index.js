@@ -57,7 +57,6 @@ client.on('messageCreate', async message => {
                 response = `Estas son todas ${selfcheck ? `tus cartas` : `las cartas de ${user.nombre}`}:\n`
                 responses.push(response);
                 await commands.show(responses, message);
-                responses.length = 0;
                 await helpers.sendCardEmbed(message, cards, true, true);
                 break;
             case 'award':

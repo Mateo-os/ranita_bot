@@ -59,7 +59,6 @@ seriesArray.forEach(series => {
                     carta.save();
                     updated++;
                 } else{
-                    output = `Skipped duplicate entry for ${elementName} in ${seriesName}.`;
                     skipped++;
                 }
                 console.log(output);

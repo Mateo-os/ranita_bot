@@ -1,9 +1,9 @@
 const helpers = require('../../helpers');
 
-
 function separateStringsAndNumbers(input) {
     // Regular expression to match alphanumeric strings and numbers wrapped in angle brackets
-    const names_regex = /[\w\s]+(?=\s*<\d+>\s*|$)/g; // Updated regex to match alphanumeric strings not followed by numbers in angle brackets
+    // EX: Foo <4> Bar <7>
+    const names_regex = /[\w\s]+(?=\s*<\d+>\s*|$)/g;
 
     const number_regex = /<(\d+)>/g;
     const alphanumericMatches = [];
@@ -31,22 +31,23 @@ async function recycle(player, args) {
     }
     let points = 0;
     let response = ''
+    const cards = player.cartas
     for (let i = 0; i < recycle_names.length; i++) {
         const name = recycle_names[i];
         // Filter by name but also ignoring rare 6 cards.
         const canRecycle = c => (new RegExp(name, 'i').test(c.nombre)) && (c.rareza < 6);
-        const cards = player.cartas.filter(canRecycle);
-        if (cards.length == 0) {
+        matchedCards = cards.filter(canRecycle); 
+        if (matchedCards.length == 0) {
             response += `No tienes cartas reciclables con el nombre \"${name}\" nombre o similares.\n`
             continue;
         }
-        if (cards.length > 1) {
+        if (matchedCards.length > 1) {
             response += `Estas son tus reciclables cartas similares a \"${name}\:"\n`;
-            response += helpers.parseCartas(cards, showRepeats = true)
+            response += helpers.parseCartas(matchedCards, showRepeats = true)
             response += `Por favor especifica.\n`;
             continue;
         }
-        const card = cards[0];
+        const card = matchedCards[0];
         const recycle_amount = i < recycle_amounts.length ? recycle_amounts[i] : card.Cromo.cantidad - 1;
         if(recycle_amount == 0){
             response += `Solamente tienes una copia de la carta ${card.nombre}. Para reciclarla, indicalo explicitamente.\n`;

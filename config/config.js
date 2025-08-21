@@ -12,6 +12,7 @@ const prefix = process.env.PREFIX;
 const version = process.env.VERSION;
 const owner = process.env.IDOWNER;
 const albumURL = process.env.ALBUMURL;
+const initial_rolls = (process.env.INITIALROLLS || 10) 
 let botID = undefined;
 
 
@@ -24,6 +25,7 @@ const Config = {
     "version": version,
     "owner": owner,
     "botID": () => botID,
+    "initial_rolls":initial_rolls
   },
 }
 

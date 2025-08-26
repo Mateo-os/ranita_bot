@@ -13,7 +13,9 @@ async function startbanks(){
     const servers = await commands.server.retrieve();
     servers.forEach( async server_id => {
         const id = config.botID();
-        (await commands.findplayer(id, server_id,true)) || (await commands.createplayer('',id,server_id));         
+        let bank = await commands.findplayer(id, server_id,true);
+        if(!bank)
+            await commands.createplayer('',id,server_id,true);
     })
 }
 
@@ -268,9 +270,6 @@ client.on('messageCreate', async message => {
         await commands.show(responses, message);
     } catch (err) {
         console.log(err);
-        /*message.channel.send("¡Hey! <@530487646766497792> y <@441325983363235841> he aquí un error.");
-        client.users.cache.get('530487646766497792').send(`Un error en ${message.url}.`); //Ray
-        client.users.cache.get('441325983363235841').send(`Un error en ${message.url}.`); //Mateo*/
     }
 });
 

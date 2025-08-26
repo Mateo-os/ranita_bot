@@ -1,5 +1,40 @@
 const fs = require('fs');
 
+
+function validatePermissions(allow, deny, banned, channelName, serverName){
+        // Neither allow nor deny can have duplications
+        if (new Set(allow).size !== allow.length) {
+            throw new Error(`'allow' array for ${channelName} contains duplicates in server ${serverName}`);
+        }
+        if (new Set(deny).size !== deny.length) {
+            throw new Error(`'deny' array for ${channelName} contains duplicates in server ${serverName}`);
+        }
+        // Allow cannot have an element that is present in the BANNED_COMMANDS list
+        for (const command of allow) {
+            if (command !== '*' && banned.includes(command)) {
+                throw new Error(`'allow' array for ${channelName} contains a banned command in server ${serverName}`);
+            }
+        }
+        // If allow (or deny) contains the wildcard, that's the only element it can have
+        if (allow.includes('*') && allow.length > 1) {
+            throw new Error(`'allow' array for ${channelName} in server ${serverName} contains '*' but has other elements`);
+        }
+        if (deny.includes('*') && deny.length > 1) {
+            throw new Error(`'deny' array for ${channelName} in server ${serverName} contains '*' but has other elements`);
+        }
+        // If allow is ['*'], deny can't be ['*']
+        if (allow.length === 1 && allow[0] === '*' && deny.length === 1 && deny[0] === '*') {
+            throw new Error(`'allow' array for ${channelName} in server ${serverName} is ['*'] but 'deny' array is also ['*']`);
+        }
+        // If allow contains a non-'*' element, "deny" must be either empty or contain a wildcard
+        if (allow.length > 0 && !allow.includes('*')) {
+            if (deny.length > 0 && !deny.includes('*')) {
+                throw new Error(`'allow' array for ${channelName} in server ${serverName} contains non-'*' elements but 'deny' array does not contain '*'`);
+            }
+        }
+}
+
+
 function validateConfig(cfg) {
     for(const [server, config] of Object.entries(cfg)){
         
@@ -17,68 +52,15 @@ function validateConfig(cfg) {
             throw new Error('BANNED_COMMANDS contains duplicates');
         }
 
+        const banned = config.BANNED_COMMANDS;
         for (const [channel, permissions] of Object.entries(config.CHANNELS)) {
-            const { allow, deny } = permissions;
-            // Neither allow nor deny can have duplications
-            if (new Set(allow).size !== allow.length) {
-                throw new Error(`'allow' array for ${channel} contains duplicates in server ${server}`);
-            }
-            if (new Set(deny).size !== deny.length) {
-                throw new Error(`'deny' array for ${channel} contains duplicates in server ${server}`);
-            }
-
-            // allow cannot have an element that is present in the BANNED_COMMANDS list
-            for (const command of allow) {
-                if (command !== '*' && config.BANNED_COMMANDS.includes(command)) {
-                    throw new Error(`'allow' array for ${channel} contains a banned command in server ${server}`);
-                }
-            }
-
-            // If allow (or deny) contains the wildcard, that's the only element it can have
-            if (allow.includes('*') && allow.length > 1) {
-                throw new Error(`'allow' array for ${channel} in server ${server} contains '*' but has other elements`);
-            }
-            if (deny.includes('*') && deny.length > 1) {
-                throw new Error(`'deny' array for ${channel} in server ${server} contains '*' but has other elements`);
-            }
-
-            // d. If allow is ['*'], deny can't be ['*']
-            if (allow.length === 1 && allow[0] === '*' && deny.length === 1 && deny[0] === '*') {
-                throw new Error(`'allow' array for ${channel} in server ${server} is ['*'] but 'deny' array is also ['*']`);
-            }
-
-            // e. If allow contains a non-'*' element, "deny" must be either empty or contain a wildcard
-            if (allow.length > 0 && !allow.includes('*')) {
-                if (deny.length > 0 && !deny.includes('*')) {
-                    throw new Error(`'allow' array for ${channel} in server ${server} contains non-'*' elements but 'deny' array does not contain '*'`);
-                }
-            }
+            const { allow, deny,name} = permissions;
+            validatePermissions(allow,deny,banned,name,server)
         }
 
         // Validate DEFAULT
         const { allow: defaultAllow, deny: defaultDeny } = config.DEFAULT;
-        if (new Set(defaultAllow).size !== defaultAllow.length) {
-            throw new Error(`DEFAULT allow array in server ${server} contains duplicates`);
-        }
-        if (new Set(defaultDeny).size !== defaultDeny.length) {
-            throw new Error(`DEFAULT deny array in server ${server} contains duplicates`);
-        }
-        if (defaultAllow.includes('*') && defaultAllow.length > 1) {
-            throw new Error(`DEFAULT allow array in server ${server} contains '*' but has other elements`);
-        }
-        if (defaultDeny.includes('*') && defaultDeny.length > 1) {
-            throw new Error(`DEFAULT deny array in server ${server} contains '*' but has other elements`);
-        }
-
-        if (defaultAllow.length === 1 && defaultAllow[0] === '*' && defaultDeny.length === 1 && defaultDeny[0] === '*') {
-            throw new Error(`DEFAULT 'allow' array in server ${server} is ['*'] but 'deny' array is also ['*']`);
-        }
-
-        if (defaultAllow.length > 0 && !defaultAllow.includes('*')) {
-            if (defaultDeny.length > 0 && !defaultDeny.includes('*')) {
-                throw new Error(`DEFAULT 'allow' array in server ${server} contains non-'*' elements but 'deny' array does not contain '*'`);
-            }
-        }
+        validatePermissions(defaultAllow,defaultDeny,banned,"DEFAULT", server)
     }
 }
 

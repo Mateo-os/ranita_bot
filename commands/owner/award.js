@@ -3,7 +3,6 @@ const { config } = require('../../config/config.js');
 
 async function award(message, args) {
     const owner = config.serverConfig[message.guild.id].OWNER
-    console.log(owner)
     if (message.author.id != owner) return ["No sos el owner."];
     if (!message.mentions.members.first()) return ["No mencionaste jugador."];
     try {

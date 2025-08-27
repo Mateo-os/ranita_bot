@@ -19,7 +19,8 @@
     },
     "ALBUMURL": "http://i.imgur.com/",
     "OWNER":0,
-    "PREFIX":"/"
+    "PREFIX":"/",
+    "INITIALROLLS":10
   }
 }
   

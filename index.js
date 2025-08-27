@@ -49,8 +49,9 @@ client.on('messageCreate', async message => {
         if(!validation) {
             await commands.show(validationresponse,message);
             return;
-        }
-        const player = await commands.findplayer(message.author.id, server) || await commands.newplayer(message);
+        }   
+        let _player = await commands.findplayer(message.author.id, server)
+        const player =  _player ?? await commands.newplayer(message);
         let responses = [];
         let response, user, cards,selfcheck,player2,bank,rolledcards;
         switch (command) {

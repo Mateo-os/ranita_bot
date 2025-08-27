@@ -45,7 +45,7 @@ function validateConfig(cfg) {
         config.OWNER = config.OWNER || 0;
         config.PREFIX = config.PREFIX || '/';
         config.ALBUMURL = config.ALBUMURL || 'https://i.imgur.com/';
-
+        config.INITIALROLLS = config.INITIALROLLS || 10;
 
         const bannedCommandsSet = new Set(config.BANNED_COMMANDS);
         if (bannedCommandsSet.size !== config.BANNED_COMMANDS.length) {

@@ -99,6 +99,3 @@ config/serverData.json
 
 #.txt
 personajes_album.txt
-
-# config-related
-config/serverData.json

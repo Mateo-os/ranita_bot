@@ -1,9 +1,9 @@
 const { models } = require('../../database');
 const { findplayer } = require('../findplayer');
 const { config } = require('../../config/config.js');
-const owner = config.owner;
 
 async function give(player, message, args){
+    const owner = config.serverConfig[message.guild.id].OWNER
     if (message.author.id != owner) return ["No sos el owner."];
     const mentionedMember = message.mentions.members.first();
     const member_id = mentionedMember ? mentionedMember.user.id : player.id_discord;

@@ -1,8 +1,8 @@
 const { findplayer } = require('../findplayer.js');
 const { config } = require('../../config/config.js');
-const owner = config.owner;
 
 async function award(message, args) {
+    const owner = config.serverConfig[message.guild.id].OWNER
     if (message.author.id != owner) return ["No sos el owner."];
     if (!message.mentions.members.first()) return ["No mencionaste jugador."];
     try {

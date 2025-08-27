@@ -1,8 +1,9 @@
 const { EmbedBuilder } = require('discord.js');
 const { config } = require('../config/config');
 const {sendPaginatedEmbed} = require('../helpers')
-const prefix = config.prefix;
 async function help(message) {
+    const prefix = config.serverConfig[message.guild.id].PREFIX
+    const owner = config.serverConfig[message.guild.id].OWNER
     const commands =  [
         { name: `${prefix}album`, value: `Muestra todos los personajes que tienes, con sus imagenes.` },
         { name: `${prefix}award`, value: "Comando solo para el admin. Otorga rolls al jugador mencionado."}, 
@@ -18,7 +19,7 @@ async function help(message) {
         { name: `${prefix}info`, value: "Te da tu data." },
         { name: `${prefix}recycle`, value: "Permite reciclar la carta mencionada. Se puede dar una cantitidad especifica entre <brackets>, o reciclar todos los duplicados de la carta dejando una unica copia.\n [ALERTA] Especificando una cantidad puede dejarte sin copias de la carta."},
         { name: `${prefix}repeats`, value: "Muestra todas tus cartas con duplicados, o la del usuario que menciones." },
-        { name: `${prefix}roll`, value: `Cada tirada son 3 personajes. Se consiguen mas tiradas diariamente (1 cada 24 horas) y según <@${config.owner}> vaya liberando.` },
+        { name: `${prefix}roll`, value: `Cada tirada son 3 personajes. Se consiguen mas tiradas diariamente (1 cada 24 horas) y según <@${owner}> vaya liberando.` },
         { name: `${prefix}scrap`, value: `Recicla todas las cartas repetidas de la rareza que menciones. Siempre te deja con una copia de cada carta.`},
         { name: `${prefix}sell`, value:`Pemite vender la carta nombrada de tu inventario al banco a cambio de dinero.`},
         { name: `${prefix}shop`, value: `Permite ver el inventario de la tienda.`},

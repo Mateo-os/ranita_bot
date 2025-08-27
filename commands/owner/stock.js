@@ -1,9 +1,9 @@
 const { models } = require('../../database');
 const _bank = require('../bank');
 const { config } = require('../../config/config.js');
-const owner = config.owner;
 
 async function stock(player, message, args){
+    const owner = config.serverConfig[message.guild.id].OWNER
     if (message.author.id != owner) return ["No sos el owner."];
     const server_id = message.guild.id;
     const bank = await _bank.get(server_id);

@@ -4,7 +4,7 @@ const { config} = require('../config/config.js');
 const { rarities } = require('./constants.js');
 const mutex = require('./async.js');
 
-const albumURL = config.albumURL;
+//const albumURL = config.albumURL;
 function pagePanel(totalPages) {
     const row = new ActionRowBuilder()
         .addComponents(
@@ -77,6 +77,7 @@ async function sendPaginatedEmbed(message, pages, interactionTime) {
 }
 
 async function sendCardEmbed(message, cards, paginated = false, showRepeats = false, showNew = false, interactionTime = 3) {
+    const albumURL = config.serverConfig[message.guild.id].ALBUMURL
     const pages = cards.map(c => {
         const photopath = urljoin(albumURL, `${c.URLimagen}.png`);
         const nw = (showNew && !c.Cromo) ? '**NEW!!!** ' : '';
